@@ -1,0 +1,56 @@
+{
+  "com.badlogic.gdx.graphics.Color": {
+    "white": {
+      "r": 1,
+      "g": 1,
+      "b": 1,
+      "a": 1
+    }
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+    "normal": {
+      "font": "font_24",
+      "fontColor": "white"
+    },
+    "small": {
+      "font": "font_16",
+      "fontColor": "white"
+    },
+    "big": {
+      "font": "font_48",
+      "fontColor": "white"
+    }
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
+    "gamePadUp": {
+      "up": "upReleased",
+      "down": "upPress",
+      "checked": "upPress"
+    },
+    "gamePadLeft": {
+      "up": "leftReleased",
+      "down": "leftPress",
+      "checked": "leftPress"
+    },
+    "gamePadRight": {
+      "up": "rightReleased",
+      "down": "rightPress",
+      "checked": "rightPress"
+    },
+    "gamePadDown": {
+      "up": "downReleased",
+      "down": "downPress",
+      "checked": "downPress"
+    },
+    "back": {
+      "up": "backReleased",
+      "down": "backPress",
+      "checked": "backPress"
+    },
+    "select": {
+      "up": "selectReleased",
+      "down": "selectPress",
+      "checked": "selectPress"
+    }
+  }
+}
