@@ -111,3 +111,9 @@ task buildHUDTextureAtlas(description: "Rebuilds the hud atlas located in assets
         TexturePacker.process('android/assets/hud/input', 'android/assets/hud', 'hud.atlas')
     }
 }
+
+task buildMapTextureAtlas(description: "Rebuilds the map atlas located in assets/map/tiles folder. Images are taken from assets/map/tiles/input folder.", group: "game") {
+    doLast {
+        TexturePacker.process('android/assets/map/tiles/input', 'android/assets/map/tiles', 'map.atlas')
+    }
+}

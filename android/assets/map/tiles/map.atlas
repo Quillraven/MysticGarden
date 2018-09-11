@@ -1,0 +1,664 @@
+
+map.png
+size: 1024,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+boulder
+  rotate: false
+  xy: 306, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+crystal/crystal
+  rotate: false
+  xy: 340, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+crystal/crystal
+  rotate: false
+  xy: 374, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+crystal/crystal
+  rotate: false
+  xy: 408, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+crystal/crystal
+  rotate: false
+  xy: 442, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+crystal/crystal
+  rotate: false
+  xy: 476, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+crystal/crystal
+  rotate: false
+  xy: 510, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+crystal/crystal
+  rotate: false
+  xy: 544, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 6
+crystal/crystal
+  rotate: false
+  xy: 578, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 7
+crystal_wall_lightred
+  rotate: false
+  xy: 612, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+dirt/dirt_0_new
+  rotate: false
+  xy: 646, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+dirt/dirt_1_new
+  rotate: false
+  xy: 680, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+dirt/dirt_2_new
+  rotate: false
+  xy: 714, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+dirt/dirt_east_new
+  rotate: false
+  xy: 748, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+dirt/dirt_full_new
+  rotate: false
+  xy: 782, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+dirt/dirt_north_new
+  rotate: false
+  xy: 816, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+dirt/dirt_northeast_new
+  rotate: false
+  xy: 850, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+dirt/dirt_northwest_new
+  rotate: false
+  xy: 884, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+dirt/dirt_south_new
+  rotate: false
+  xy: 918, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+dirt/dirt_southeast_new
+  rotate: false
+  xy: 952, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+dirt/dirt_southwest_new
+  rotate: false
+  xy: 986, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+dirt/dirt_west_new
+  rotate: false
+  xy: 0, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+fire_altar/altar_makhleb_flame
+  rotate: false
+  xy: 0, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+fire_altar/altar_makhleb_flame
+  rotate: false
+  xy: 34, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+fire_altar/altar_makhleb_flame
+  rotate: false
+  xy: 68, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+fire_altar/altar_makhleb_flame
+  rotate: false
+  xy: 102, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+fire_altar/altar_makhleb_flame
+  rotate: false
+  xy: 136, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+fire_altar/altar_makhleb_flame
+  rotate: false
+  xy: 170, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 6
+fire_altar/altar_makhleb_flame
+  rotate: false
+  xy: 204, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 7
+fire_altar/altar_makhleb_flame
+  rotate: false
+  xy: 238, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 8
+grass/grass_0_new
+  rotate: false
+  xy: 204, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_1_new
+  rotate: false
+  xy: 238, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_2_new
+  rotate: false
+  xy: 272, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_east_new
+  rotate: false
+  xy: 306, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_flowers_blue_1_new
+  rotate: false
+  xy: 340, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_flowers_blue_2_new
+  rotate: false
+  xy: 374, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_flowers_blue_3_new
+  rotate: false
+  xy: 408, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_flowers_red_1_new
+  rotate: false
+  xy: 442, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_flowers_red_2_new
+  rotate: false
+  xy: 476, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_flowers_red_3_new
+  rotate: false
+  xy: 510, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_flowers_yellow_1_new
+  rotate: false
+  xy: 544, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_flowers_yellow_2_new
+  rotate: false
+  xy: 578, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_flowers_yellow_3_new
+  rotate: false
+  xy: 612, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_full_new
+  rotate: false
+  xy: 646, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_north_new
+  rotate: false
+  xy: 680, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_northeast_new
+  rotate: false
+  xy: 714, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_northwest_new
+  rotate: false
+  xy: 748, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_south_new
+  rotate: false
+  xy: 782, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_southeast_new
+  rotate: false
+  xy: 816, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_southwest_new
+  rotate: false
+  xy: 850, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass/grass_west_new
+  rotate: false
+  xy: 884, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+grass_dirt/grass0-dirt-mix
+  rotate: false
+  xy: 102, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+grass_dirt/grass0-dirt-mix
+  rotate: false
+  xy: 136, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+grass_dirt/grass0-dirt-mix
+  rotate: false
+  xy: 170, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+items/axe
+  rotate: false
+  xy: 272, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+items/giant_spiked_club
+  rotate: false
+  xy: 68, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+items/urand_firestarter
+  rotate: false
+  xy: 102, 102
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+mold/mold_large
+  rotate: false
+  xy: 952, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+mold/mold_large
+  rotate: false
+  xy: 986, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+mold/mold_large
+  rotate: false
+  xy: 0, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+mold/mold_large
+  rotate: false
+  xy: 34, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+portal/expired_portal
+  rotate: false
+  xy: 34, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+portal/portal
+  rotate: false
+  xy: 68, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+portal/portal_rotated
+  rotate: false
+  xy: 102, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+statue_cat
+  rotate: false
+  xy: 816, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+stone/stone_brick
+  rotate: false
+  xy: 850, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+stone/stone_brick
+  rotate: false
+  xy: 884, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 12
+torch/torch
+  rotate: false
+  xy: 918, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+torch/torch
+  rotate: false
+  xy: 952, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+torch/torch
+  rotate: false
+  xy: 986, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+torch/torch
+  rotate: false
+  xy: 0, 102
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+torch/torch
+  rotate: false
+  xy: 34, 102
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+tree/mangrove
+  rotate: false
+  xy: 918, 34
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+tree/tree_1_red
+  rotate: false
+  xy: 68, 102
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+water/shallow_water_wave_corner_northeast_new
+  rotate: false
+  xy: 136, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+water/shallow_water_wave_corner_northwest_new
+  rotate: false
+  xy: 170, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+water/shallow_water_wave_corner_southeast_new
+  rotate: false
+  xy: 204, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+water/shallow_water_wave_corner_southwest_new
+  rotate: false
+  xy: 238, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+water/shallow_water_wave_east_new
+  rotate: false
+  xy: 272, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+water/shallow_water_wave_north_new
+  rotate: false
+  xy: 306, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+water/shallow_water_wave_south_new
+  rotate: false
+  xy: 340, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+water/shallow_water_wave_west_new
+  rotate: false
+  xy: 374, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+water/shoals_shallow_water
+  rotate: false
+  xy: 408, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+water/shoals_shallow_water
+  rotate: false
+  xy: 442, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+water/shoals_shallow_water
+  rotate: false
+  xy: 476, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 6
+water/shoals_shallow_water
+  rotate: false
+  xy: 510, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 7
+water/shoals_shallow_water
+  rotate: false
+  xy: 544, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 8
+water/shoals_shallow_water
+  rotate: false
+  xy: 578, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 9
+water/shoals_shallow_water
+  rotate: false
+  xy: 612, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 10
+water/shoals_shallow_water
+  rotate: false
+  xy: 646, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 11
+water/shoals_shallow_water_1_new
+  rotate: false
+  xy: 680, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+water/shoals_shallow_water_2_new
+  rotate: false
+  xy: 714, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+water/shoals_shallow_water_3_new
+  rotate: false
+  xy: 748, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+water/shoals_shallow_water_4_new
+  rotate: false
+  xy: 782, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
