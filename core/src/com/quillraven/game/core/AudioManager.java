@@ -23,21 +23,28 @@ public class AudioManager {
                 currentMusic.stop();
             }
             music.setLooping(true);
+            music.setVolume(type.volume);
             music.play();
         } else {
-            assetManager.get(type.filePath, Sound.class).play();
+            assetManager.get(type.filePath, Sound.class).play(type.volume);
         }
     }
 
     public enum AudioType {
-        INTRO("audio/intro.mp3", true);
+        INTRO("audio/intro.mp3", true, 0.3f);
 
         private final String filePath;
         private final boolean isMusic;
+        private final float volume;
 
-        AudioType(final String filePath, final boolean isMusic) {
+        AudioType(final String filePath, final boolean isMusic, final float volume) {
             this.filePath = filePath;
             this.isMusic = isMusic;
+            this.volume = volume;
+        }
+
+        AudioType(final String filePath, final boolean isMusic) {
+            this(filePath, isMusic, 1);
         }
 
         public String getFilePath() {

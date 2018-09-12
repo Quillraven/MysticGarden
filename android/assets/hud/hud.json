@@ -52,5 +52,12 @@
       "down": "selectPress",
       "checked": "selectPress"
     }
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle": {
+    "default": {
+      "background": "knobAfter",
+      "knob": "knob",
+      "knobBefore": "knobBefore"
+    }
   }
 }

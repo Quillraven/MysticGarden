@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.quillraven.game.core.ui.HUD;
 import com.quillraven.game.core.ui.Skin;
 import com.quillraven.game.core.ui.SkinLoader;
@@ -26,6 +28,7 @@ public class Game implements Disposable {
     private final SpriteBatch spriteBatch;
     private final InputController inputController;
     private final AudioManager audioManager;
+    private final I18NBundle i18NBundle;
 
     private final EnumMap<EGameState, GameState> gameStateCache;
     private GameState activeState;
@@ -44,8 +47,11 @@ public class Game implements Disposable {
         assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
         assetManager.setLoader(Skin.class, new SkinLoader(resolver));
         assetManager.load("hud/hud.json", Skin.class, new SkinLoader.SkinParameter("hud/font.ttf", 16, 24, 48));
+        assetManager.load(AudioManager.AudioType.INTRO.getFilePath(), Music.class);
+        assetManager.load("i18n/strings", I18NBundle.class);
         assetManager.finishLoading();
         skin = assetManager.get("hud/hud.json", Skin.class);
+        i18NBundle = assetManager.get("i18n/strings", I18NBundle.class);
 
         // setup inputlistener
         inputController = new InputController();
@@ -64,12 +70,16 @@ public class Game implements Disposable {
         return assetManager;
     }
 
-    public InputController getInputController() {
+    InputController getInputController() {
         return inputController;
     }
 
     public Skin getSkin() {
         return skin;
+    }
+
+    public I18NBundle getI18NBundle() {
+        return i18NBundle;
     }
 
     public AudioManager getAudioManager() {

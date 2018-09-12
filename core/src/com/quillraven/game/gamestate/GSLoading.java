@@ -3,6 +3,7 @@ package com.quillraven.game.gamestate;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.quillraven.game.core.*;
 import com.quillraven.game.ui.LoadingUI;
 
@@ -13,7 +14,12 @@ public class GSLoading extends GameState<LoadingUI> {
         super(game, hud);
 
         assetManager = game.getAssetManager();
+        loadTextureAtlas();
         loadAudio();
+    }
+
+    private void loadTextureAtlas() {
+        assetManager.load("map/tiles/map.atlas", TextureAtlas.class);
     }
 
     private void loadAudio() {
@@ -27,6 +33,12 @@ public class GSLoading extends GameState<LoadingUI> {
     }
 
     @Override
+    public void activate() {
+        game.getAudioManager().playAudio(AudioManager.AudioType.INTRO);
+        super.activate();
+    }
+
+    @Override
     public void processInput(final InputController inputController) {
         if (assetManager.getProgress() == 1 && inputController.isAnyKeyPressed()) {
             game.setGameState(EGameState.GAME);
@@ -36,9 +48,7 @@ public class GSLoading extends GameState<LoadingUI> {
     @Override
     public void step(final float fixedTimeStep) {
         assetManager.update();
-        if (assetManager.isLoaded(AudioManager.AudioType.INTRO.getFilePath())) {
-            game.getAudioManager().playAudio(AudioManager.AudioType.INTRO);
-        }
+        hud.setProgress(assetManager.getProgress());
         super.step(fixedTimeStep);
     }
 }
