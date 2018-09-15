@@ -31,7 +31,10 @@ public class AudioManager {
     }
 
     public enum AudioType {
-        INTRO("audio/intro.mp3", true, 0.3f);
+        // music
+        INTRO("audio/intro.mp3", true, 0.3f),
+        // sounds
+        SELECT("audio/select.wav", false);
 
         private final String filePath;
         private final boolean isMusic;

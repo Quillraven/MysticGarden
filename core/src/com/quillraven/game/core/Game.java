@@ -87,9 +87,17 @@ public class Game implements Disposable {
     }
 
     public void setGameState(final EGameState gameStateType) {
+        setGameState(gameStateType, false);
+    }
+
+    public void setGameState(final EGameState gameStateType, final boolean disposeActive) {
         if (activeState != null) {
-            Gdx.app.debug(TAG, "Deactivating gamestate " + activeState + "\n");
+            Gdx.app.debug(TAG, "Deactivating gamestate " + (disposeActive ? "and disposing" : "") + " " + activeState);
             activeState.deactivate();
+            if (disposeActive) {
+                gameStateCache.remove(activeState.getType());
+                activeState.dispose();
+            }
         }
 
         activeState = gameStateCache.get(gameStateType);
@@ -98,7 +106,7 @@ public class Game implements Disposable {
 
             try {
                 final HUD hud = gameStateType.getHUDType().getConstructor(Game.class).newInstance(this);
-                activeState = gameStateType.getGameStateType().getConstructor(Game.class, gameStateType.getHUDType()).newInstance(this, hud);
+                activeState = gameStateType.getGameStateType().getConstructor(EGameState.class, Game.class, gameStateType.getHUDType()).newInstance(gameStateType, this, hud);
                 gameStateCache.put(gameStateType, activeState);
             } catch (Exception e) {
                 throw new GdxRuntimeException("Could not create gamestate of type " + gameStateType, e);

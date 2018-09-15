@@ -8,6 +8,8 @@ import com.quillraven.game.MysticGarden;
 public class DesktopLauncher {
     public static void main(String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        config.width = 450;
+        config.height = 800;
         new LwjglApplication(new MysticGarden(), config).setLogLevel(Application.LOG_DEBUG);
     }
 }

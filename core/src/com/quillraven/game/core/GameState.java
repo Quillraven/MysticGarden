@@ -12,11 +12,17 @@ public abstract class GameState<T extends HUD> implements Disposable {
     protected final T hud;
     protected final Game game;
     private final InputMultiplexer inputMultiplexer;
+    private final EGameState type;
 
-    protected GameState(final Game game, final T hud) {
+    protected GameState(final EGameState type, final Game game, final T hud) {
         this.hud = hud;
         this.game = game;
+        this.type = type;
         this.inputMultiplexer = new InputMultiplexer(game.getInputController(), hud.getStage());
+    }
+
+    public EGameState getType() {
+        return type;
     }
 
     public abstract void processInput(final InputController inputController);

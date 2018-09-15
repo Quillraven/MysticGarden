@@ -7,9 +7,8 @@ import com.quillraven.game.core.InputController;
 import com.quillraven.game.ui.GameUI;
 
 public class GSGame extends GameState<GameUI> {
-
-    public GSGame(final Game game, final GameUI hud) {
-        super(game, hud);
+    public GSGame(final EGameState type, final Game game, final GameUI hud) {
+        super(type, game, hud);
     }
 
     @Override

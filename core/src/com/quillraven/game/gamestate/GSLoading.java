@@ -10,8 +10,8 @@ import com.quillraven.game.ui.LoadingUI;
 public class GSLoading extends GameState<LoadingUI> {
     private final AssetManager assetManager;
 
-    public GSLoading(final Game game, final LoadingUI hud) {
-        super(game, hud);
+    public GSLoading(final EGameState type, final Game game, final LoadingUI hud) {
+        super(type, game, hud);
 
         assetManager = game.getAssetManager();
         loadTextureAtlas();
@@ -24,6 +24,9 @@ public class GSLoading extends GameState<LoadingUI> {
 
     private void loadAudio() {
         for (final AudioManager.AudioType type : AudioManager.AudioType.values()) {
+            if (assetManager.isLoaded(type.getFilePath())) {
+                continue;
+            }
             if (type.isMusic()) {
                 assetManager.load(type.getFilePath(), Music.class);
             } else {
@@ -41,7 +44,8 @@ public class GSLoading extends GameState<LoadingUI> {
     @Override
     public void processInput(final InputController inputController) {
         if (assetManager.getProgress() == 1 && inputController.isAnyKeyPressed()) {
-            game.setGameState(EGameState.GAME);
+            game.getAudioManager().playAudio(AudioManager.AudioType.SELECT);
+            game.setGameState(EGameState.GAME, true);
         }
     }
 
