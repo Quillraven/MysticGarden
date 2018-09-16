@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
  * The reason is that the bitmap fonts that are created on runtime are not handled correctly within
  * the {@link com.badlogic.gdx.assets.AssetManager} and get therefore disposed twice.
  */
-public class Skin extends com.badlogic.gdx.scenes.scene2d.ui.Skin {
-    Skin(final TextureAtlas atlas) {
+public class TTFSkin extends com.badlogic.gdx.scenes.scene2d.ui.Skin {
+    TTFSkin(final TextureAtlas atlas) {
         super(atlas);
 
         Colors.put("Highlight", new Color(0xff0000ff));

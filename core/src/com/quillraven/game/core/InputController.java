@@ -5,7 +5,7 @@ import com.badlogic.gdx.InputAdapter;
 
 public class InputController extends InputAdapter {
     private final Key[] keyMapping;
-    private final boolean keyState[];
+    private final boolean[] keyState;
 
     InputController() {
         this.keyMapping = new Key[256];

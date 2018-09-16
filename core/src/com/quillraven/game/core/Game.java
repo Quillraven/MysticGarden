@@ -5,16 +5,24 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.I18NBundle;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.quillraven.game.core.ui.HUD;
-import com.quillraven.game.core.ui.Skin;
+import com.quillraven.game.core.ui.TTFSkin;
 import com.quillraven.game.core.ui.SkinLoader;
 
 import java.util.EnumMap;
@@ -24,11 +32,14 @@ public class Game implements Disposable {
     private static final String TAG = Game.class.getSimpleName();
 
     private final AssetManager assetManager;
-    private final Skin skin;
+    private final TTFSkin skin;
     private final SpriteBatch spriteBatch;
     private final InputController inputController;
     private final AudioManager audioManager;
     private final I18NBundle i18NBundle;
+
+    private final World world;
+    private final OrthographicCamera gameCamera;
 
     private final EnumMap<EGameState, GameState> gameStateCache;
     private GameState activeState;
@@ -37,20 +48,26 @@ public class Game implements Disposable {
 
     public Game(final EGameState initialState) {
         spriteBatch = new SpriteBatch();
+        this.gameCamera = new OrthographicCamera();
         gameStateCache = new EnumMap<>(EGameState.class);
         accumulator = 0;
+
+        //box2d
+        Box2D.init();
+        world = new World(new Vector2(0, 0), true);
 
         // setup assetmanager and skin
         final FileHandleResolver resolver = new InternalFileHandleResolver();
         this.assetManager = new AssetManager();
         assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
-        assetManager.setLoader(Skin.class, new SkinLoader(resolver));
-        assetManager.load("hud/hud.json", Skin.class, new SkinLoader.SkinParameter("hud/font.ttf", 16, 24, 48));
+        assetManager.setLoader(TTFSkin.class, new SkinLoader(resolver));
+        assetManager.setLoader(TiledMap.class, new TmxMapLoader(resolver));
+        assetManager.load("hud/hud.json", TTFSkin.class, new SkinLoader.SkinParameter("hud/font.ttf", 16, 24, 48));
         assetManager.load(AudioManager.AudioType.INTRO.getFilePath(), Music.class);
         assetManager.load("i18n/strings", I18NBundle.class);
         assetManager.finishLoading();
-        skin = assetManager.get("hud/hud.json", Skin.class);
+        skin = assetManager.get("hud/hud.json", TTFSkin.class);
         i18NBundle = assetManager.get("i18n/strings", I18NBundle.class);
 
         // setup inputlistener
@@ -66,6 +83,14 @@ public class Game implements Disposable {
         return spriteBatch;
     }
 
+    public World getWorld() {
+        return world;
+    }
+
+    public OrthographicCamera getGameCamera() {
+        return gameCamera;
+    }
+
     public AssetManager getAssetManager() {
         return assetManager;
     }
@@ -74,7 +99,7 @@ public class Game implements Disposable {
         return inputController;
     }
 
-    public Skin getSkin() {
+    public TTFSkin getSkin() {
         return skin;
     }
 
@@ -105,10 +130,10 @@ public class Game implements Disposable {
             Gdx.app.debug(TAG, "Creating new gamestate: " + gameStateType);
 
             try {
-                final HUD hud = gameStateType.getHUDType().getConstructor(Game.class).newInstance(this);
-                activeState = gameStateType.getGameStateType().getConstructor(EGameState.class, Game.class, gameStateType.getHUDType()).newInstance(gameStateType, this, hud);
+                final HUD hud = (HUD) ClassReflection.getConstructor(gameStateType.getHUDType(), Game.class).newInstance(this);
+                activeState = (GameState) ClassReflection.getConstructor(gameStateType.getGameStateType(), EGameState.class, Game.class, gameStateType.getHUDType()).newInstance(gameStateType, this, hud);
                 gameStateCache.put(gameStateType, activeState);
-            } catch (Exception e) {
+            } catch (ReflectionException e) {
                 throw new GdxRuntimeException("Could not create gamestate of type " + gameStateType, e);
             }
         }
@@ -145,5 +170,6 @@ public class Game implements Disposable {
         Gdx.app.debug(TAG, "Last number of render calls: " + spriteBatch.renderCalls);
         spriteBatch.dispose();
         assetManager.dispose();
+        world.dispose();
     }
 }

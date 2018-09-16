@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-up" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextobjectid="8">
+ <tileset firstgid="1" source="tileset.tsx"/>
+ <layer name="background" width="64" height="64">
+  <data encoding="base64" compression="zlib">
+   eJzt1u0KgjAUgOFdTSmEfVnW/d9YShMsikKQgef58bAfE7YXDrI6pVQDAAAAAAAA/Gk7Q+k7L9Xf/uhbe3+V18NkrwnU3+X10jtnw0xsgvSPbffeaaIN1n9766+C9e/S6wx0gfqH9n16zsA1tx8D9U/3mi/flr7zkv3R3j98Nr4B2kLnlzb+/6tC5wMAAAAAwFo9AKY9kOA=
+  </data>
+ </layer>
+ <layer name="background2" width="64" height="64">
+  <data encoding="base64" compression="zlib">
+   eJzt1rENACAIRUHmcv/BHMBCIzbgXUL1q9cRAQAAAAAAAMCNcXA/696/69Pfm/7cXp3+3F6d/txenf711/X/AgAAAADAWxMMQwgp
+  </data>
+ </layer>
+ <objectgroup name="boundaries">
+  <object id="7" x="894.833" y="928.333" width="288" height="383.833"/>
+ </objectgroup>
+ <objectgroup name="objects">
+  <object id="4" gid="11" x="1024.36" y="1056" width="32" height="32"/>
+  <object id="6" gid="93" x="897.167" y="992.667" width="32" height="32"/>
+ </objectgroup>
+</map>

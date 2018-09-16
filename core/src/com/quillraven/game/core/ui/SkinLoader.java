@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 /**
- * Custom SkinLoader class for our custom {@link Skin} class to create bitmap fonts on runtime
+ * Custom SkinLoader class for our custom {@link TTFSkin} class to create bitmap fonts on runtime
  * according to the density of the display.
  * <p></p>
  * Code is very similar to the original SkinLoader code except
@@ -23,9 +23,9 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
  * dependencies according to the given {@link SkinParameter} to load the bitmap fonts before
  * loading the skin.
  * Also {@link #loadSync(AssetManager, String, FileHandle, SkinParameter)} is creating our own
- * {@link Skin} instance.
+ * {@link TTFSkin} instance.
  */
-public class SkinLoader extends AsynchronousAssetLoader<Skin, SkinLoader.SkinParameter> {
+public class SkinLoader extends AsynchronousAssetLoader<TTFSkin, SkinLoader.SkinParameter> {
     public SkinLoader(final FileHandleResolver resolver) {
         super(resolver);
     }
@@ -57,11 +57,11 @@ public class SkinLoader extends AsynchronousAssetLoader<Skin, SkinLoader.SkinPar
     }
 
     @Override
-    public Skin loadSync(final AssetManager manager, final String fileName, final FileHandle file, final SkinParameter parameter) {
+    public TTFSkin loadSync(final AssetManager manager, final String fileName, final FileHandle file, final SkinParameter parameter) {
         // load atlas and create skin
         final String textureAtlasPath = file.pathWithoutExtension() + ".atlas";
         final TextureAtlas atlas = manager.get(textureAtlasPath, TextureAtlas.class);
-        final Skin skin = new Skin(atlas);
+        final TTFSkin skin = new TTFSkin(atlas);
 
         // add bitmap fonts to skin
         for (int fontSize : parameter.fontSizesToCreate) {
@@ -75,10 +75,10 @@ public class SkinLoader extends AsynchronousAssetLoader<Skin, SkinLoader.SkinPar
 
     @Override
     public void loadAsync(final AssetManager manager, final String fileName, final FileHandle file, final SkinParameter parameter) {
-
+        // do nothing because TTFSkin is always loaded synchronously
     }
 
-    public static class SkinParameter extends AssetLoaderParameters<Skin> {
+    public static class SkinParameter extends AssetLoaderParameters<TTFSkin> {
         private final String fontPath;
         private final int[] fontSizesToCreate;
 

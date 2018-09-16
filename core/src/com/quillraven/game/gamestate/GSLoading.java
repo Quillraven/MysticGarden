@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.quillraven.game.core.*;
 import com.quillraven.game.ui.LoadingUI;
 
@@ -14,12 +15,9 @@ public class GSLoading extends GameState<LoadingUI> {
         super(type, game, hud);
 
         assetManager = game.getAssetManager();
-        loadTextureAtlas();
-        loadAudio();
-    }
-
-    private void loadTextureAtlas() {
         assetManager.load("map/tiles/map.atlas", TextureAtlas.class);
+        assetManager.load("map/map.tmx", TiledMap.class);
+        loadAudio();
     }
 
     private void loadAudio() {
