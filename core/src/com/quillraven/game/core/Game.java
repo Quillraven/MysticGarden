@@ -5,7 +5,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -13,17 +12,14 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2D;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.quillraven.game.core.ui.HUD;
-import com.quillraven.game.core.ui.TTFSkin;
 import com.quillraven.game.core.ui.SkinLoader;
+import com.quillraven.game.core.ui.TTFSkin;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -38,9 +34,6 @@ public class Game implements Disposable {
     private final AudioManager audioManager;
     private final I18NBundle i18NBundle;
 
-    private final World world;
-    private final OrthographicCamera gameCamera;
-
     private final EnumMap<EGameState, GameState> gameStateCache;
     private GameState activeState;
 
@@ -48,13 +41,8 @@ public class Game implements Disposable {
 
     public Game(final EGameState initialState) {
         spriteBatch = new SpriteBatch();
-        this.gameCamera = new OrthographicCamera();
         gameStateCache = new EnumMap<>(EGameState.class);
         accumulator = 0;
-
-        //box2d
-        Box2D.init();
-        world = new World(new Vector2(0, 0), true);
 
         // setup assetmanager and skin
         final FileHandleResolver resolver = new InternalFileHandleResolver();
@@ -81,14 +69,6 @@ public class Game implements Disposable {
 
     public SpriteBatch getSpriteBatch() {
         return spriteBatch;
-    }
-
-    public World getWorld() {
-        return world;
-    }
-
-    public OrthographicCamera getGameCamera() {
-        return gameCamera;
     }
 
     public AssetManager getAssetManager() {
@@ -170,6 +150,5 @@ public class Game implements Disposable {
         Gdx.app.debug(TAG, "Last number of render calls: " + spriteBatch.renderCalls);
         spriteBatch.dispose();
         assetManager.dispose();
-        world.dispose();
     }
 }

@@ -2,7 +2,12 @@ package com.quillraven.game.gamestate;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
+import com.quillraven.game.Map;
 import com.quillraven.game.core.EGameState;
 import com.quillraven.game.core.Game;
 import com.quillraven.game.core.GameState;
@@ -13,31 +18,33 @@ import com.quillraven.game.ui.GameUI;
 public class GSGame extends GameState<GameUI> {
     private final ECSEngine ecsEngine;
     private final World world;
+    private final Map map;
 
     public GSGame(final EGameState type, final Game game, final GameUI hud) {
         super(type, game, hud);
+        map = new Map(game.getAssetManager().get("map/map.tmx", TiledMap.class));
 
-        this.ecsEngine = new ECSEngine(game);
+        //box2d
+        Box2D.init();
+        world = new World(new Vector2(0, 0), true);
+
+        this.ecsEngine = new ECSEngine(game, world, new OrthographicCamera(), map);
+        //TODO add player start location information to map
         ecsEngine.addPlayer(32.5f, 27);
-        this.world = game.getWorld();
+        map.createGameObjects(ecsEngine);
+
+        /*TODO
+         *) add collision layer to tiledmap and parse it
+         *) add bounding restriction of map to PlayerCameraSystem (observer system for boundary area change)
+         *) include animationCache instead of creating new animations all the time
+         *) add player animation
+         *) make a HUD at the bottom of the screen (game time, found equippment boxes, found crystals)
+         */
     }
 
     @Override
     public void processInput(final InputController inputController) {
         ecsEngine.processInput(inputController);
-    }
-
-    @Override
-    public void activate() {
-        /*TODO
-         *) think of a better solution for parameter parsing for ECS systems (how can they retrieve the map, gameCamera, etc?)
-         *) add collision layer to tiledmap and parse it
-         *) add CameraSystem (=camera follows player + bounding restriction of map)
-         *) include animationCache instead of creating new animations all the time
-         *) make a HUD at the bottom of the screen
-         */
-
-        super.activate();
     }
 
     @Override
@@ -66,5 +73,6 @@ public class GSGame extends GameState<GameUI> {
     @Override
     public void dispose() {
         ecsEngine.dispose();
+        world.dispose();
     }
 }

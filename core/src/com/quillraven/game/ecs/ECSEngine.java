@@ -3,6 +3,7 @@ package com.quillraven.game.ecs;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
@@ -13,12 +14,14 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.quillraven.game.Map;
 import com.quillraven.game.core.Game;
 import com.quillraven.game.core.ecs.component.Box2DComponent;
-import com.quillraven.game.ecs.component.AnimationComponent;
+import com.quillraven.game.core.ecs.component.AnimationComponent;
 import com.quillraven.game.ecs.component.PlayerComponent;
-import com.quillraven.game.ecs.system.AnimationSystem;
+import com.quillraven.game.core.ecs.system.AnimationSystem;
 import com.quillraven.game.ecs.system.GameRenderSystem;
+import com.quillraven.game.ecs.system.PlayerCameraSystem;
 import com.quillraven.game.ecs.system.PlayerMovementSystem;
 
 public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
@@ -28,9 +31,9 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
     private final BodyDef bodyDef;
     private final FixtureDef fixtureDef;
 
-    public ECSEngine(final Game game) {
+    public ECSEngine(final Game game, final World world, final OrthographicCamera gameCamera, final Map map) {
         super();
-        this.world = game.getWorld();
+        this.world = world;
         bodyDef = new BodyDef();
         fixtureDef = new FixtureDef();
 
@@ -40,8 +43,9 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         // iterating systems
         addSystem(new AnimationSystem(aniCmpMapper));
         addSystem(new PlayerMovementSystem(playerCmpMapper, b2dCmpMapper));
+        addSystem(new PlayerCameraSystem(gameCamera, b2dCmpMapper));
         // render systems
-        addRenderSystem(new GameRenderSystem(this, game, b2dCmpMapper, aniCmpMapper));
+        addRenderSystem(new GameRenderSystem(this, game, world, gameCamera, map, b2dCmpMapper, aniCmpMapper));
     }
 
     public void addPlayer(final float x, final float y) {

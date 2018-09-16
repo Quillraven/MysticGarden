@@ -15,13 +15,12 @@ public class Map {
 
     private final TiledMap tiledMap;
 
-    public Map(final TiledMap tiledMap, final ECSEngine ecsEngine) {
+    public Map(final TiledMap tiledMap) {
         this.tiledMap = tiledMap;
-
-        parseObjectsLayer(tiledMap.getLayers().get("objects"), ecsEngine);
     }
 
-    private void parseObjectsLayer(final MapLayer objectsLayer, final ECSEngine ecsEngine) {
+    public void createGameObjects(final ECSEngine ecsEngine) {
+        final MapLayer objectsLayer = tiledMap.getLayers().get("objects");
         if (objectsLayer == null) {
             Gdx.app.log(TAG, "Map does not have a layer called 'objects'");
             return;

@@ -1,10 +1,10 @@
-package com.quillraven.game.ecs.system;
+package com.quillraven.game.core.ecs.system;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.quillraven.game.ecs.component.AnimationComponent;
+import com.quillraven.game.core.ecs.component.AnimationComponent;
 
 public class AnimationSystem extends IteratingSystem {
     private final ComponentMapper<AnimationComponent> aniCmpMapper;
