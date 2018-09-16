@@ -30,10 +30,10 @@ public class GSGame extends GameState<GameUI> {
     @Override
     public void activate() {
         /*TODO
-         *) add MapManager and map class for property parsing and game object creation
-         *) render game objects
-         *) add Box2D for collision
-         *) add camera boundaries logic
+         *) think of a better solution for parameter parsing for ECS systems (how can they retrieve the map, gameCamera, etc?)
+         *) add collision layer to tiledmap and parse it
+         *) add CameraSystem (=camera follows player + bounding restriction of map)
+         *) include animationCache instead of creating new animations all the time
          *) make a HUD at the bottom of the screen
          */
 

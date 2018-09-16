@@ -11,19 +11,29 @@ public abstract class EntityEngine extends PooledEngine implements Disposable {
     private static final String TAG = EntityEngine.class.getSimpleName();
 
     private final Array<RenderSystem> renderSystems;
+    private final Array<IteratingInputSystem> iteratingInputSystems;
 
     protected EntityEngine() {
         super();
         this.renderSystems = new Array<>();
+        this.iteratingInputSystems = new Array<>();
     }
 
     protected void addRenderSystem(final RenderSystem renderSystem) {
         renderSystems.add(renderSystem);
     }
 
+    @Override
+    public void addSystem(final EntitySystem system) {
+        super.addSystem(system);
+        if (system instanceof IteratingInputSystem) {
+            iteratingInputSystems.add((IteratingInputSystem) system);
+        }
+    }
+
     public void processInput(final InputController inputController) {
-        for (final EntitySystem system : this.getSystems()) {
-            ((IteratingInputSystem) system).processInput(inputController);
+        for (final IteratingInputSystem system : iteratingInputSystems) {
+            system.processInput(inputController);
         }
     }
 
