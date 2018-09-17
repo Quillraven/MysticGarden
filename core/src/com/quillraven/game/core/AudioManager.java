@@ -5,7 +5,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
 public class AudioManager {
-    private final Music currentMusic;
+    private Music currentMusic;
     private final AssetManager assetManager;
 
     AudioManager(final AssetManager assetManager) {
@@ -22,9 +22,10 @@ public class AudioManager {
             } else if (currentMusic != null) {
                 currentMusic.stop();
             }
-            music.setLooping(true);
-            music.setVolume(type.volume);
-            music.play();
+            currentMusic = music;
+            currentMusic.setLooping(true);
+            currentMusic.setVolume(type.volume);
+            currentMusic.play();
         } else {
             assetManager.get(type.filePath, Sound.class).play(type.volume);
         }
@@ -33,6 +34,7 @@ public class AudioManager {
     public enum AudioType {
         // music
         INTRO("audio/intro.mp3", true, 0.3f),
+        ALMOST_FINISHED("audio/almost_finished.ogg", true),
         // sounds
         SELECT("audio/select.wav", false);
 

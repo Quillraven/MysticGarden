@@ -6,24 +6,25 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.quillraven.game.Map;
 import com.quillraven.game.core.Game;
 import com.quillraven.game.core.ecs.EntityEngine;
 import com.quillraven.game.core.ecs.RenderSystem;
 import com.quillraven.game.core.ecs.component.AnimationComponent;
 import com.quillraven.game.core.ecs.component.Box2DComponent;
+import com.quillraven.game.map.Map;
+import com.quillraven.game.map.MapManager;
 
 import static com.quillraven.game.MysticGarden.UNIT_SCALE;
 
-public class GameRenderSystem implements RenderSystem {
+public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     private final Viewport viewport;
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final Box2DDebugRenderer b2dRenderer;
@@ -35,28 +36,31 @@ public class GameRenderSystem implements RenderSystem {
     private final ComponentMapper<Box2DComponent> b2dCmpMapper;
     private final ComponentMapper<AnimationComponent> aniCmpMapper;
 
-    public GameRenderSystem(final EntityEngine entityEngine, final Game game, final World world, final OrthographicCamera gameCamera, final Map map, final ComponentMapper<Box2DComponent> b2dCmpMapper, final ComponentMapper<AnimationComponent> aniCmpMapper) {
+    public GameRenderSystem(final EntityEngine entityEngine, final Game game, final World world, final OrthographicCamera gameCamera, final MapManager mapManager, final ComponentMapper<Box2DComponent> b2dCmpMapper, final ComponentMapper<AnimationComponent> aniCmpMapper) {
         this.b2dCmpMapper = b2dCmpMapper;
         this.aniCmpMapper = aniCmpMapper;
         entitiesForRender = entityEngine.getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class).get());
-
-        mapRenderer = new OrthogonalTiledMapRenderer(map.getTiledMap(), UNIT_SCALE, game.getSpriteBatch());
+        mapRenderer = new OrthogonalTiledMapRenderer(null, UNIT_SCALE, game.getSpriteBatch());
         b2dRenderer = new Box2DDebugRenderer();
         this.gameCamera = gameCamera;
         this.world = world;
         viewport = new FitViewport(9, 16, gameCamera);
+
+        mapManager.addMapListener(this);
     }
 
     @Override
     public void render(final float alpha) {
         viewport.apply();
 
-        float width = gameCamera.viewportWidth * gameCamera.zoom;
-        float height = gameCamera.viewportHeight * gameCamera.zoom;
-        float w = width * Math.abs(gameCamera.up.y) + height * Math.abs(gameCamera.up.x);
-        float h = height * Math.abs(gameCamera.up.y) + width * Math.abs(gameCamera.up.x);
-        mapRenderer.setView(gameCamera.combined, gameCamera.position.x - w * 0.5f, gameCamera.position.y - h * 0.5f, w, h);
-        mapRenderer.render();
+        if (mapRenderer.getMap() != null) {
+            float width = gameCamera.viewportWidth * gameCamera.zoom;
+            float height = gameCamera.viewportHeight * gameCamera.zoom;
+            float w = width * Math.abs(gameCamera.up.y) + height * Math.abs(gameCamera.up.x);
+            float h = height * Math.abs(gameCamera.up.y) + width * Math.abs(gameCamera.up.x);
+            mapRenderer.setView(gameCamera.combined, gameCamera.position.x - w * 0.5f, gameCamera.position.y - h * 0.5f, w, h);
+            mapRenderer.render();
+        }
 
         mapRenderer.getBatch().begin();
         final float invertAlpha = 1.0f - alpha;
@@ -88,5 +92,15 @@ public class GameRenderSystem implements RenderSystem {
     @Override
     public void dispose() {
         b2dRenderer.dispose();
+    }
+
+    @Override
+    public void mapChanged(final Map map) {
+        mapRenderer.setMap(map.getTiledMap());
+    }
+
+    @Override
+    public void areaChanged(final Rectangle oldArea, final Rectangle newArea) {
+        // render system does not care about area changes
     }
 }

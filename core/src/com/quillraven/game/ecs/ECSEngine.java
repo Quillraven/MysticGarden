@@ -2,36 +2,31 @@ package com.quillraven.game.ecs;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
-import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
-import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
-import com.quillraven.game.Map;
 import com.quillraven.game.core.Game;
-import com.quillraven.game.core.ecs.component.Box2DComponent;
 import com.quillraven.game.core.ecs.component.AnimationComponent;
-import com.quillraven.game.ecs.component.PlayerComponent;
+import com.quillraven.game.core.ecs.component.Box2DComponent;
 import com.quillraven.game.core.ecs.system.AnimationSystem;
+import com.quillraven.game.ecs.component.PlayerComponent;
 import com.quillraven.game.ecs.system.GameRenderSystem;
 import com.quillraven.game.ecs.system.PlayerCameraSystem;
 import com.quillraven.game.ecs.system.PlayerMovementSystem;
+import com.quillraven.game.map.MapManager;
 
 public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
-    private static final String TAG = ECSEngine.class.getSimpleName();
-
     private final World world;
     private final BodyDef bodyDef;
     private final FixtureDef fixtureDef;
 
-    public ECSEngine(final Game game, final World world, final OrthographicCamera gameCamera, final Map map) {
+    public ECSEngine(final Game game, final World world, final OrthographicCamera gameCamera, final MapManager mapManager) {
         super();
         this.world = world;
         bodyDef = new BodyDef();
@@ -45,18 +40,18 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         addSystem(new PlayerMovementSystem(playerCmpMapper, b2dCmpMapper));
         addSystem(new PlayerCameraSystem(gameCamera, b2dCmpMapper));
         // render systems
-        addRenderSystem(new GameRenderSystem(this, game, world, gameCamera, map, b2dCmpMapper, aniCmpMapper));
+        addRenderSystem(new GameRenderSystem(this, game, world, gameCamera, mapManager, b2dCmpMapper, aniCmpMapper));
     }
 
-    public void addPlayer(final float x, final float y) {
+    public void addPlayer(final Vector2 spawnLocation) {
         final Entity player = createEntity();
 
         final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
-        b2dCmp.width = 1;
-        b2dCmp.height = 1;
+        b2dCmp.width = 0.5f;
+        b2dCmp.height = 0.5f;
         // body
         bodyDef.gravityScale = 1;
-        bodyDef.position.set(x, y);
+        bodyDef.position.set(spawnLocation);
         b2dCmp.positionBeforeUpdate.set(bodyDef.position);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         b2dCmp.body = world.createBody(bodyDef);
@@ -77,15 +72,15 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         addEntity(player);
     }
 
-    public void addGameObject(final float x, final float y, final float width, final float height, final TiledMapTile tile) {
+    public void addGameObject(final Rectangle boundaries, final Animation<Sprite> animation) {
         final Entity gameObj = createEntity();
 
         final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
-        b2dCmp.width = width;
-        b2dCmp.height = height;
+        b2dCmp.width = boundaries.width;
+        b2dCmp.height = boundaries.height;
         // body
         bodyDef.gravityScale = 0;
-        bodyDef.position.set(x + width * 0.5f, y + height * 0.5f);
+        bodyDef.position.set(boundaries.x + boundaries.width * 0.5f, boundaries.y + boundaries.height * 0.5f);
         b2dCmp.positionBeforeUpdate.set(bodyDef.position);
         bodyDef.type = BodyDef.BodyType.StaticBody;
         b2dCmp.body = world.createBody(bodyDef);
@@ -100,20 +95,9 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         gameObj.add(b2dCmp);
 
         final AnimationComponent aniCmp = createComponent(AnimationComponent.class);
-        aniCmp.width = width;
-        aniCmp.height = height;
-        if (tile instanceof AnimatedTiledMapTile) {
-            final AnimatedTiledMapTile aniTile = (AnimatedTiledMapTile) tile;
-            final Array<Sprite> keyFrames = new Array<>();
-            for (final StaticTiledMapTile staticTile : aniTile.getFrameTiles()) {
-                keyFrames.add(new Sprite(staticTile.getTextureRegion()));
-            }
-            aniCmp.animation = new Animation<>(aniTile.getAnimationIntervals()[0] * 0.001f, keyFrames, Animation.PlayMode.LOOP);
-        } else if (tile instanceof StaticTiledMapTile) {
-            aniCmp.animation = new Animation<>(0, new Sprite(tile.getTextureRegion()));
-        } else {
-            Gdx.app.error(TAG, "Unsupported TiledMapTile type " + tile);
-        }
+        aniCmp.width = boundaries.width;
+        aniCmp.height = boundaries.height;
+        aniCmp.animation = animation;
         gameObj.add(aniCmp);
 
         addEntity(gameObj);
