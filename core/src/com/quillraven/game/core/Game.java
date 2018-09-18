@@ -144,6 +144,7 @@ public class Game implements Disposable {
     public void dispose() {
         for (final Map.Entry<EGameState, GameState> entry : gameStateCache.entrySet()) {
             Gdx.app.debug(TAG, "Disposing gamestate " + entry.getKey());
+            entry.getValue().deactivate();
             entry.getValue().dispose();
         }
         Gdx.app.debug(TAG, "Maximum sprites in batch: " + spriteBatch.maxSpritesInBatch);

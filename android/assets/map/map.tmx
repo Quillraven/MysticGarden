@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-up" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextobjectid="28">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-up" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextobjectid="31">
  <properties>
   <property name="playerStartTileX" type="float" value="32.5"/>
   <property name="playerStartTileY" type="float" value="27"/>
@@ -12,7 +12,7 @@
  </layer>
  <layer name="background2" width="64" height="64">
   <data encoding="base64" compression="zlib">
-   eJzt11sKwjAQheF0Ne6hb16q7n9FRqggIeq0E2FO8n8wNDSdkPNQmqYEAAAAAAAAAAAAANhjNtTIes//Kx/5+0Z+37w68vvm1ZHfN69utPyWs67lTKx6Pm69X/JrmT+Mrb1lj3L+iOv9W22/WzJMjt4IDpV71gxTcd3SG0Utv4daft7/ts+r5y+/aedct1yXZDvj9ZD/5Zl9Wcf3netF922/y9t4xPzHXNe1Tg3Wi6jV/57q/x8AAEA0DzN6GuI=
+   eJzt11sKwjAQRuF0Ne6hb16q7n9FRqggIdqpE2H+5HwQLI0pOQ9imhIAAAAAAAAAAAA8ZsPoGf300z9u/5be+7f66O8b/b55dfT75tXR75tXN1q/5axrOROrno9b75d+LfOHa+vaco1yf8Tn/Vttv3saJsfaCA6Ve9aGqfjcszaKWr+HWj+//7bfV+8v/9POedzyuCTbGa+H/pdn+7Je3398XnTf9ru8XY/Yf8zjuo5Tg+dF1Op9T/n9b+R+AAAQzwOEwCdY
   </data>
  </layer>
  <layer name="background3" width="64" height="64">
@@ -21,8 +21,8 @@
   </data>
  </layer>
  <objectgroup color="#7d55aaff" name="boundaries">
-  <object id="7" x="894.833" y="928.333" width="288" height="367.833"/>
-  <object id="27" x="784" y="1297" width="654" height="446"/>
+  <object id="7" x="895.333" y="799.833" width="288" height="511.833"/>
+  <object id="27" x="768" y="1279" width="672" height="513"/>
  </objectgroup>
  <objectgroup color="#ff0000" name="collision">
   <object id="9" x="928" y="959.875">
@@ -63,6 +63,15 @@
   </object>
   <object id="21" x="1249.33" y="1472">
    <polyline points="0,0 30,2 32,-33.3333 61.3333,-31.3333 62,2.66667 94,1.33333 94,32 62,30.6667 61.3333,1.33333 29.3333,2 30,33.3333 -1.33333,29.3333 -0.666667,0.666667"/>
+  </object>
+  <object id="28" x="895" y="1760">
+   <polyline points="0,0 0.5,31 -127.5,31 -126.5,-0.5"/>
+  </object>
+  <object id="29" x="928" y="1761">
+   <polyline points="0,0 0.5,31 384,31 384,0"/>
+  </object>
+  <object id="30" x="1346" y="1762">
+   <polyline points="0,0 -1,31 93.5,30.5 93,-2"/>
   </object>
  </objectgroup>
  <objectgroup name="objects">

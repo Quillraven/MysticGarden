@@ -38,7 +38,7 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         // iterating systems
         addSystem(new AnimationSystem(aniCmpMapper));
         addSystem(new PlayerMovementSystem(playerCmpMapper, b2dCmpMapper));
-        addSystem(new PlayerCameraSystem(gameCamera, b2dCmpMapper));
+        addSystem(new PlayerCameraSystem(mapManager, gameCamera, b2dCmpMapper));
         // render systems
         addRenderSystem(new GameRenderSystem(this, game, world, gameCamera, mapManager, b2dCmpMapper, aniCmpMapper));
     }

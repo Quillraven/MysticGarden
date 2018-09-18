@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -97,10 +96,5 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     @Override
     public void mapChanged(final Map map) {
         mapRenderer.setMap(map.getTiledMap());
-    }
-
-    @Override
-    public void areaChanged(final Rectangle oldArea, final Rectangle newArea) {
-        // render system does not care about area changes
     }
 }

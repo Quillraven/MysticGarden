@@ -35,7 +35,6 @@ public class GSGame extends GameState<GameUI> {
         game.getAudioManager().playAudio(AudioManager.AudioType.ALMOST_FINISHED);
 
         /*TODO
-         *) add bounding restriction of map to PlayerCameraSystem (observer system for boundary area change from mapmanager)
          *) add player animation (PlayerAnimationSystem before normal AnimationSystem to set correct playerAnimation)
          *) make a HUD at the bottom of the screen (game time, found equippment boxes, found crystals)
          *) make a better solution for all the parameter passing (singletons? CreateContext class? ObserverPattern for inputProcessing?)
