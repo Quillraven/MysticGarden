@@ -4,13 +4,20 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.quillraven.game.core.Game;
@@ -24,12 +31,18 @@ import com.quillraven.game.map.MapManager;
 import static com.quillraven.game.MysticGarden.UNIT_SCALE;
 
 public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
+    private static final String TAG = GameRenderSystem.class.getSimpleName();
+    private static final boolean DEBUG = false;
+
     private final Viewport viewport;
     private final OrthogonalTiledMapRenderer mapRenderer;
+    private Array<TiledMapTileLayer> layersToRender;
     private final Box2DDebugRenderer b2dRenderer;
+    private final SpriteBatch spriteBatch;
 
     private final World world;
     private final OrthographicCamera gameCamera;
+    private final Vector3 viewPortOffset;
 
     private final ImmutableArray<Entity> entitiesForRender;
     private final ComponentMapper<Box2DComponent> b2dCmpMapper;
@@ -39,11 +52,13 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
         this.b2dCmpMapper = b2dCmpMapper;
         this.aniCmpMapper = aniCmpMapper;
         entitiesForRender = entityEngine.getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class).get());
-        mapRenderer = new OrthogonalTiledMapRenderer(null, UNIT_SCALE, game.getSpriteBatch());
-        b2dRenderer = new Box2DDebugRenderer();
+        this.spriteBatch = game.getSpriteBatch();
+        mapRenderer = new OrthogonalTiledMapRenderer(null, UNIT_SCALE, spriteBatch);
+        b2dRenderer = DEBUG ? new Box2DDebugRenderer() : null;
         this.gameCamera = gameCamera;
         this.world = world;
         viewport = new FitViewport(9, 16, gameCamera);
+        viewPortOffset = new Vector3();
 
         mapManager.addMapListener(this);
     }
@@ -52,49 +67,61 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     public void render(final float alpha) {
         viewport.apply();
 
+        spriteBatch.begin();
+        AnimatedTiledMapTile.updateAnimationBaseTime();
         if (mapRenderer.getMap() != null) {
             float width = gameCamera.viewportWidth * gameCamera.zoom;
             float height = gameCamera.viewportHeight * gameCamera.zoom;
             float w = width * Math.abs(gameCamera.up.y) + height * Math.abs(gameCamera.up.x);
             float h = height * Math.abs(gameCamera.up.y) + width * Math.abs(gameCamera.up.x);
             mapRenderer.setView(gameCamera.combined, gameCamera.position.x - w * 0.5f, gameCamera.position.y - h * 0.5f, w, h);
-            mapRenderer.render();
+            for (TiledMapTileLayer layer : layersToRender) {
+                mapRenderer.renderTileLayer(layer);
+            }
         }
 
-        mapRenderer.getBatch().begin();
-        final float invertAlpha = 1.0f - alpha;
         for (final Entity entity : entitiesForRender) {
+            final AnimationComponent aniCmp = aniCmpMapper.get(entity);
+            if (aniCmp.animation == null) {
+                continue;
+            }
+
             final Box2DComponent b2dCmp = b2dCmpMapper.get(entity);
             final Vector2 position = b2dCmp.body.getPosition();
-            final AnimationComponent aniCmp = aniCmpMapper.get(entity);
-
-            // calculate interpolated position for rendering
-            final float x = (position.x * alpha + b2dCmp.positionBeforeUpdate.x * invertAlpha) - (b2dCmp.width * 0.5f);
-            final float y = (position.y * alpha + b2dCmp.positionBeforeUpdate.y * invertAlpha) - (b2dCmp.height * 0.5f);
 
             final Sprite frame = aniCmp.animation.getKeyFrame(aniCmp.aniTimer, true);
             frame.setColor(Color.WHITE);
             frame.setOriginCenter();
-            frame.setBounds(x, y, aniCmp.width, aniCmp.height);
-            frame.draw(mapRenderer.getBatch());
+            frame.setBounds(MathUtils.lerp(b2dCmp.positionBeforeUpdate.x, position.x, alpha) - (aniCmp.width * 0.5f), MathUtils.lerp(b2dCmp.positionBeforeUpdate.y, position.y, alpha) - (b2dCmp.height * 0.5f), aniCmp.width, aniCmp.height);
+            frame.draw(spriteBatch);
         }
-        mapRenderer.getBatch().end();
+        spriteBatch.end();
 
-        b2dRenderer.render(world, gameCamera.combined);
+        if (DEBUG) {
+            b2dRenderer.render(world, gameCamera.combined);
+            Gdx.app.debug(TAG, "Last number of render calls: " + spriteBatch.renderCalls);
+        }
     }
 
     @Override
     public void resize(final int width, final int height) {
         viewport.update(width, height, false);
+//        viewPortOffset.set(gameCamera.position.x - gameCamera.viewportWidth * 0.5f, 4 + gameCamera.position.y - gameCamera.viewportHeight * 0.5f, 0);
+//        gameCamera.project(viewPortOffset, viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
+//        viewport.setScreenY((int) viewPortOffset.y);
+        //viewport.setScreenHeight((int) (viewport.getScreenHeight() - viewport.getScreenY() * 0.5f));
     }
 
     @Override
     public void dispose() {
-        b2dRenderer.dispose();
+        if (b2dRenderer != null) {
+            b2dRenderer.dispose();
+        }
     }
 
     @Override
     public void mapChanged(final Map map) {
         mapRenderer.setMap(map.getTiledMap());
+        layersToRender = map.getTiledMap().getLayers().getByType(TiledMapTileLayer.class);
     }
 }

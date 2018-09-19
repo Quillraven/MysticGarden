@@ -3,6 +3,7 @@ package com.quillraven.game.gamestate;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.quillraven.game.core.*;
@@ -15,6 +16,7 @@ public class GSLoading extends GameState<LoadingUI> {
         super(type, game, hud);
 
         assetManager = game.getAssetManager();
+        assetManager.load("characters/hero.png", Texture.class);
         assetManager.load("map/tiles/map.atlas", TextureAtlas.class);
         assetManager.load("map/map.tmx", TiledMap.class);
         loadAudio();

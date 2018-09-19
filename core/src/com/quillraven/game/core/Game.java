@@ -129,11 +129,11 @@ public class Game implements Disposable {
         accumulator += deltaTime > 0.25f ? 0.25f : deltaTime;
 
         activeState.processInput(inputController);
-        activeState.render(accumulator / fixedTimeStep);
         while (accumulator >= fixedTimeStep) {
             activeState.step(fixedTimeStep);
             accumulator -= fixedTimeStep;
         }
+        activeState.render(accumulator / fixedTimeStep);
     }
 
     public void resize(final int width, final int height) {
@@ -148,7 +148,6 @@ public class Game implements Disposable {
             entry.getValue().dispose();
         }
         Gdx.app.debug(TAG, "Maximum sprites in batch: " + spriteBatch.maxSpritesInBatch);
-        Gdx.app.debug(TAG, "Last number of render calls: " + spriteBatch.renderCalls);
         spriteBatch.dispose();
         assetManager.dispose();
     }

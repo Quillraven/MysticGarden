@@ -35,7 +35,7 @@ public class GSGame extends GameState<GameUI> {
         game.getAudioManager().playAudio(AudioManager.AudioType.ALMOST_FINISHED);
 
         /*TODO
-         *) add player animation (PlayerAnimationSystem before normal AnimationSystem to set correct playerAnimation)
+         *) fix rendering (viewport should be 4 worldunits up and PlayerCameraSystem should not get messed up if boundaries are smaller than the camera view
          *) make a HUD at the bottom of the screen (game time, found equippment boxes, found crystals)
          *) make a better solution for all the parameter passing (singletons? CreateContext class? ObserverPattern for inputProcessing?)
          */

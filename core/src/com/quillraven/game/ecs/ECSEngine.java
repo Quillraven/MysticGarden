@@ -17,6 +17,7 @@ import com.quillraven.game.core.ecs.component.Box2DComponent;
 import com.quillraven.game.core.ecs.system.AnimationSystem;
 import com.quillraven.game.ecs.component.PlayerComponent;
 import com.quillraven.game.ecs.system.GameRenderSystem;
+import com.quillraven.game.ecs.system.PlayerAnimationSystem;
 import com.quillraven.game.ecs.system.PlayerCameraSystem;
 import com.quillraven.game.ecs.system.PlayerMovementSystem;
 import com.quillraven.game.map.MapManager;
@@ -37,6 +38,7 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         final ComponentMapper<AnimationComponent> aniCmpMapper = ComponentMapper.getFor(AnimationComponent.class);
         // iterating systems
         addSystem(new AnimationSystem(aniCmpMapper));
+        addSystem(new PlayerAnimationSystem(game.getAssetManager(), b2dCmpMapper, playerCmpMapper, aniCmpMapper));
         addSystem(new PlayerMovementSystem(playerCmpMapper, b2dCmpMapper));
         addSystem(new PlayerCameraSystem(mapManager, gameCamera, b2dCmpMapper));
         // render systems
@@ -68,6 +70,9 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         final PlayerComponent playerCmp = createComponent(PlayerComponent.class);
         playerCmp.maxSpeed = 3;
         player.add(playerCmp);
+
+        final AnimationComponent aniCmp = createComponent(AnimationComponent.class);
+        player.add(aniCmp);
 
         addEntity(player);
     }
