@@ -12,6 +12,8 @@ import com.quillraven.game.ecs.component.PlayerComponent;
 import com.quillraven.game.map.Map;
 import com.quillraven.game.map.MapManager;
 
+import static com.quillraven.game.ecs.system.GameRenderSystem.RENDER_OFFSET_Y;
+
 public class PlayerCameraSystem extends IteratingSystem implements MapManager.MapListener {
     private final OrthographicCamera gameCamera;
     private final ComponentMapper<Box2DComponent> b2dCmpMapper;
@@ -63,14 +65,14 @@ public class PlayerCameraSystem extends IteratingSystem implements MapManager.Ma
             } else if (currentBoundary.contains(b2dCmp.positionBeforeUpdate)) {
                 // update location in current boundary
                 gameCamera.position.x = MathUtils.clamp(b2dCmp.positionBeforeUpdate.x, currentBoundary.x + camW, currentBoundary.x + currentBoundary.width - camW);
-                gameCamera.position.y = MathUtils.clamp(b2dCmp.positionBeforeUpdate.y, currentBoundary.y + camH, currentBoundary.y + currentBoundary.height - camH);
+                gameCamera.position.y = MathUtils.clamp(b2dCmp.positionBeforeUpdate.y, currentBoundary.y + camH, currentBoundary.y + currentBoundary.height - camH + RENDER_OFFSET_Y);
                 gameCamera.update();
             } else {
                 // outside boundary -> find new boundary location and set interpolation target
                 findCurrentBoundary(b2dCmp.positionBeforeUpdate);
                 if (currentBoundary != null) {
                     lerpTarget.x = MathUtils.clamp(b2dCmp.positionBeforeUpdate.x, currentBoundary.x + camW, currentBoundary.x + currentBoundary.width - camW);
-                    lerpTarget.y = MathUtils.clamp(b2dCmp.positionBeforeUpdate.y, currentBoundary.y + camH, currentBoundary.y + currentBoundary.height - camH);
+                    lerpTarget.y = MathUtils.clamp(b2dCmp.positionBeforeUpdate.y, currentBoundary.y + camH, currentBoundary.y + currentBoundary.height - camH + RENDER_OFFSET_Y);
                     camTime = 0f;
                     // stop body until camera interpolation is done
                     b2dCmp.body.setActive(false);

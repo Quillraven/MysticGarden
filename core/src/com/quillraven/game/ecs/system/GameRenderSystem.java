@@ -34,6 +34,8 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     private static final String TAG = GameRenderSystem.class.getSimpleName();
     private static final boolean DEBUG = false;
 
+    public static final int RENDER_OFFSET_Y = 4;
+
     private final Viewport viewport;
     private final OrthogonalTiledMapRenderer mapRenderer;
     private Array<TiledMapTileLayer> layersToRender;
@@ -70,11 +72,7 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
         spriteBatch.begin();
         AnimatedTiledMapTile.updateAnimationBaseTime();
         if (mapRenderer.getMap() != null) {
-            float width = gameCamera.viewportWidth * gameCamera.zoom;
-            float height = gameCamera.viewportHeight * gameCamera.zoom;
-            float w = width * Math.abs(gameCamera.up.y) + height * Math.abs(gameCamera.up.x);
-            float h = height * Math.abs(gameCamera.up.y) + width * Math.abs(gameCamera.up.x);
-            mapRenderer.setView(gameCamera.combined, gameCamera.position.x - w * 0.5f, gameCamera.position.y - h * 0.5f, w, h);
+            mapRenderer.setView(gameCamera);
             for (TiledMapTileLayer layer : layersToRender) {
                 mapRenderer.renderTileLayer(layer);
             }
@@ -106,10 +104,9 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     @Override
     public void resize(final int width, final int height) {
         viewport.update(width, height, false);
-//        viewPortOffset.set(gameCamera.position.x - gameCamera.viewportWidth * 0.5f, 4 + gameCamera.position.y - gameCamera.viewportHeight * 0.5f, 0);
-//        gameCamera.project(viewPortOffset, viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
-//        viewport.setScreenY((int) viewPortOffset.y);
-        //viewport.setScreenHeight((int) (viewport.getScreenHeight() - viewport.getScreenY() * 0.5f));
+        viewPortOffset.set(gameCamera.position.x - gameCamera.viewportWidth * 0.5f, RENDER_OFFSET_Y + gameCamera.position.y - gameCamera.viewportHeight * 0.5f, 0);
+        gameCamera.project(viewPortOffset, viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
+        viewport.setScreenY((int) viewPortOffset.y);
     }
 
     @Override
