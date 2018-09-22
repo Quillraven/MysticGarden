@@ -66,7 +66,6 @@ public class PlayerCameraSystem extends IteratingSystem implements MapManager.Ma
                 // update location in current boundary
                 gameCamera.position.x = MathUtils.clamp(b2dCmp.positionBeforeUpdate.x, currentBoundary.x + camW, currentBoundary.x + currentBoundary.width - camW);
                 gameCamera.position.y = MathUtils.clamp(b2dCmp.positionBeforeUpdate.y, currentBoundary.y + camH, currentBoundary.y + currentBoundary.height - camH + RENDER_OFFSET_Y);
-                gameCamera.update();
             } else {
                 // outside boundary -> find new boundary location and set interpolation target
                 findCurrentBoundary(b2dCmp.positionBeforeUpdate);

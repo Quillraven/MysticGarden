@@ -1,40 +1,65 @@
 
 hud.png
-size: 421,153
+size: 309,276
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 backPress
   rotate: false
-  xy: 353, 105
+  xy: 238, 73
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 backReleased
   rotate: false
-  xy: 373, 55
+  xy: 241, 23
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
+crystal
+  rotate: false
+  xy: 98, 89
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 downPress
   rotate: false
-  xy: 233, 0
+  xy: 98, 123
   size: 61, 75
   orig: 61, 75
   offset: 0, 0
   index: -1
 downReleased
   rotate: false
-  xy: 290, 78
+  xy: 242, 123
   size: 61, 75
   orig: 61, 75
   offset: 0, 0
   index: -1
+frame_blue
+  rotate: false
+  xy: 0, 180
+  size: 96, 96
+  split: 32, 24, 32, 36
+  pad: 0, 0, 0, 0
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+frame_brown
+  rotate: false
+  xy: 0, 82
+  size: 96, 96
+  split: 32, 48, 32, 60
+  pad: 0, 0, 0, 0
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
 knob
   rotate: false
-  xy: 403, 123
+  xy: 305, 246
   size: 2, 30
   split: 0, 1, 1, 1
   pad: 0, 0, 0, 0
@@ -43,7 +68,7 @@ knob
   index: -1
 knobAfter
   rotate: false
-  xy: 373, 23
+  xy: 132, 91
   size: 21, 30
   split: 12, 2, 1, 1
   pad: 0, 0, 0, 0
@@ -52,7 +77,7 @@ knobAfter
   index: -1
 knobBefore
   rotate: false
-  xy: 396, 23
+  xy: 288, 91
   size: 21, 30
   split: 12, 2, 1, 1
   pad: 0, 0, 0, 0
@@ -61,56 +86,56 @@ knobBefore
   index: -1
 leftPress
   rotate: false
-  xy: 0, 10
+  xy: 164, 215
   size: 76, 61
   orig: 76, 61
   offset: 0, 0
   index: -1
 leftReleased
   rotate: false
-  xy: 78, 10
+  xy: 164, 152
   size: 76, 61
   orig: 76, 61
   offset: 0, 0
   index: -1
 rightPress
   rotate: false
-  xy: 156, 10
+  xy: 161, 89
   size: 75, 61
   orig: 75, 61
   offset: 0, 0
   index: -1
 rightReleased
   rotate: false
-  xy: 296, 15
+  xy: 164, 10
   size: 75, 61
   orig: 75, 61
   offset: 0, 0
   index: -1
 selectPress
   rotate: false
-  xy: 0, 73
+  xy: 0, 0
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 selectReleased
   rotate: false
-  xy: 82, 73
+  xy: 82, 0
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 upPress
   rotate: false
-  xy: 164, 77
+  xy: 98, 200
   size: 61, 76
   orig: 61, 76
   offset: 0, 0
   index: -1
 upReleased
   rotate: false
-  xy: 227, 77
+  xy: 242, 200
   size: 61, 76
   orig: 61, 76
   offset: 0, 0

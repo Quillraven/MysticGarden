@@ -14,9 +14,18 @@ import com.quillraven.game.ui.GameUI;
 public class GSGame extends GameState<GameUI> {
     private final ECSEngine ecsEngine;
     private final World world;
+    private float elapsedTime;
+
+    private int seconds;
+    private int minutes;
+    private int hours;
 
     public GSGame(final EGameState type, final Game game, final GameUI hud) {
         super(type, game, hud);
+        elapsedTime = 0;
+        seconds = 0;
+        minutes = 0;
+        hours = 0;
 
         // box2d
         Box2D.init();
@@ -28,17 +37,11 @@ public class GSGame extends GameState<GameUI> {
 
         // init map -> this needs to happen after ECSEngine creation because some systems need to register as listeners first
         mapManager.loadMap();
-        ecsEngine.addPlayer(mapManager.getCurrentMap().getStartLocation());
         mapManager.spawnGameObjects(ecsEngine);
         mapManager.spawnCollisionAreas(world);
+        ecsEngine.addPlayer(mapManager.getCurrentMap().getStartLocation());
 
         game.getAudioManager().playAudio(AudioManager.AudioType.ALMOST_FINISHED);
-
-        /*TODO
-         *) fix rendering (viewport should be 4 worldunits up and PlayerCameraSystem should not get messed up if boundaries are smaller than the camera view
-         *) make a HUD at the bottom of the screen (game time, found equippment boxes, found crystals)
-         *) make a better solution for all the parameter passing (singletons? CreateContext class? ObserverPattern for inputProcessing?)
-         */
     }
 
     @Override
@@ -49,6 +52,22 @@ public class GSGame extends GameState<GameUI> {
     @Override
     public void step(final float fixedTimeStep) {
         super.step(fixedTimeStep);
+        elapsedTime += fixedTimeStep;
+        if (elapsedTime >= 1) {
+            while (elapsedTime >= 1) {
+                elapsedTime -= 1;
+                ++seconds;
+                if (seconds == 60) {
+                    seconds = 0;
+                    ++minutes;
+                    if (minutes == 60) {
+                        minutes = 0;
+                        ++hours;
+                    }
+                }
+            }
+            hud.setGameTime(hours, minutes, seconds);
+        }
         // important to update entity engine before updating the box2d because we need to store
         // the body position before the next step for the interpolation rendering
         ecsEngine.update(fixedTimeStep);
