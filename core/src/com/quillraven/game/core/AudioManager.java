@@ -37,7 +37,8 @@ public enum AudioManager {
         INTRO("audio/intro.mp3", true, 0.3f),
         ALMOST_FINISHED("audio/almost_finished.ogg", true),
         // sounds
-        SELECT("audio/select.wav", false);
+        SELECT("audio/select.wav", false),
+        CHOP("audio/chop.ogg", false);
 
         private final String filePath;
         private final boolean isMusic;

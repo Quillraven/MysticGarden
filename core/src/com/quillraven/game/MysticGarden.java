@@ -9,18 +9,24 @@ import com.quillraven.game.core.gamestate.EGameState;
 
 
 /*TODO
- *) make world contact listener and add logic to collide with crystals/game objects (also update hud accordingly)
- *) add logic that when player has an axe then he can cut some trees (also play sound when a tree is cut)
  *) add box2d light to make the player only see a little circle that fluctuates
+ *) show some hints and play some sounds when gameObjects are picked up or if they are not available yet
  *) add main menu screen to show credits and adjust sound volume
  *) add save/load to continue game where player left it
  *) finalize map and remaining game logic
  *) add particle effects to some areas of the map (f.e. torches and fire stones)
- *)
  */
 public class MysticGarden extends ApplicationAdapter {
     private static final String TAG = MysticGarden.class.getSimpleName();
+
+    public static final int V_WIDTH = 450;
+    public static final int V_HEIGHT = 800;
+    public static final String TITLE = "MysticGarden";
+
     public static final float UNIT_SCALE = 1 / 32f;
+    public static final short BIT_PLAYER = 1 << 1;
+    public static final short BIT_GAME_OBJECT = 1 << 2;
+    public static final short BIT_GROUND = 1 << 3;
 
     private ResourceManager resourceManager;
     private SpriteBatch spriteBatch;

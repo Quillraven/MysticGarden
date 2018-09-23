@@ -10,6 +10,8 @@ import com.quillraven.game.core.ui.HUD;
 import com.quillraven.game.core.ui.TTFSkin;
 
 public class GameUI extends Table {
+    private final TTFSkin skin;
+
     private final TextButton timeText;
     private final TextButton crystalText;
 
@@ -17,6 +19,7 @@ public class GameUI extends Table {
 
     public GameUI(final HUD hud, final TTFSkin skin) {
         super();
+        this.skin = skin;
 
         final Table contentTable = new Table();
         contentTable.setBackground(skin.getDrawable("frame_brown"));
@@ -71,5 +74,19 @@ public class GameUI extends Table {
         }
         timeText.getLabel().getText().append(seconds);
         timeText.getLabel().invalidateHierarchy();
+    }
+
+    public void setCrystals(final int crystalsFound) {
+        crystalText.getLabel().getText().setLength(0);
+        crystalText.getLabel().getText().append(crystalsFound);
+        crystalText.getLabel().invalidateHierarchy();
+    }
+
+    public void setAxe(final boolean hasAxe) {
+        if (slots.get(0).getChildren().size > 1) {
+            slots.get(0).getChildren().get(1).setVisible(hasAxe);
+        } else if (hasAxe) {
+            slots.get(0).add(new Image(skin.getDrawable("axe")));
+        }
     }
 }

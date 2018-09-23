@@ -91,13 +91,45 @@
   </object>
  </objectgroup>
  <objectgroup name="objects">
-  <object id="59" gid="11" x="1022.86" y="991.457" width="32" height="32"/>
-  <object id="60" gid="93" x="893.667" y="928.124" width="32" height="32"/>
-  <object id="61" gid="11" x="1279.5" y="1440.63" width="32" height="32"/>
-  <object id="62" gid="19" x="766.5" y="1471.88" width="32" height="32"/>
-  <object id="63" gid="19" x="767.25" y="1440.21" width="32" height="32"/>
-  <object id="64" gid="93" x="1408.18" y="1983.82" width="32" height="32"/>
-  <object id="65" gid="93" x="1344.33" y="1824.67" width="32" height="32"/>
-  <object id="76" gid="9" x="1472.5" y="2014.5" width="32" height="32"/>
+  <object id="59" gid="11" x="1022.86" y="991.457" width="32" height="32">
+   <properties>
+    <property name="type" value="CRYSTAL"/>
+   </properties>
+  </object>
+  <object id="60" gid="93" x="893.667" y="928.124" width="32" height="32">
+   <properties>
+    <property name="type" value="TREE"/>
+   </properties>
+  </object>
+  <object id="61" gid="11" x="1277" y="1444.63" width="32" height="32">
+   <properties>
+    <property name="type" value="CRYSTAL"/>
+   </properties>
+  </object>
+  <object id="62" gid="19" x="766.5" y="1471.88" width="32" height="32">
+   <properties>
+    <property name="type" value="FIRESTONE"/>
+   </properties>
+  </object>
+  <object id="63" gid="19" x="767.25" y="1440.21" width="32" height="32">
+   <properties>
+    <property name="type" value="FIRESTONE"/>
+   </properties>
+  </object>
+  <object id="64" gid="93" x="1408.18" y="1983.82" width="32" height="32">
+   <properties>
+    <property name="type" value="TREE"/>
+   </properties>
+  </object>
+  <object id="65" gid="93" x="1344.33" y="1824.67" width="32" height="32">
+   <properties>
+    <property name="type" value="TREE"/>
+   </properties>
+  </object>
+  <object id="76" gid="9" x="1472.5" y="2014.5" width="32" height="32">
+   <properties>
+    <property name="type" value="AXE"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

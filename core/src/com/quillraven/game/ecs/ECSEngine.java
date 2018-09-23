@@ -14,11 +14,11 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.quillraven.game.core.ecs.component.AnimationComponent;
 import com.quillraven.game.core.ecs.component.Box2DComponent;
 import com.quillraven.game.core.ecs.system.AnimationSystem;
+import com.quillraven.game.ecs.component.GameObjectComponent;
 import com.quillraven.game.ecs.component.PlayerComponent;
-import com.quillraven.game.ecs.system.GameRenderSystem;
-import com.quillraven.game.ecs.system.PlayerAnimationSystem;
-import com.quillraven.game.ecs.system.PlayerCameraSystem;
-import com.quillraven.game.ecs.system.PlayerMovementSystem;
+import com.quillraven.game.ecs.system.*;
+
+import static com.quillraven.game.MysticGarden.*;
 
 public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
     private final World world;
@@ -32,6 +32,7 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         fixtureDef = new FixtureDef();
 
         final ComponentMapper<PlayerComponent> playerCmpMapper = ComponentMapper.getFor(PlayerComponent.class);
+        final ComponentMapper<GameObjectComponent> gameObjCmpMapper = ComponentMapper.getFor(GameObjectComponent.class);
         final ComponentMapper<Box2DComponent> b2dCmpMapper = ComponentMapper.getFor(Box2DComponent.class);
         final ComponentMapper<AnimationComponent> aniCmpMapper = ComponentMapper.getFor(AnimationComponent.class);
         // iterating systems
@@ -39,8 +40,14 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         addSystem(new PlayerAnimationSystem(b2dCmpMapper, playerCmpMapper, aniCmpMapper));
         addSystem(new PlayerMovementSystem(playerCmpMapper, b2dCmpMapper));
         addSystem(new PlayerCameraSystem(gameCamera, b2dCmpMapper));
+        // player contact system does not need processing because it is triggered by WorldContactManager
+        addSystem(new PlayerContactSystem(playerCmpMapper, gameObjCmpMapper));
+        getSystem(PlayerContactSystem.class).setProcessing(false);
+        addSystem(new RemoveSystem());
         // render systems
         addRenderSystem(new GameRenderSystem(this, world, gameCamera, b2dCmpMapper, aniCmpMapper));
+        // special systems
+
     }
 
     public void addPlayer(final Vector2 spawnLocation) {
@@ -61,6 +68,8 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         shape.setAsBox(b2dCmp.width * 0.5f, b2dCmp.height * 0.5f);
         fixtureDef.isSensor = false;
         fixtureDef.shape = shape;
+        fixtureDef.filter.categoryBits = BIT_PLAYER;
+        fixtureDef.filter.maskBits = BIT_GAME_OBJECT | BIT_GROUND;
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
         player.add(b2dCmp);
@@ -75,7 +84,7 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         addEntity(player);
     }
 
-    public void addGameObject(final Rectangle boundaries, final Animation<Sprite> animation) {
+    public void addGameObject(final Rectangle boundaries, final Animation<Sprite> animation, GameObjectComponent.GameObjectType type) {
         final Entity gameObj = createEntity();
 
         final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
@@ -93,6 +102,8 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         shape.setAsBox(b2dCmp.width * 0.5f, b2dCmp.height * 0.5f);
         fixtureDef.isSensor = false;
         fixtureDef.shape = shape;
+        fixtureDef.filter.categoryBits = BIT_GAME_OBJECT;
+        fixtureDef.filter.maskBits = BIT_PLAYER;
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
         gameObj.add(b2dCmp);
@@ -102,6 +113,10 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         aniCmp.height = boundaries.height;
         aniCmp.animation = animation;
         gameObj.add(aniCmp);
+
+        final GameObjectComponent gameObjCmp = createComponent(GameObjectComponent.class);
+        gameObjCmp.type = type;
+        gameObj.add(gameObjCmp);
 
         addEntity(gameObj);
     }

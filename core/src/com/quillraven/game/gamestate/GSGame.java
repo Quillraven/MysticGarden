@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
+import com.quillraven.game.WorldContactManager;
 import com.quillraven.game.core.AudioManager;
 import com.quillraven.game.core.gamestate.EGameState;
 import com.quillraven.game.core.gamestate.GameState;
@@ -12,11 +13,13 @@ import com.quillraven.game.core.input.InputManager;
 import com.quillraven.game.core.ui.HUD;
 import com.quillraven.game.core.ui.TTFSkin;
 import com.quillraven.game.ecs.ECSEngine;
+import com.quillraven.game.ecs.component.GameObjectComponent;
+import com.quillraven.game.ecs.system.PlayerContactSystem;
 import com.quillraven.game.ecs.system.PlayerMovementSystem;
 import com.quillraven.game.map.MapManager;
 import com.quillraven.game.ui.GameUI;
 
-public class GSGame extends GameState<GameUI> {
+public class GSGame extends GameState<GameUI> implements PlayerContactSystem.PlayerContactListener {
     private final ECSEngine ecsEngine;
     private final World world;
     private float elapsedTime;
@@ -35,9 +38,11 @@ public class GSGame extends GameState<GameUI> {
         // box2d
         Box2D.init();
         world = new World(new Vector2(0, 0), true);
+        world.setContactListener(WorldContactManager.INSTANCE);
 
         // entity component system
         this.ecsEngine = new ECSEngine(world, new OrthographicCamera());
+        ecsEngine.getSystem(PlayerContactSystem.class).addPlayerContactListener(this);
 
         // init map -> this needs to happen after ECSEngine creation because some systems need to register as listeners first
         MapManager.INSTANCE.loadMap();
@@ -113,5 +118,19 @@ public class GSGame extends GameState<GameUI> {
     @Override
     public void keyUp(final InputManager manager, final EKey key) {
         // input handling is done within ECS systems
+    }
+
+    @Override
+    public void crystalContact(final int crystalsFound) {
+        gameStateHUD.setCrystals(crystalsFound);
+    }
+
+    @Override
+    public void itemContact(final GameObjectComponent.GameObjectType type) {
+        switch (type) {
+            case AXE:
+                gameStateHUD.setAxe(true);
+                break;
+        }
     }
 }
