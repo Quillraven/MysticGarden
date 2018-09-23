@@ -1,0 +1,13 @@
+
+character.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+hero
+  rotate: false
+  xy: 0, 0
+  size: 576, 256
+  orig: 576, 256
+  offset: 0, 0
+  index: -1

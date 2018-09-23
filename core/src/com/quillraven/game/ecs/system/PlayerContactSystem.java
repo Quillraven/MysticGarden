@@ -33,6 +33,7 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
         final PlayerComponent playerCmp = playerCmpMapper.get(player);
         switch (gameObjCmp.type) {
             case CRYSTAL:
+                AudioManager.INSTANCE.playAudio(AudioManager.AudioType.CRYSTAL_PICKUP);
                 gameObject.add(((ECSEngine) this.getEngine()).createComponent(RemoveComponent.class));
                 ++playerCmp.crystals;
                 for (final PlayerContactListener listener : listeners) {
@@ -40,6 +41,7 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
                 }
                 break;
             case AXE:
+                AudioManager.INSTANCE.playAudio(AudioManager.AudioType.JINGLE);
                 gameObject.add(((ECSEngine) this.getEngine()).createComponent(RemoveComponent.class));
                 playerCmp.hasAxe = true;
                 for (final PlayerContactListener listener : listeners) {

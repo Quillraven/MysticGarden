@@ -19,7 +19,6 @@ buildscript {
 }
 
 allprojects {
-    apply plugin: "eclipse"
     apply plugin: "idea"
 
     version = '1.0'
@@ -100,10 +99,6 @@ project(":core") {
     }
 }
 
-tasks.eclipse.doLast {
-    delete ".project"
-}
-
 import com.badlogic.gdx.tools.texturepacker.TexturePacker
 
 task buildHUDTextureAtlas(description: "Rebuilds the hud atlas located in assets/hud folder. Images are taken from assets/hud/input folder.", group: "game") {
@@ -115,5 +110,11 @@ task buildHUDTextureAtlas(description: "Rebuilds the hud atlas located in assets
 task buildMapTextureAtlas(description: "Rebuilds the map atlas located in assets/map/tiles folder. Images are taken from assets/map/tiles/input folder.", group: "game") {
     doLast {
         TexturePacker.process('android/assets/map/tiles/input', 'android/assets/map/tiles', 'map.atlas')
+    }
+}
+
+task buildCharacterTextureAtlas(description: "Rebuilds the character atlas located in assets/characters folder. Images are taken from assets/characters/input folder.", group: "game") {
+    doLast {
+        TexturePacker.process('android/assets/characters/input', 'android/assets/characters', 'character.atlas')
     }
 }

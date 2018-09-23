@@ -2,7 +2,6 @@ package com.quillraven.game.gamestate;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.quillraven.game.core.AudioManager;
@@ -25,7 +24,7 @@ public class GSLoading extends GameState<LoadingUI> {
         isMusicLoaded = false;
 
         resourceManager = Utils.getResourceManager();
-        resourceManager.load("characters/hero.png", Texture.class);
+        resourceManager.load("characters/character.atlas", TextureAtlas.class);
         resourceManager.load("map/tiles/map.atlas", TextureAtlas.class);
         resourceManager.load("map/map.tmx", TiledMap.class);
         loadAudio();

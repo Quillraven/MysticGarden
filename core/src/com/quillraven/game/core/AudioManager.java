@@ -35,10 +35,12 @@ public enum AudioManager {
     public enum AudioType {
         // music
         INTRO("audio/intro.mp3", true, 0.3f),
-        ALMOST_FINISHED("audio/almost_finished.ogg", true),
+        ALMOST_FINISHED("audio/almost_finished.ogg", true, 0.5f),
         // sounds
         SELECT("audio/select.wav", false),
-        CHOP("audio/chop.ogg", false);
+        CHOP("audio/chop.ogg", false),
+        CRYSTAL_PICKUP("audio/crystal_pickup.ogg", false),
+        JINGLE("audio/jingle.wav", false, 0.7f);
 
         private final String filePath;
         private final boolean isMusic;

@@ -4,9 +4,9 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -34,8 +34,8 @@ public class PlayerAnimationSystem extends IteratingSystem {
         this.b2dCmpMapper = b2dCmpMapper;
 
         // create player animations
-        final Texture texture = Utils.getResourceManager().get("characters/hero.png", Texture.class);
-        final TextureRegion[][] textureRegions = new TextureRegion(texture).split(64, 64);
+        final TextureAtlas.AtlasRegion atlasRegion = Utils.getResourceManager().get("characters/character.atlas", TextureAtlas.class).findRegion("hero");
+        final TextureRegion[][] textureRegions = atlasRegion.split(64, 64);
         aniUp = new Animation<>(0.05f, getKeyFrames(textureRegions[0]), Animation.PlayMode.LOOP);
         aniLeft = new Animation<>(0.05f, getKeyFrames(textureRegions[1]), Animation.PlayMode.LOOP);
         aniDown = new Animation<>(0.05f, getKeyFrames(textureRegions[2]), Animation.PlayMode.LOOP);

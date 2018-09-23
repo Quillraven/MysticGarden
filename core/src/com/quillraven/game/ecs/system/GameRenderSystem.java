@@ -25,6 +25,8 @@ import com.quillraven.game.core.ecs.EntityEngine;
 import com.quillraven.game.core.ecs.RenderSystem;
 import com.quillraven.game.core.ecs.component.AnimationComponent;
 import com.quillraven.game.core.ecs.component.Box2DComponent;
+import com.quillraven.game.ecs.component.GameObjectComponent;
+import com.quillraven.game.ecs.component.PlayerComponent;
 import com.quillraven.game.map.Map;
 import com.quillraven.game.map.MapManager;
 
@@ -46,14 +48,16 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     private final OrthographicCamera gameCamera;
     private final Vector3 viewPortOffset;
 
-    private final ImmutableArray<Entity> entitiesForRender;
+    private final ImmutableArray<Entity> gameObjectsForRender;
+    private final ImmutableArray<Entity> charactersForRender;
     private final ComponentMapper<Box2DComponent> b2dCmpMapper;
     private final ComponentMapper<AnimationComponent> aniCmpMapper;
 
     public GameRenderSystem(final EntityEngine entityEngine, final World world, final OrthographicCamera gameCamera, final ComponentMapper<Box2DComponent> b2dCmpMapper, final ComponentMapper<AnimationComponent> aniCmpMapper) {
         this.b2dCmpMapper = b2dCmpMapper;
         this.aniCmpMapper = aniCmpMapper;
-        entitiesForRender = entityEngine.getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class).get());
+        gameObjectsForRender = entityEngine.getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class, GameObjectComponent.class).get());
+        charactersForRender = entityEngine.getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class, PlayerComponent.class).get());
         this.spriteBatch = Utils.getSpriteBatch();
         mapRenderer = new OrthogonalTiledMapRenderer(null, UNIT_SCALE, spriteBatch);
         b2dRenderer = DEBUG ? new Box2DDebugRenderer() : null;
@@ -78,20 +82,12 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
             }
         }
 
-        for (final Entity entity : entitiesForRender) {
-            final AnimationComponent aniCmp = aniCmpMapper.get(entity);
-            if (aniCmp.animation == null) {
-                continue;
-            }
-
-            final Box2DComponent b2dCmp = b2dCmpMapper.get(entity);
-            final Vector2 position = b2dCmp.body.getPosition();
-
-            final Sprite frame = aniCmp.animation.getKeyFrame(aniCmp.aniTimer, true);
-            frame.setColor(Color.WHITE);
-            frame.setOriginCenter();
-            frame.setBounds(MathUtils.lerp(b2dCmp.positionBeforeUpdate.x, position.x, alpha) - (aniCmp.width * 0.5f), MathUtils.lerp(b2dCmp.positionBeforeUpdate.y, position.y, alpha) - (b2dCmp.height * 0.5f), aniCmp.width, aniCmp.height);
-            frame.draw(spriteBatch);
+        // render game objects first because they are in the same texture atlas as the map so we avoid a texture binding --> better performance
+        for (final Entity entity : gameObjectsForRender) {
+            renderEntity(entity, alpha);
+        }
+        for (final Entity entity : charactersForRender) {
+            renderEntity(entity, alpha);
         }
         spriteBatch.end();
 
@@ -99,6 +95,22 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
             b2dRenderer.render(world, gameCamera.combined);
             Gdx.app.debug(TAG, "Last number of render calls: " + spriteBatch.renderCalls);
         }
+    }
+
+    private void renderEntity(final Entity entity, final float alpha) {
+        final AnimationComponent aniCmp = aniCmpMapper.get(entity);
+        if (aniCmp.animation == null) {
+            return;
+        }
+
+        final Box2DComponent b2dCmp = b2dCmpMapper.get(entity);
+        final Vector2 position = b2dCmp.body.getPosition();
+
+        final Sprite frame = aniCmp.animation.getKeyFrame(aniCmp.aniTimer, true);
+        frame.setColor(Color.WHITE);
+        frame.setOriginCenter();
+        frame.setBounds(MathUtils.lerp(b2dCmp.positionBeforeUpdate.x, position.x, alpha) - (aniCmp.width * 0.5f), MathUtils.lerp(b2dCmp.positionBeforeUpdate.y, position.y, alpha) - (b2dCmp.height * 0.5f), aniCmp.width, aniCmp.height);
+        frame.draw(spriteBatch);
     }
 
     @Override
