@@ -1,13 +1,18 @@
 package com.quillraven.game.gamestate;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
-import com.quillraven.game.core.*;
+import com.quillraven.game.core.AudioManager;
+import com.quillraven.game.core.gamestate.EGameState;
+import com.quillraven.game.core.gamestate.GameState;
+import com.quillraven.game.core.input.EKey;
+import com.quillraven.game.core.input.InputManager;
+import com.quillraven.game.core.ui.HUD;
+import com.quillraven.game.core.ui.TTFSkin;
 import com.quillraven.game.ecs.ECSEngine;
+import com.quillraven.game.ecs.system.PlayerMovementSystem;
 import com.quillraven.game.map.MapManager;
 import com.quillraven.game.ui.GameUI;
 
@@ -20,8 +25,8 @@ public class GSGame extends GameState<GameUI> {
     private int minutes;
     private int hours;
 
-    public GSGame(final EGameState type, final Game game, final GameUI hud) {
-        super(type, game, hud);
+    public GSGame(final EGameState type, final HUD hud) {
+        super(type, hud);
         elapsedTime = 0;
         seconds = 0;
         minutes = 0;
@@ -32,26 +37,36 @@ public class GSGame extends GameState<GameUI> {
         world = new World(new Vector2(0, 0), true);
 
         // entity component system
-        final MapManager mapManager = new MapManager(game.getAssetManager());
-        this.ecsEngine = new ECSEngine(game, world, new OrthographicCamera(), mapManager);
+        this.ecsEngine = new ECSEngine(world, new OrthographicCamera());
 
         // init map -> this needs to happen after ECSEngine creation because some systems need to register as listeners first
-        mapManager.loadMap();
-        mapManager.spawnGameObjects(ecsEngine);
-        mapManager.spawnCollisionAreas(world);
-        ecsEngine.addPlayer(mapManager.getCurrentMap().getStartLocation());
+        MapManager.INSTANCE.loadMap();
+        MapManager.INSTANCE.spawnGameObjects(ecsEngine);
+        MapManager.INSTANCE.spawnCollisionAreas(world);
+        ecsEngine.addPlayer(MapManager.INSTANCE.getCurrentMap().getStartLocation());
 
-        game.getAudioManager().playAudio(AudioManager.AudioType.ALMOST_FINISHED);
+        AudioManager.INSTANCE.playAudio(AudioManager.AudioType.ALMOST_FINISHED);
     }
 
     @Override
-    public void processInput(final InputController inputController) {
-        ecsEngine.processInput(inputController);
+    protected GameUI createHUD(final HUD hud, final TTFSkin skin) {
+        return new GameUI(hud, skin);
+    }
+
+    @Override
+    public void activate() {
+        super.activate();
+        InputManager.INSTANCE.addKeyInputListener(ecsEngine.getSystem(PlayerMovementSystem.class));
+    }
+
+    @Override
+    public void deactivate() {
+        super.deactivate();
+        InputManager.INSTANCE.removeKeyInputListener(ecsEngine.getSystem(PlayerMovementSystem.class));
     }
 
     @Override
     public void step(final float fixedTimeStep) {
-        super.step(fixedTimeStep);
         elapsedTime += fixedTimeStep;
         if (elapsedTime >= 1) {
             while (elapsedTime >= 1) {
@@ -66,7 +81,7 @@ public class GSGame extends GameState<GameUI> {
                     }
                 }
             }
-            hud.setGameTime(hours, minutes, seconds);
+            gameStateHUD.setGameTime(hours, minutes, seconds);
         }
         // important to update entity engine before updating the box2d because we need to store
         // the body position before the next step for the interpolation rendering
@@ -76,15 +91,11 @@ public class GSGame extends GameState<GameUI> {
 
     @Override
     public void render(final float alpha) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         ecsEngine.render(alpha);
-        hud.render();
     }
 
     @Override
     public void resize(final int width, final int height) {
-        super.resize(width, height);
         ecsEngine.resize(width, height);
     }
 
@@ -92,5 +103,15 @@ public class GSGame extends GameState<GameUI> {
     public void dispose() {
         ecsEngine.dispose();
         world.dispose();
+    }
+
+    @Override
+    public void keyDown(final InputManager manager, final EKey key) {
+        // input handling is done within ECS systems
+    }
+
+    @Override
+    public void keyUp(final InputManager manager, final EKey key) {
+        // input handling is done within ECS systems
     }
 }

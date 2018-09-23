@@ -1,7 +1,6 @@
 package com.quillraven.game.map;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -11,21 +10,25 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
+import com.quillraven.game.core.ResourceManager;
+import com.quillraven.game.core.Utils;
 import com.quillraven.game.ecs.ECSEngine;
 
-public class MapManager {
+public enum MapManager {
+    INSTANCE;
+
     private static final String TAG = MapManager.class.getSimpleName();
 
     private Map currentMap;
-    private final AssetManager assetManager;
+    private final ResourceManager resourceManager;
     private final IntMap<Animation<Sprite>> gameObjAnimationCache;
     private final Array<MapListener> mapListeners;
     private final BodyDef bodyDef;
     private final FixtureDef fixtureDef;
 
-    public MapManager(final AssetManager assetManager) {
+    MapManager() {
         this.currentMap = null;
-        this.assetManager = assetManager;
+        this.resourceManager = Utils.getResourceManager();
         this.gameObjAnimationCache = new IntMap<>();
         this.mapListeners = new Array<>();
         bodyDef = new BodyDef();
@@ -42,7 +45,7 @@ public class MapManager {
 
     public void loadMap() {
         if (currentMap == null) {
-            currentMap = new Map(assetManager.get("map/map.tmx", TiledMap.class));
+            currentMap = new Map(resourceManager.get("map/map.tmx", TiledMap.class));
         }
         for (final MapListener mapListener : mapListeners) {
             mapListener.mapChanged(currentMap);

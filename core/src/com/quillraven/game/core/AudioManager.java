@@ -1,21 +1,22 @@
 package com.quillraven.game.core;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
-public class AudioManager {
-    private Music currentMusic;
-    private final AssetManager assetManager;
+public enum AudioManager {
+    INSTANCE;
 
-    AudioManager(final AssetManager assetManager) {
-        this.assetManager = assetManager;
+    private Music currentMusic;
+    private final ResourceManager resourceManager;
+
+    AudioManager() {
+        this.resourceManager = Utils.getResourceManager();
         this.currentMusic = null;
     }
 
     public void playAudio(final AudioType type) {
         if (type.isMusic) {
-            final Music music = assetManager.get(type.filePath, Music.class);
+            final Music music = resourceManager.get(type.filePath, Music.class);
             if (music.equals(currentMusic)) {
                 // continue current music
                 return;
@@ -27,7 +28,7 @@ public class AudioManager {
             currentMusic.setVolume(type.volume);
             currentMusic.play();
         } else {
-            assetManager.get(type.filePath, Sound.class).play(type.volume);
+            resourceManager.get(type.filePath, Sound.class).play(type.volume);
         }
     }
 

@@ -23,14 +23,14 @@ public class PlayerCameraSystem extends IteratingSystem implements MapManager.Ma
     private final float camLerpTime;
     private final Vector3 lerpTarget;
 
-    public PlayerCameraSystem(final MapManager mapManager, final OrthographicCamera gameCamera, final ComponentMapper<Box2DComponent> b2dCmpMapper) {
+    public PlayerCameraSystem(final OrthographicCamera gameCamera, final ComponentMapper<Box2DComponent> b2dCmpMapper) {
         super(Family.all(PlayerComponent.class, Box2DComponent.class).get());
         this.gameCamera = gameCamera;
         this.b2dCmpMapper = b2dCmpMapper;
         this.camLerpTime = 1.75f;
         this.camTime = this.camLerpTime;
         this.lerpTarget = new Vector3();
-        mapManager.addMapListener(this);
+        MapManager.INSTANCE.addMapListener(this);
     }
 
     private void findCurrentBoundary(final Vector2 playerPosition) {

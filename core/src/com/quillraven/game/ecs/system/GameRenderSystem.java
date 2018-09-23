@@ -20,7 +20,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.quillraven.game.core.Game;
+import com.quillraven.game.core.Utils;
 import com.quillraven.game.core.ecs.EntityEngine;
 import com.quillraven.game.core.ecs.RenderSystem;
 import com.quillraven.game.core.ecs.component.AnimationComponent;
@@ -50,11 +50,11 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     private final ComponentMapper<Box2DComponent> b2dCmpMapper;
     private final ComponentMapper<AnimationComponent> aniCmpMapper;
 
-    public GameRenderSystem(final EntityEngine entityEngine, final Game game, final World world, final OrthographicCamera gameCamera, final MapManager mapManager, final ComponentMapper<Box2DComponent> b2dCmpMapper, final ComponentMapper<AnimationComponent> aniCmpMapper) {
+    public GameRenderSystem(final EntityEngine entityEngine, final World world, final OrthographicCamera gameCamera, final ComponentMapper<Box2DComponent> b2dCmpMapper, final ComponentMapper<AnimationComponent> aniCmpMapper) {
         this.b2dCmpMapper = b2dCmpMapper;
         this.aniCmpMapper = aniCmpMapper;
         entitiesForRender = entityEngine.getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class).get());
-        this.spriteBatch = game.getSpriteBatch();
+        this.spriteBatch = Utils.getSpriteBatch();
         mapRenderer = new OrthogonalTiledMapRenderer(null, UNIT_SCALE, spriteBatch);
         b2dRenderer = DEBUG ? new Box2DDebugRenderer() : null;
         this.gameCamera = gameCamera;
@@ -62,7 +62,7 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
         viewport = new FitViewport(9, 16, gameCamera);
         viewPortOffset = new Vector3();
 
-        mapManager.addMapListener(this);
+        MapManager.INSTANCE.addMapListener(this);
     }
 
     @Override

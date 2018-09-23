@@ -11,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.quillraven.game.core.Game;
 import com.quillraven.game.core.ecs.component.AnimationComponent;
 import com.quillraven.game.core.ecs.component.Box2DComponent;
 import com.quillraven.game.core.ecs.system.AnimationSystem;
@@ -20,14 +19,13 @@ import com.quillraven.game.ecs.system.GameRenderSystem;
 import com.quillraven.game.ecs.system.PlayerAnimationSystem;
 import com.quillraven.game.ecs.system.PlayerCameraSystem;
 import com.quillraven.game.ecs.system.PlayerMovementSystem;
-import com.quillraven.game.map.MapManager;
 
 public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
     private final World world;
     private final BodyDef bodyDef;
     private final FixtureDef fixtureDef;
 
-    public ECSEngine(final Game game, final World world, final OrthographicCamera gameCamera, final MapManager mapManager) {
+    public ECSEngine(final World world, final OrthographicCamera gameCamera) {
         super();
         this.world = world;
         bodyDef = new BodyDef();
@@ -38,11 +36,11 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         final ComponentMapper<AnimationComponent> aniCmpMapper = ComponentMapper.getFor(AnimationComponent.class);
         // iterating systems
         addSystem(new AnimationSystem(aniCmpMapper));
-        addSystem(new PlayerAnimationSystem(game.getAssetManager(), b2dCmpMapper, playerCmpMapper, aniCmpMapper));
+        addSystem(new PlayerAnimationSystem(b2dCmpMapper, playerCmpMapper, aniCmpMapper));
         addSystem(new PlayerMovementSystem(playerCmpMapper, b2dCmpMapper));
-        addSystem(new PlayerCameraSystem(mapManager, gameCamera, b2dCmpMapper));
+        addSystem(new PlayerCameraSystem(gameCamera, b2dCmpMapper));
         // render systems
-        addRenderSystem(new GameRenderSystem(this, game, world, gameCamera, mapManager, b2dCmpMapper, aniCmpMapper));
+        addRenderSystem(new GameRenderSystem(this, world, gameCamera, b2dCmpMapper, aniCmpMapper));
     }
 
     public void addPlayer(final Vector2 spawnLocation) {

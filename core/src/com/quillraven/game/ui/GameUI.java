@@ -6,38 +6,38 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import com.quillraven.game.core.Game;
 import com.quillraven.game.core.ui.HUD;
+import com.quillraven.game.core.ui.TTFSkin;
 
-public class GameUI extends HUD {
+public class GameUI extends Table {
     private final TextButton timeText;
     private final TextButton crystalText;
 
     private final Array<Stack> slots;
 
-    public GameUI(final Game game) {
-        super(game);
+    public GameUI(final HUD hud, final TTFSkin skin) {
+        super();
 
         final Table contentTable = new Table();
-        contentTable.setBackground(game.getSkin().getDrawable("frame_brown"));
+        contentTable.setBackground(skin.getDrawable("frame_brown"));
 
-        final TextButton timeLabel = new TextButton(getLocalizedString("time") + ":", game.getSkin(), "big");
+        final TextButton timeLabel = new TextButton(hud.getLocalizedString("time") + ":", skin, "big");
         timeLabel.getLabel().setAlignment(Align.right);
-        timeText = new TextButton("00:00:00", game.getSkin(), "big");
+        timeText = new TextButton("00:00:00", skin, "big");
         timeText.getLabel().setAlignment(Align.left);
 
         final Table crystalInfoTable = new Table();
-        final Image crystalImg = new Image(game.getSkin().getDrawable("crystal"));
+        final Image crystalImg = new Image(skin.getDrawable("crystal"));
         crystalInfoTable.add(crystalImg).expand().fill().right();
-        crystalInfoTable.add(new TextButton(":", game.getSkin(), "big")).expand().fill().left();
-        crystalText = new TextButton("0", game.getSkin(), "big");
+        crystalInfoTable.add(new TextButton(":", skin, "big")).expand().fill().left();
+        crystalText = new TextButton("0", skin, "big");
         crystalText.getLabel().setAlignment(Align.left);
 
         slots = new Array<>();
         final Table slotTable = new Table();
         for (int i = 0; i < 4; ++i) {
             final Stack slot = new Stack();
-            slot.add(new Image(game.getSkin().getDrawable("frame_blue")));
+            slot.add(new Image(skin.getDrawable("frame_blue")));
             slots.add(slot);
             slotTable.add(slot);
         }
@@ -50,8 +50,8 @@ public class GameUI extends HUD {
 
         contentTable.add(slotTable).colspan(2).expand().fill().center().padBottom(10).padTop(10).row();
 
-        this.table.add(contentTable).expandX().fill().bottom();
-        this.table.bottom();
+        add(contentTable).expandX().fill().bottom();
+        bottom();
     }
 
     public void setGameTime(final int hours, final int minutes, final int seconds) {

@@ -1,29 +1,30 @@
 package com.quillraven.game.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.quillraven.game.core.Game;
 import com.quillraven.game.core.ui.HUD;
+import com.quillraven.game.core.ui.TTFSkin;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class LoadingUI extends HUD {
+public class LoadingUI extends Table {
     private final TextButton pressAnyButtonInfo;
     private final ProgressBar progressBar;
 
-    public LoadingUI(final Game game) {
-        super(game);
+    public LoadingUI(final HUD hud, final TTFSkin skin) {
+        super();
 
-        progressBar = new ProgressBar(0, 1, 0.01f, false, game.getSkin(), "default");
+        progressBar = new ProgressBar(0, 1, 0.01f, false, skin, "default");
 
-        pressAnyButtonInfo = new TextButton(getLocalizedString("pressAnyKey"), game.getSkin(), "big");
+        pressAnyButtonInfo = new TextButton(hud.getLocalizedString("pressAnyKey"), skin, "big");
         pressAnyButtonInfo.setVisible(false);
         pressAnyButtonInfo.getLabel().setWrap(true);
 
-        table.add(pressAnyButtonInfo).expand().fill().center().row();
-        table.add(new TextButton(getLocalizedString("loading") + "...", game.getSkin(), "normal")).expandX().fillX().padBottom(15).bottom().row();
-        table.add(progressBar).expandX().fillX().pad(0, 50, 25, 50).bottom();
-        table.bottom();
+        add(pressAnyButtonInfo).expand().fill().center().row();
+        add(new TextButton(hud.getLocalizedString("loading") + "...", skin, "normal")).expandX().fillX().padBottom(15).bottom().row();
+        add(progressBar).expandX().fillX().pad(0, 50, 25, 50).bottom();
+        bottom();
     }
 
     public void setProgress(final float progress) {

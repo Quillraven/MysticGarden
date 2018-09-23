@@ -1,15 +1,17 @@
 package com.quillraven.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.quillraven.game.core.EGameState;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.quillraven.game.core.Game;
+import com.quillraven.game.core.ResourceManager;
+import com.quillraven.game.core.gamestate.EGameState;
 
 
 /*TODO
  *) make world contact listener and add logic to collide with crystals/game objects (also update hud accordingly)
  *) add logic that when player has an axe then he can cut some trees (also play sound when a tree is cut)
  *) add box2d light to make the player only see a little circle that fluctuates
- *) make a better solution for all the parameter passing (singletons? CreateContext class? ObserverPattern for inputProcessing?)
  *) add main menu screen to show credits and adjust sound volume
  *) add save/load to continue game where player left it
  *) finalize map and remaining game logic
@@ -17,13 +19,30 @@ import com.quillraven.game.core.Game;
  *)
  */
 public class MysticGarden extends ApplicationAdapter {
+    private static final String TAG = MysticGarden.class.getSimpleName();
     public static final float UNIT_SCALE = 1 / 32f;
 
+    private ResourceManager resourceManager;
+    private SpriteBatch spriteBatch;
     private Game game;
 
     @Override
     public void create() {
+        resourceManager = new ResourceManager();
+        spriteBatch = new SpriteBatch();
         this.game = new Game(EGameState.LOADING);
+    }
+
+    public ResourceManager getResourceManager() {
+        return resourceManager;
+    }
+
+    public SpriteBatch getSpriteBatch() {
+        return spriteBatch;
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     @Override
@@ -39,5 +58,8 @@ public class MysticGarden extends ApplicationAdapter {
     @Override
     public void dispose() {
         game.dispose();
+        Gdx.app.debug(TAG, "Maximum sprites in batch: " + spriteBatch.maxSpritesInBatch);
+        spriteBatch.dispose();
+        resourceManager.dispose();
     }
 }

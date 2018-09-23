@@ -4,13 +4,13 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.quillraven.game.core.Utils;
 import com.quillraven.game.core.ecs.component.AnimationComponent;
 import com.quillraven.game.core.ecs.component.Box2DComponent;
 import com.quillraven.game.ecs.component.PlayerComponent;
@@ -27,14 +27,14 @@ public class PlayerAnimationSystem extends IteratingSystem {
     private final Animation<Sprite> aniUp;
     private final Animation<Sprite> aniDown;
 
-    public PlayerAnimationSystem(final AssetManager assetManager, final ComponentMapper<Box2DComponent> b2dCmpMapper, final ComponentMapper<PlayerComponent> playerCmpMapper, final ComponentMapper<AnimationComponent> aniCmpMapper) {
+    public PlayerAnimationSystem(final ComponentMapper<Box2DComponent> b2dCmpMapper, final ComponentMapper<PlayerComponent> playerCmpMapper, final ComponentMapper<AnimationComponent> aniCmpMapper) {
         super(Family.all(PlayerComponent.class, AnimationComponent.class).get());
         this.playerCmpMapper = playerCmpMapper;
         this.aniCmpMapper = aniCmpMapper;
         this.b2dCmpMapper = b2dCmpMapper;
 
         // create player animations
-        final Texture texture = assetManager.get("characters/hero.png", Texture.class);
+        final Texture texture = Utils.getResourceManager().get("characters/hero.png", Texture.class);
         final TextureRegion[][] textureRegions = new TextureRegion(texture).split(64, 64);
         aniUp = new Animation<>(0.05f, getKeyFrames(textureRegions[0]), Animation.PlayMode.LOOP);
         aniLeft = new Animation<>(0.05f, getKeyFrames(textureRegions[1]), Animation.PlayMode.LOOP);

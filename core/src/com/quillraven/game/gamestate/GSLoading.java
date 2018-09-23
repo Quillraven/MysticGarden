@@ -1,58 +1,89 @@
 package com.quillraven.game.gamestate;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.quillraven.game.core.*;
+import com.quillraven.game.core.AudioManager;
+import com.quillraven.game.core.ResourceManager;
+import com.quillraven.game.core.Utils;
+import com.quillraven.game.core.gamestate.EGameState;
+import com.quillraven.game.core.gamestate.GameState;
+import com.quillraven.game.core.input.EKey;
+import com.quillraven.game.core.input.InputManager;
+import com.quillraven.game.core.ui.HUD;
+import com.quillraven.game.core.ui.TTFSkin;
 import com.quillraven.game.ui.LoadingUI;
 
 public class GSLoading extends GameState<LoadingUI> {
-    private final AssetManager assetManager;
+    private final ResourceManager resourceManager;
+    private boolean isMusicLoaded;
 
-    public GSLoading(final EGameState type, final Game game, final LoadingUI hud) {
-        super(type, game, hud);
+    public GSLoading(final EGameState type, final HUD hud) {
+        super(type, hud);
+        isMusicLoaded = false;
 
-        assetManager = game.getAssetManager();
-        assetManager.load("characters/hero.png", Texture.class);
-        assetManager.load("map/tiles/map.atlas", TextureAtlas.class);
-        assetManager.load("map/map.tmx", TiledMap.class);
+        resourceManager = Utils.getResourceManager();
+        resourceManager.load("characters/hero.png", Texture.class);
+        resourceManager.load("map/tiles/map.atlas", TextureAtlas.class);
+        resourceManager.load("map/map.tmx", TiledMap.class);
         loadAudio();
+    }
+
+    @Override
+    protected LoadingUI createHUD(final HUD hud, final TTFSkin skin) {
+        return new LoadingUI(hud, skin);
     }
 
     private void loadAudio() {
         for (final AudioManager.AudioType type : AudioManager.AudioType.values()) {
-            if (assetManager.isLoaded(type.getFilePath())) {
+            if (resourceManager.isLoaded(type.getFilePath())) {
                 continue;
             }
             if (type.isMusic()) {
-                assetManager.load(type.getFilePath(), Music.class);
+                resourceManager.load(type.getFilePath(), Music.class);
             } else {
-                assetManager.load(type.getFilePath(), Sound.class);
+                resourceManager.load(type.getFilePath(), Sound.class);
             }
-        }
-    }
-
-    @Override
-    public void activate() {
-        game.getAudioManager().playAudio(AudioManager.AudioType.INTRO);
-        super.activate();
-    }
-
-    @Override
-    public void processInput(final InputController inputController) {
-        if (assetManager.getProgress() == 1 && inputController.isAnyKeyPressed()) {
-            game.getAudioManager().playAudio(AudioManager.AudioType.SELECT);
-            game.setGameState(EGameState.GAME, true);
         }
     }
 
     @Override
     public void step(final float fixedTimeStep) {
-        assetManager.update();
-        hud.setProgress(assetManager.getProgress());
-        super.step(fixedTimeStep);
+        resourceManager.update();
+        gameStateHUD.setProgress(resourceManager.getProgress());
+        if (!isMusicLoaded && resourceManager.isLoaded(AudioManager.AudioType.INTRO.getFilePath())) {
+            AudioManager.INSTANCE.playAudio(AudioManager.AudioType.INTRO);
+            isMusicLoaded = true;
+        }
+    }
+
+    @Override
+    public void render(final float alpha) {
+        // done by HUD; no special things needed here
+    }
+
+    @Override
+    public void resize(final int width, final int height) {
+        // done by HUD; no special things needed here
+    }
+
+    @Override
+    public void dispose() {
+        hud.removeGameStateHUD(gameStateHUD);
+    }
+
+    @Override
+    public void keyDown(final InputManager manager, final EKey key) {
+        if (resourceManager.getProgress() == 1) {
+            AudioManager.INSTANCE.playAudio(AudioManager.AudioType.SELECT);
+            Utils.setGameState(EGameState.GAME, true);
+        }
+    }
+
+    @Override
+    public void keyUp(final InputManager manager, final EKey key) {
+        // nothing to do for key up
     }
 }
