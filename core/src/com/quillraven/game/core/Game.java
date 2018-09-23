@@ -45,8 +45,6 @@ public class Game implements Disposable {
         }
 
         activeState = gameStateCache.computeIfAbsent(gameStateType, this::createGameState);
-
-        activeState = gameStateCache.get(gameStateType);
         Gdx.app.debug(TAG, "Activating gamestate " + activeState.getType());
         activeState.activate();
         activeState.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
