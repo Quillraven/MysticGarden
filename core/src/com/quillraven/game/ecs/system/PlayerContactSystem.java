@@ -54,6 +54,9 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
                     gameObject.add(((ECSEngine) this.getEngine()).createComponent(RemoveComponent.class));
                 }
                 break;
+            default:
+                // nothing to do
+                break;
         }
     }
 

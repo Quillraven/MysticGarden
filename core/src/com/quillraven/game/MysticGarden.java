@@ -9,8 +9,8 @@ import com.quillraven.game.core.gamestate.EGameState;
 
 
 /*TODO
- *) add box2d light to make the player only see a little circle that fluctuates
- *) show some hints and play some sounds when gameObjects are picked up or if they are not available yet
+ *) show some hints when picking up things
+ *) add support that tiledmap contains light information to create lights for water/fire/etc.
  *) add main menu screen to show credits and adjust sound volume
  *) add save/load to continue game where player left it
  *) finalize map and remaining game logic

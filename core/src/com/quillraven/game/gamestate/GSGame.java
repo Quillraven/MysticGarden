@@ -1,5 +1,6 @@
 package com.quillraven.game.gamestate;
 
+import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
@@ -21,6 +22,7 @@ import com.quillraven.game.ui.GameUI;
 
 public class GSGame extends GameState<GameUI> implements PlayerContactSystem.PlayerContactListener {
     private final ECSEngine ecsEngine;
+    private final RayHandler rayHandler;
     private final World world;
     private float elapsedTime;
 
@@ -39,9 +41,11 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         Box2D.init();
         world = new World(new Vector2(0, 0), true);
         world.setContactListener(WorldContactManager.INSTANCE);
+        rayHandler = new RayHandler(world);
+        rayHandler.setAmbientLight(0, 0, 0, 0.05f);
 
         // entity component system
-        this.ecsEngine = new ECSEngine(world, new OrthographicCamera());
+        this.ecsEngine = new ECSEngine(world, rayHandler, new OrthographicCamera());
         ecsEngine.getSystem(PlayerContactSystem.class).addPlayerContactListener(this);
 
         // init map -> this needs to happen after ECSEngine creation because some systems need to register as listeners first
@@ -108,6 +112,7 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
     public void dispose() {
         ecsEngine.dispose();
         world.dispose();
+        rayHandler.dispose();
     }
 
     @Override
@@ -130,6 +135,9 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         switch (type) {
             case AXE:
                 gameStateHUD.setAxe(true);
+                break;
+            default:
+                // nothing to do
                 break;
         }
     }

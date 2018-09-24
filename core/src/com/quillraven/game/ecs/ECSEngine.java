@@ -1,7 +1,10 @@
 package com.quillraven.game.ecs;
 
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -22,12 +25,14 @@ import static com.quillraven.game.MysticGarden.*;
 
 public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
     private final World world;
+    private final RayHandler rayHandler;
     private final BodyDef bodyDef;
     private final FixtureDef fixtureDef;
 
-    public ECSEngine(final World world, final OrthographicCamera gameCamera) {
+    public ECSEngine(final World world, final RayHandler rayHandler, final OrthographicCamera gameCamera) {
         super();
         this.world = world;
+        this.rayHandler = rayHandler;
         bodyDef = new BodyDef();
         fixtureDef = new FixtureDef();
 
@@ -43,9 +48,10 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         // player contact system does not need processing because it is triggered by WorldContactManager
         addSystem(new PlayerContactSystem(playerCmpMapper, gameObjCmpMapper));
         getSystem(PlayerContactSystem.class).setProcessing(false);
+        addSystem(new LightSystem(b2dCmpMapper));
         addSystem(new RemoveSystem());
         // render systems
-        addRenderSystem(new GameRenderSystem(this, world, gameCamera, b2dCmpMapper, aniCmpMapper));
+        addRenderSystem(new GameRenderSystem(this, world, rayHandler, gameCamera, b2dCmpMapper, aniCmpMapper));
         // special systems
 
     }
@@ -73,6 +79,11 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
         player.add(b2dCmp);
+        // light
+        b2dCmp.lightDistance = 6;
+        b2dCmp.light = new PointLight(rayHandler, 64, new Color(1, 1, 1, 0.7f), b2dCmp.lightDistance, spawnLocation.x, spawnLocation.y);
+        b2dCmp.light.attachToBody(b2dCmp.body);
+        b2dCmp.lightFluctuationDistance = b2dCmp.light.getDistance() * 0.15f;
 
         final PlayerComponent playerCmp = createComponent(PlayerComponent.class);
         playerCmp.maxSpeed = 3;

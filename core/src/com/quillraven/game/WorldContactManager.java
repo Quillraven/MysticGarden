@@ -42,15 +42,19 @@ public enum WorldContactManager implements ContactListener {
             return false;
         }
 
-        player = (Entity) (playerCmpMapper.get((Entity) userDataA) == null ? playerCmpMapper.get((Entity) userDataB) == null ? null : userDataB : userDataA);
-        if (player == null) {
-            // no collision with player -> ignore
+        if (playerCmpMapper.get((Entity) userDataA) != null) {
+            player = (Entity) userDataA;
+        } else if (playerCmpMapper.get((Entity) userDataB) != null) {
+            player = (Entity) userDataB;
+        } else {
             return false;
         }
 
-        gameObj = (Entity) (gameObjectCmpMapper.get((Entity) userDataA) == null ? gameObjectCmpMapper.get((Entity) userDataB) == null ? null : userDataB : userDataA);
-        if (gameObj == null) {
-            // no collision with gameObj -> ignore
+        if (gameObjectCmpMapper.get((Entity) userDataA) != null) {
+            gameObj = (Entity) userDataA;
+        } else if (gameObjectCmpMapper.get((Entity) userDataB) != null) {
+            gameObj = (Entity) userDataB;
+        } else {
             return false;
         }
 
@@ -68,17 +72,17 @@ public enum WorldContactManager implements ContactListener {
 
     @Override
     public void endContact(final Contact contact) {
-
+        // no special logic needed
     }
 
     @Override
     public void preSolve(final Contact contact, final Manifold oldManifold) {
-
+        // no special logic needed
     }
 
     @Override
     public void postSolve(final Contact contact, final ContactImpulse impulse) {
-
+        // no special logic needed
     }
 
     public interface WorldContactListener {

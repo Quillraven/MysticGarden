@@ -1,5 +1,6 @@
 package com.quillraven.game.ecs.system;
 
+import box2dLight.RayHandler;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -45,15 +47,17 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     private final SpriteBatch spriteBatch;
 
     private final World world;
+    private final RayHandler rayHandler;
     private final OrthographicCamera gameCamera;
-    private final Vector3 viewPortOffset;
+    private final Vector3 renderOffsetVector;
+    private final Matrix4 b2dCombinedMatrix;
 
     private final ImmutableArray<Entity> gameObjectsForRender;
     private final ImmutableArray<Entity> charactersForRender;
     private final ComponentMapper<Box2DComponent> b2dCmpMapper;
     private final ComponentMapper<AnimationComponent> aniCmpMapper;
 
-    public GameRenderSystem(final EntityEngine entityEngine, final World world, final OrthographicCamera gameCamera, final ComponentMapper<Box2DComponent> b2dCmpMapper, final ComponentMapper<AnimationComponent> aniCmpMapper) {
+    public GameRenderSystem(final EntityEngine entityEngine, final World world, final RayHandler rayHandler, final OrthographicCamera gameCamera, final ComponentMapper<Box2DComponent> b2dCmpMapper, final ComponentMapper<AnimationComponent> aniCmpMapper) {
         this.b2dCmpMapper = b2dCmpMapper;
         this.aniCmpMapper = aniCmpMapper;
         gameObjectsForRender = entityEngine.getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class, GameObjectComponent.class).get());
@@ -63,8 +67,10 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
         b2dRenderer = DEBUG ? new Box2DDebugRenderer() : null;
         this.gameCamera = gameCamera;
         this.world = world;
+        this.rayHandler = rayHandler;
         viewport = new FitViewport(9, 16, gameCamera);
-        viewPortOffset = new Vector3();
+        renderOffsetVector = new Vector3();
+        b2dCombinedMatrix = new Matrix4();
 
         MapManager.INSTANCE.addMapListener(this);
     }
@@ -91,8 +97,11 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
         }
         spriteBatch.end();
 
+        // draw lights
+        rayHandler.setCombinedMatrix(gameCamera);
+        rayHandler.updateAndRender();
         if (DEBUG) {
-            b2dRenderer.render(world, gameCamera.combined);
+            b2dRenderer.render(world, b2dCombinedMatrix);
             Gdx.app.debug(TAG, "Last number of render calls: " + spriteBatch.renderCalls);
         }
     }
@@ -116,9 +125,12 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     @Override
     public void resize(final int width, final int height) {
         viewport.update(width, height, false);
-        viewPortOffset.set(gameCamera.position.x - gameCamera.viewportWidth * 0.5f, RENDER_OFFSET_Y + gameCamera.position.y - gameCamera.viewportHeight * 0.5f, 0);
-        gameCamera.project(viewPortOffset, viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
-        viewport.setScreenY((int) viewPortOffset.y);
+        // offset viewport by y-axis (get distance from viewport to viewport with offset)
+        renderOffsetVector.set(gameCamera.position.x - gameCamera.viewportWidth * 0.5f, RENDER_OFFSET_Y + gameCamera.position.y - gameCamera.viewportHeight * 0.5f, 0);
+        gameCamera.project(renderOffsetVector, viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
+        viewport.setScreenY((int) renderOffsetVector.y);
+
+        rayHandler.useCustomViewport(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
     }
 
     @Override
