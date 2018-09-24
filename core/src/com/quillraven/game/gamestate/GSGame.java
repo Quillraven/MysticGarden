@@ -96,16 +96,19 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         // the body position before the next step for the interpolation rendering
         ecsEngine.update(fixedTimeStep);
         world.step(fixedTimeStep, 6, 2);
+        super.step(fixedTimeStep);
     }
 
     @Override
     public void render(final float alpha) {
         ecsEngine.render(alpha);
+        super.render(alpha);
     }
 
     @Override
     public void resize(final int width, final int height) {
         ecsEngine.resize(width, height);
+        super.resize(width, height);
     }
 
     @Override

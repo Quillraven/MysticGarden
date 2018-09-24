@@ -36,9 +36,15 @@ public abstract class GameState<T extends Table> implements Disposable, KeyInput
         gameStateHUD.setVisible(false);
     }
 
-    public abstract void step(final float fixedTimeStep);
+    public void step(final float fixedTimeStep) {
+        hud.step(fixedTimeStep);
+    }
 
-    public abstract void render(final float alpha);
+    public void render(final float alpha) {
+        hud.render(alpha);
+    }
 
-    public abstract void resize(final int width, final int height);
+    public void resize(final int width, final int height) {
+        hud.resize(width, height);
+    }
 }

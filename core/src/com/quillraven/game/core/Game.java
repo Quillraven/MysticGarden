@@ -18,6 +18,8 @@ import java.util.Map;
 public class Game implements Disposable {
     private static final String TAG = Game.class.getSimpleName();
 
+    public static final float TARGET_FRAME_TIME = 1 / 60f;
+
     private final HUD hud;
     private final EnumMap<EGameState, GameState> gameStateCache;
     private GameState activeState;
@@ -64,24 +66,20 @@ public class Game implements Disposable {
 
     public void process() {
         final float deltaTime = Gdx.graphics.getRawDeltaTime();
-        final float fixedTimeStep = 1 / 60.0f;
         accumulator += deltaTime > 0.25f ? 0.25f : deltaTime;
 
-        while (accumulator >= fixedTimeStep) {
-            hud.step(fixedTimeStep);
-            activeState.step(fixedTimeStep);
-            accumulator -= fixedTimeStep;
+        while (accumulator >= TARGET_FRAME_TIME) {
+            activeState.step(TARGET_FRAME_TIME);
+            accumulator -= TARGET_FRAME_TIME;
         }
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        activeState.render(accumulator / fixedTimeStep);
-        hud.render();
+        activeState.render(accumulator / TARGET_FRAME_TIME);
     }
 
     public void resize(final int width, final int height) {
         activeState.resize(width, height);
-        hud.resize(width, height);
     }
 
     @Override

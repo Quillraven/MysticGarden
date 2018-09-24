@@ -11,6 +11,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.quillraven.game.core.ResourceManager;
 import com.quillraven.game.core.Utils;
 
+import static com.quillraven.game.core.Game.TARGET_FRAME_TIME;
+
 public class HUD implements Disposable {
     private static final String TAG = HUD.class.getSimpleName();
 
@@ -55,7 +57,8 @@ public class HUD implements Disposable {
         stage.act(deltaTime);
     }
 
-    public void render() {
+    public void render(final float alpha) {
+        stage.act(alpha * TARGET_FRAME_TIME);
         stage.getViewport().apply();
         stage.draw();
     }

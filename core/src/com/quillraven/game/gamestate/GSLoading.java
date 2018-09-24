@@ -56,16 +56,7 @@ public class GSLoading extends GameState<LoadingUI> {
             AudioManager.INSTANCE.playAudio(AudioManager.AudioType.INTRO);
             isMusicLoaded = true;
         }
-    }
-
-    @Override
-    public void render(final float alpha) {
-        // done by HUD; no special things needed here
-    }
-
-    @Override
-    public void resize(final int width, final int height) {
-        // done by HUD; no special things needed here
+        super.step(fixedTimeStep);
     }
 
     @Override
