@@ -9,7 +9,6 @@ import com.quillraven.game.core.gamestate.EGameState;
 
 
 /*TODO
- *) show some hints when picking up things
  *) add support that tiledmap contains light information to create lights for water/fire/etc.
  *) add main menu screen to show credits and adjust sound volume
  *) add save/load to continue game where player left it

@@ -42,6 +42,7 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
                 break;
             case AXE:
                 AudioManager.INSTANCE.playAudio(AudioManager.AudioType.JINGLE);
+                playerCmp.sleepTime = 3f;
                 gameObject.add(((ECSEngine) this.getEngine()).createComponent(RemoveComponent.class));
                 playerCmp.hasAxe = true;
                 for (final PlayerContactListener listener : listeners) {

@@ -1,9 +1,11 @@
 package com.quillraven.game.core.ui;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Colors;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.ObjectMap;
 
 /**
  * Custom skin class to avoid the "Pixmap already disposed" exception when disposing the skin.
@@ -14,9 +16,21 @@ public class TTFSkin extends com.badlogic.gdx.scenes.scene2d.ui.Skin {
     TTFSkin(final TextureAtlas atlas) {
         super(atlas);
 
-        Colors.put("Highlight", new Color(0xff0000ff));
-        Colors.put("Disabled", new Color(0x22222222));
-        Colors.put("Black", new Color(0x000000ff));
+        Colors.put("Highlight", new Color(0xff7f50ff));
+        Colors.put("Normal", new Color(0xffffffff));
+    }
+
+    @Override
+    public void load(final FileHandle skinFile) {
+        super.load(skinFile);
+        // enable markup for all fonts to use the Colors of the constructor when creating texts
+        final ObjectMap<String, BitmapFont> allFonts = this.getAll(BitmapFont.class);
+        if (allFonts != null) {
+            for (final BitmapFont font : allFonts.values()) {
+                font.getData().markupEnabled = true;
+            }
+        }
+
     }
 
     @Override

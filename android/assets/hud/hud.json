@@ -19,6 +19,11 @@
     "big": {
       "font": "font_48",
       "fontColor": "white"
+    },
+    "info": {
+      "font": "font_24",
+      "fontColor": "white",
+      "up": "frame_brown"
     }
   },
   "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {

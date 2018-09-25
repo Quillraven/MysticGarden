@@ -9,6 +9,7 @@ public class PlayerComponent implements Pool.Poolable, Component {
     public float maxSpeed;
     public int crystals;
     public boolean hasAxe;
+    public float sleepTime;
 
     @Override
     public void reset() {
@@ -16,5 +17,6 @@ public class PlayerComponent implements Pool.Poolable, Component {
         maxSpeed = 0;
         crystals = 0;
         hasAxe = false;
+        sleepTime = 0;
     }
 }

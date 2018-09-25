@@ -35,6 +35,12 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
         final Box2DComponent b2dCmp = b2dCmpMapper.get(entity);
         final PlayerComponent playerCmp = playerCmpMapper.get(entity);
 
+        if (playerCmp.sleepTime > 0) {
+            playerCmp.sleepTime -= deltaTime;
+            b2dCmp.body.setActive(playerCmp.sleepTime <= 0);
+            return;
+        }
+
         if (directionChange) {
             directionChange = false;
             playerCmp.speed.x = xFactor * playerCmp.maxSpeed;

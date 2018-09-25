@@ -35,11 +35,11 @@ public enum AudioManager {
     public enum AudioType {
         // music
         INTRO("audio/intro.mp3", true, 0.3f),
-        ALMOST_FINISHED("audio/almost_finished.ogg", true, 0.5f),
+        ALMOST_FINISHED("audio/almost_finished.ogg", true, 0.35f),
         // sounds
-        SELECT("audio/select.wav", false),
-        CHOP("audio/chop.ogg", false),
-        CRYSTAL_PICKUP("audio/crystal_pickup.ogg", false),
+        SELECT("audio/select.wav", false, 0.5f),
+        CHOP("audio/chop.ogg", false, 1),
+        CRYSTAL_PICKUP("audio/crystal_pickup.ogg", false, 1),
         JINGLE("audio/jingle.wav", false, 0.7f);
 
         private final String filePath;
@@ -50,10 +50,6 @@ public enum AudioManager {
             this.filePath = filePath;
             this.isMusic = isMusic;
             this.volume = volume;
-        }
-
-        AudioType(final String filePath, final boolean isMusic) {
-            this(filePath, isMusic, 1);
         }
 
         public String getFilePath() {

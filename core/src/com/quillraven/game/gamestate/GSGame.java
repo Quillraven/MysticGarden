@@ -131,6 +131,9 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
     @Override
     public void crystalContact(final int crystalsFound) {
         gameStateHUD.setCrystals(crystalsFound);
+        if (crystalsFound == 1) {
+            gameStateHUD.showInfoMessage(hud.getLocalizedString("crystalInfo"), 7.0f);
+        }
     }
 
     @Override
@@ -138,6 +141,7 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         switch (type) {
             case AXE:
                 gameStateHUD.setAxe(true);
+                gameStateHUD.showInfoMessage(hud.getLocalizedString("axeInfo"), 7.0f);
                 break;
             default:
                 // nothing to do

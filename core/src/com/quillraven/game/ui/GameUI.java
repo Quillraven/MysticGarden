@@ -9,11 +9,14 @@ import com.badlogic.gdx.utils.Array;
 import com.quillraven.game.core.ui.HUD;
 import com.quillraven.game.core.ui.TTFSkin;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+
 public class GameUI extends Table {
     private final TTFSkin skin;
 
     private final TextButton timeText;
     private final TextButton crystalText;
+    private final TextButton infoBox;
 
     private final Array<Stack> slots;
 
@@ -53,8 +56,15 @@ public class GameUI extends Table {
 
         contentTable.add(slotTable).colspan(2).expand().fill().center().padBottom(10).padTop(10).row();
 
+        infoBox = new TextButton("", skin, "info");
+        infoBox.getLabel().setWrap(true);
+        infoBox.setVisible(false);
+
+        add(infoBox).expand().fillX().top().padTop(25).padLeft(15).padRight(15).row();
         add(contentTable).expandX().fill().bottom();
         bottom();
+
+
     }
 
     public void setGameTime(final int hours, final int minutes, final int seconds) {
@@ -88,5 +98,12 @@ public class GameUI extends Table {
         } else if (hasAxe) {
             slots.get(0).add(new Image(skin.getDrawable("axe")));
         }
+    }
+
+    public void showInfoMessage(final String message, final float displayTime) {
+        infoBox.setText(message);
+        infoBox.setVisible(true);
+        infoBox.setColor(1, 1, 1, 0);
+        infoBox.addAction(sequence(alpha(1, 1), delay(displayTime), alpha(0, 1)));
     }
 }
