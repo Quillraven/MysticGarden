@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-up" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextobjectid="78">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-up" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextobjectid="83">
  <properties>
   <property name="playerStartTileX" type="float" value="32.5"/>
-  <property name="playerStartTileY" type="float" value="31.5"/>
+  <property name="playerStartTileY" type="float" value="31"/>
  </properties>
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer name="background" width="64" height="64">
@@ -12,7 +12,7 @@
  </layer>
  <layer name="background2" width="64" height="64">
   <data encoding="base64" compression="zlib">
-   eJzt1+8OgiAUh2G8mu7Bb/2xvIE+dP83km6y1RnQUWjjwPtsTEpw/kIDnAMAAAAAAAAAAABw1KgoPWs9/6985G8b+fPOW0f+vPPWkT/vvHW95desdTVrYqvr49L3S35bxkhd21f2sZy/xuv9W+h+92QYMvrW4BT4TpthEMc9fWsRyp/DWn7e/7LtreeXc9p1KY+l3JxujddCfm/NPm31+eD1ape63+mj3mP+81LuW7kUuF6NSu33WtoThmjX+T7vU9HWklF5TPW1LJYzNn+2+vxr/gNifS3b+3zL38W61Fgz/t91zTthjWaud66f8Zef/T7J75VeibYWxcZ3Xef47J7cK7SSP1Ym0XYOtDnqDWvlMSc=
+   eJzt130OgiAcxnFu0x38rxfKC3T/q6SbbMWAfgltPvD9bCxKcD6hAs4BAAAAAAAAAAAA2GsylJH1nv9bPvL3jfx1x9WRv+64OvLXHVc3Wn7LWteyJlZdH7e+XvJrmTJ1a9+4j3L+I57v31LXW5NBLf8p8dvo+Wuo5ef5b9tePX88p12X8ljKzdnWeD3kD9bsfqvPO893dKXr9W/1EfOfl3LfyqXB+Y6o1X6vpz1hinWdH/I+DW2VTMbPUl9luZy5+bPX+9/yDsj1Vfbr/R3/L+pKY834f9Ytz4Qay1zv3DjjH38P+6SwVyq1VZQb33WdE7IH8V6hl/y54qO2c6LNXi9lrjDL
   </data>
  </layer>
  <layer name="background3" width="64" height="64">
@@ -60,16 +60,13 @@
    <polyline points="0,0 63.3333,2.66667 64,-30.6667 -0.666667,-29.3333 -0.666667,2"/>
   </object>
   <object id="57" x="1049" y="1563">
+   <properties>
+    <property name="isWater" type="bool" value="true"/>
+   </properties>
    <polyline points="0,0 -0.666667,30.6667 -30.6667,30.6667 -32,72.6667 39.3333,71.3333 39.3333,-0.666667 4,-0.666667"/>
-  </object>
-  <object id="58" x="1247" y="1407">
-   <polyline points="0,0 30,2 32,-33.3333 61.3333,-31.3333 62,2.66667 94,1.33333 94,32 62,30.6667 61.3333,1.33333 29.3333,2 30,33.3333 -1.33333,29.3333 -0.666667,0.666667"/>
   </object>
   <object id="66" x="1118.67" y="1694">
    <polyline points="0,0 1.33333,160.667 64.6667,161.333 64.6667,193.333 2.66667,194.667 2,225.333 34,225.333 34,256.667 1.33333,258 2.66667,320.667 34,322 34,290 64.6667,290 66,322 160,321.333 161.333,290 194,290.667 193.333,322.667 217.333,321.333 224,315.333 250,314 250.667,284 326,283.333 327.333,321.333 449.333,324 449.333,227.333 418.667,228 418,196 448.667,195.333 449.333,98.6667 321.333,99.3333 321.333,130.667 257.333,130.667 257.333,98.6667 289.333,98.6667 289.333,66 450.667,66.6667 448.667,0.666667 384.667,2.66667 385.333,33.3333 289.333,34.6667 290,2"/>
-  </object>
-  <object id="67" x="1470.67" y="1952">
-   <polyline points="0,0 2,31.3333 32,30 32,0.666667 1.33333,0.666667"/>
   </object>
   <object id="68" x="1473.33" y="1853.33">
    <polyline points="0,0 60.6667,2 61.3333,-29.3333 -0.666667,-28.6667 0,0.666667"/>
@@ -89,47 +86,22 @@
   <object id="73" x="1154" y="1730">
    <polyline points="0,0 29.3333,-0.666667 30.6667,61.3333 126.667,61.3333 126.667,-1.33333 158.667,0 158,64 190,64 190.667,190.667 220,190.667 222,222 94,222 94.6667,253.333 64,253.333 62,223.333 30,222 31.3333,190 158.667,188.667 156.667,96.6667 -0.666667,94 0,0"/>
   </object>
+  <object id="79" x="1475.45" y="1952.18">
+   <polyline points="0,0 -3.27273,-0.181818 -3.27273,31.0909 28,31.2727 27.8182,0 23.4545,0"/>
+  </object>
  </objectgroup>
  <objectgroup name="objects">
-  <object id="59" gid="11" x="1022.86" y="991.457" width="32" height="32">
-   <properties>
-    <property name="type" value="CRYSTAL"/>
-   </properties>
-  </object>
-  <object id="60" gid="93" x="893.667" y="928.124" width="32" height="32">
-   <properties>
-    <property name="type" value="TREE"/>
-   </properties>
-  </object>
-  <object id="61" gid="11" x="1277" y="1444.63" width="32" height="32">
-   <properties>
-    <property name="type" value="CRYSTAL"/>
-   </properties>
-  </object>
-  <object id="62" gid="19" x="766.5" y="1471.88" width="32" height="32">
-   <properties>
-    <property name="type" value="FIRESTONE"/>
-   </properties>
-  </object>
-  <object id="63" gid="19" x="767.25" y="1440.21" width="32" height="32">
-   <properties>
-    <property name="type" value="FIRESTONE"/>
-   </properties>
-  </object>
-  <object id="64" gid="93" x="1408.18" y="1983.82" width="32" height="32">
-   <properties>
-    <property name="type" value="TREE"/>
-   </properties>
-  </object>
-  <object id="65" gid="93" x="1344.33" y="1824.67" width="32" height="32">
-   <properties>
-    <property name="type" value="TREE"/>
-   </properties>
-  </object>
-  <object id="76" gid="9" x="1472.5" y="2014.5" width="32" height="32">
-   <properties>
-    <property name="type" value="AXE"/>
-   </properties>
-  </object>
+  <object id="59" gid="11" x="1022.86" y="991.457" width="32" height="32"/>
+  <object id="60" gid="93" x="893.667" y="928.124" width="32" height="32"/>
+  <object id="61" gid="11" x="1277" y="1444.63" width="32" height="32"/>
+  <object id="62" gid="19" x="766.5" y="1471.88" width="32" height="32"/>
+  <object id="63" gid="19" x="767.25" y="1440.21" width="32" height="32"/>
+  <object id="64" gid="93" x="1408.18" y="1983.82" width="32" height="32"/>
+  <object id="65" gid="93" x="1344.33" y="1824.67" width="32" height="32"/>
+  <object id="76" gid="9" x="1472.5" y="2014.5" width="32" height="32"/>
+  <object id="78" gid="89" x="1476.91" y="1973.14" width="21.2727" height="21.2727"/>
+  <object id="80" gid="1" x="1312.25" y="1440" width="32" height="32"/>
+  <object id="81" gid="1" x="1247.75" y="1440.25" width="32" height="32"/>
+  <object id="82" gid="1" x="1280" y="1408" width="32" height="32"/>
  </objectgroup>
 </map>

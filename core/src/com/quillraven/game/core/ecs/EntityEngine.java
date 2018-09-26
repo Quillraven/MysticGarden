@@ -1,18 +1,27 @@
 package com.quillraven.game.core.ecs;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.quillraven.game.core.ecs.component.AnimationComponent;
+import com.quillraven.game.core.ecs.system.AnimationSystem;
+import com.quillraven.game.core.ecs.system.RemoveSystem;
 
 public abstract class EntityEngine extends PooledEngine implements Disposable {
     private static final String TAG = EntityEngine.class.getSimpleName();
 
     private final Array<RenderSystem> renderSystems;
+    protected final ComponentMapper<AnimationComponent> aniCmpMapper;
 
     protected EntityEngine() {
         super();
         this.renderSystems = new Array<>();
+
+        aniCmpMapper = ComponentMapper.getFor(AnimationComponent.class);
+        addSystem(new RemoveSystem());
+        addSystem(new AnimationSystem(aniCmpMapper));
     }
 
     protected void addRenderSystem(final RenderSystem renderSystem) {

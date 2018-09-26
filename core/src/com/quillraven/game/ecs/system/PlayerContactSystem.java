@@ -9,7 +9,7 @@ import com.quillraven.game.core.AudioManager;
 import com.quillraven.game.ecs.ECSEngine;
 import com.quillraven.game.ecs.component.GameObjectComponent;
 import com.quillraven.game.ecs.component.PlayerComponent;
-import com.quillraven.game.ecs.component.RemoveComponent;
+import com.quillraven.game.core.ecs.component.RemoveComponent;
 
 public class PlayerContactSystem extends EntitySystem implements WorldContactManager.WorldContactListener {
     private final ComponentMapper<PlayerComponent> playerCmpMapper;

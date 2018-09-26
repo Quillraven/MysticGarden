@@ -1,9 +1,9 @@
-package com.quillraven.game.ecs.system;
+package com.quillraven.game.core.ecs.system;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.quillraven.game.ecs.component.RemoveComponent;
+import com.quillraven.game.core.ecs.component.RemoveComponent;
 
 public class RemoveSystem extends IteratingSystem {
     public RemoveSystem() {

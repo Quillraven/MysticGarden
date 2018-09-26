@@ -1,13 +1,16 @@
 package com.quillraven.game.ecs;
 
+import box2dLight.ConeLight;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -16,14 +19,17 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.quillraven.game.core.ecs.component.AnimationComponent;
 import com.quillraven.game.core.ecs.component.Box2DComponent;
-import com.quillraven.game.core.ecs.system.AnimationSystem;
+import com.quillraven.game.core.ecs.component.LightSystem;
 import com.quillraven.game.ecs.component.GameObjectComponent;
 import com.quillraven.game.ecs.component.PlayerComponent;
 import com.quillraven.game.ecs.system.*;
+import com.quillraven.game.map.LightData;
 
 import static com.quillraven.game.MysticGarden.*;
 
 public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
+    private static final String TAG = ECSEngine.class.getSimpleName();
+
     private final World world;
     private final RayHandler rayHandler;
     private final BodyDef bodyDef;
@@ -39,9 +45,7 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         final ComponentMapper<PlayerComponent> playerCmpMapper = ComponentMapper.getFor(PlayerComponent.class);
         final ComponentMapper<GameObjectComponent> gameObjCmpMapper = ComponentMapper.getFor(GameObjectComponent.class);
         final ComponentMapper<Box2DComponent> b2dCmpMapper = ComponentMapper.getFor(Box2DComponent.class);
-        final ComponentMapper<AnimationComponent> aniCmpMapper = ComponentMapper.getFor(AnimationComponent.class);
         // iterating systems
-        addSystem(new AnimationSystem(aniCmpMapper));
         addSystem(new PlayerAnimationSystem(b2dCmpMapper, playerCmpMapper, aniCmpMapper));
         addSystem(new PlayerMovementSystem(playerCmpMapper, b2dCmpMapper));
         addSystem(new PlayerCameraSystem(gameCamera, b2dCmpMapper));
@@ -49,11 +53,8 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         addSystem(new PlayerContactSystem(playerCmpMapper, gameObjCmpMapper));
         getSystem(PlayerContactSystem.class).setProcessing(false);
         addSystem(new LightSystem(b2dCmpMapper));
-        addSystem(new RemoveSystem());
         // render systems
         addRenderSystem(new GameRenderSystem(this, world, rayHandler, gameCamera, b2dCmpMapper, aniCmpMapper));
-        // special systems
-
     }
 
     public void addPlayer(final Vector2 spawnLocation) {
@@ -75,7 +76,7 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         fixtureDef.isSensor = false;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = BIT_PLAYER;
-        fixtureDef.filter.maskBits = BIT_GAME_OBJECT | BIT_GROUND;
+        fixtureDef.filter.maskBits = BIT_GAME_OBJECT | BIT_GROUND | BIT_WATER;
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
         player.add(b2dCmp);
@@ -83,6 +84,7 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         b2dCmp.lightDistance = 6;
         b2dCmp.light = new PointLight(rayHandler, 64, new Color(1, 1, 1, 0.7f), b2dCmp.lightDistance, spawnLocation.x, spawnLocation.y);
         b2dCmp.light.attachToBody(b2dCmp.body);
+        b2dCmp.lightFluctuationSpeed = 4;
         b2dCmp.lightFluctuationDistance = b2dCmp.light.getDistance() * 0.15f;
 
         final PlayerComponent playerCmp = createComponent(PlayerComponent.class);
@@ -95,7 +97,7 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         addEntity(player);
     }
 
-    public void addGameObject(final Rectangle boundaries, final Animation<Sprite> animation, GameObjectComponent.GameObjectType type) {
+    public void addGameObject(final Rectangle boundaries, final Animation<Sprite> animation, GameObjectComponent.GameObjectType type, final LightData lightData) {
         final Entity gameObj = createEntity();
 
         final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
@@ -128,6 +130,27 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         final GameObjectComponent gameObjCmp = createComponent(GameObjectComponent.class);
         gameObjCmp.type = type;
         gameObj.add(gameObjCmp);
+
+        if (lightData != null) {
+            b2dCmp.lightDistance = lightData.getDistance();
+            if ("point".equals(lightData.getType())) {
+                // position is automatically aligned with the b2d body so there is no need to set them in the constructor
+                b2dCmp.light = new PointLight(rayHandler, 64, lightData.getColor(), b2dCmp.lightDistance, 0, 0);
+                ((PointLight) b2dCmp.light).attachToBody(b2dCmp.body, lightData.getOffsetX(), lightData.getOffsetY());
+            } else if ("cone".equals(lightData.getType())) {
+                // position and direction are automatically aligned with the b2d body so there is no need to set them in the constructor
+                b2dCmp.light = new ConeLight(rayHandler, 64, lightData.getColor(), b2dCmp.lightDistance, 0, 0, 0, lightData.getConeDegree());
+                ((ConeLight) b2dCmp.light).attachToBody(b2dCmp.body, lightData.getOffsetX(), lightData.getOffsetY());
+                b2dCmp.body.setTransform(b2dCmp.body.getPosition(), lightData.getConeDirection() * MathUtils.degRad);
+                b2dCmp.light.setXray(true);
+            } else {
+                Gdx.app.error(TAG, "Unsupported light type: " + lightData.getType());
+            }
+            if (lightData.getFluctuation() > 0) {
+                b2dCmp.lightFluctuationDistance = b2dCmp.light.getDistance() * lightData.getFluctuation();
+                b2dCmp.lightFluctuationSpeed = lightData.getFluctuationSpeed();
+            }
+        }
 
         addEntity(gameObj);
     }

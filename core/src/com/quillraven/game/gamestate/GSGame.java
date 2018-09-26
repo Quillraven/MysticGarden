@@ -1,5 +1,6 @@
 package com.quillraven.game.gamestate;
 
+import box2dLight.Light;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
@@ -19,6 +20,9 @@ import com.quillraven.game.ecs.system.PlayerContactSystem;
 import com.quillraven.game.ecs.system.PlayerMovementSystem;
 import com.quillraven.game.map.MapManager;
 import com.quillraven.game.ui.GameUI;
+
+import static com.quillraven.game.MysticGarden.BIT_GROUND;
+import static com.quillraven.game.MysticGarden.BIT_PLAYER;
 
 public class GSGame extends GameState<GameUI> implements PlayerContactSystem.PlayerContactListener {
     private final ECSEngine ecsEngine;
@@ -43,6 +47,8 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         world.setContactListener(WorldContactManager.INSTANCE);
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(0, 0, 0, 0.05f);
+        // player light should only collide with ground objects. Water for example should not throw shadows
+        Light.setGlobalContactFilter(BIT_PLAYER, (short) 1, BIT_GROUND);
 
         // entity component system
         this.ecsEngine = new ECSEngine(world, rayHandler, new OrthographicCamera());

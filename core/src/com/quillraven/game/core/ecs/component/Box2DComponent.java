@@ -12,6 +12,7 @@ public class Box2DComponent implements Component, Pool.Poolable {
     public float lightDistance;
     public float lightFluctuationDistance;
     public float lightFluctuationTime;
+    public float lightFluctuationSpeed;
     public final Vector2 positionBeforeUpdate = new Vector2();
     public float width;
     public float height;
@@ -22,7 +23,7 @@ public class Box2DComponent implements Component, Pool.Poolable {
         lightFluctuationTime = 0;
         lightDistance = 0;
         if (light != null) {
-            light.dispose();
+            light.remove(true);
             light = null;
         }
         if (body != null) {

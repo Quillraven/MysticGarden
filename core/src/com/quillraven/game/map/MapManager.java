@@ -14,8 +14,7 @@ import com.quillraven.game.core.ResourceManager;
 import com.quillraven.game.core.Utils;
 import com.quillraven.game.ecs.ECSEngine;
 
-import static com.quillraven.game.MysticGarden.BIT_GROUND;
-import static com.quillraven.game.MysticGarden.BIT_PLAYER;
+import static com.quillraven.game.MysticGarden.*;
 
 public enum MapManager {
     INSTANCE;
@@ -63,7 +62,7 @@ public enum MapManager {
         }
 
         for (final GameObject gameObj : currentMap.getGameObjects()) {
-            ecsEngine.addGameObject(gameObj.getBoundaries(), getAnimation(gameObj), gameObj.getType());
+            ecsEngine.addGameObject(gameObj.getBoundaries(), getAnimation(gameObj), gameObj.getType(), gameObj.getLightData());
         }
     }
 
@@ -83,7 +82,7 @@ public enum MapManager {
             fixtureDef.shape = shape;
             fixtureDef.friction = 0;
             fixtureDef.isSensor = false;
-            fixtureDef.filter.categoryBits = BIT_GROUND;
+            fixtureDef.filter.categoryBits = collArea.isWater() ? BIT_WATER : BIT_GROUND;
             fixtureDef.filter.maskBits = BIT_PLAYER;
             body.createFixture(fixtureDef);
             shape.dispose();

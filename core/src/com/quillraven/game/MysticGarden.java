@@ -9,9 +9,11 @@ import com.quillraven.game.core.gamestate.EGameState;
 
 
 /*TODO
- *) add support that tiledmap contains light information to create lights for water/fire/etc.
+ *) add "candle" game object to light up the ambient light; place one in the axe area
  *) add main menu screen to show credits and adjust sound volume
  *) add save/load to continue game where player left it
+ *) add intro gamestate to explain story
+ *) add victory gamestate to show beloved couple and score ;)
  *) finalize map and remaining game logic
  *) add particle effects to some areas of the map (f.e. torches and fire stones)
  */
@@ -26,6 +28,7 @@ public class MysticGarden extends ApplicationAdapter {
     public static final short BIT_PLAYER = 1 << 1;
     public static final short BIT_GAME_OBJECT = 1 << 2;
     public static final short BIT_GROUND = 1 << 3;
+    public static final short BIT_WATER = 1 << 4;
 
     private ResourceManager resourceManager;
     private SpriteBatch spriteBatch;

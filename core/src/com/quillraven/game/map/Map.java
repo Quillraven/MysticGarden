@@ -67,7 +67,7 @@ public class Map {
         for (final MapObject mapObj : collisionLayer.getObjects()) {
             if (mapObj instanceof PolylineMapObject) {
                 final Polyline polyline = ((PolylineMapObject) mapObj).getPolyline();
-                collisionAreas.add(new CollisionArea(polyline.getX(), polyline.getY(), polyline.getVertices()));
+                collisionAreas.add(new CollisionArea(polyline.getX(), polyline.getY(), polyline.getVertices(), mapObj.getProperties().get("isWater", false, Boolean.class)));
             } else {
                 Gdx.app.log(TAG, "Unsupported mapObject for collision layer: " + mapObj);
             }
