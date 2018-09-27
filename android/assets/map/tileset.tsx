@@ -8,7 +8,6 @@
    <property name="light_fluctuation" type="float" value="0.1"/>
    <property name="light_fluctuation_speed" type="float" value="8"/>
    <property name="light_type" value="point"/>
-   <property name="type" value="TORCH_STATUE"/>
   </properties>
   <animation>
    <frame tileid="0" duration="200"/>
@@ -44,11 +43,6 @@
    <frame tileid="17" duration="150"/>
   </animation>
  </tile>
- <tile id="18">
-  <properties>
-   <property name="type" value="FIRESTONE"/>
-  </properties>
- </tile>
  <tile id="62">
   <animation>
    <frame tileid="62" duration="200"/>
@@ -75,7 +69,6 @@
    <property name="light_offset_x" type="float" value="-0.3"/>
    <property name="light_offset_y" type="float" value="0"/>
    <property name="light_type" value="cone"/>
-   <property name="type" value="TORCH"/>
   </properties>
   <animation>
    <frame tileid="88" duration="100"/>
@@ -87,6 +80,11 @@
  <tile id="92">
   <properties>
    <property name="type" value="TREE"/>
+  </properties>
+ </tile>
+ <tile id="94">
+  <properties>
+   <property name="type" value="CHROMA_ORB"/>
   </properties>
  </tile>
 </tileset>
