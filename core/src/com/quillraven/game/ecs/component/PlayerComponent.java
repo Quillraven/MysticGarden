@@ -10,6 +10,7 @@ public class PlayerComponent implements Pool.Poolable, Component {
     public int crystals;
     public boolean hasAxe;
     public float sleepTime;
+    public int chromaOrbs;
 
     @Override
     public void reset() {
@@ -18,5 +19,6 @@ public class PlayerComponent implements Pool.Poolable, Component {
         crystals = 0;
         hasAxe = false;
         sleepTime = 0;
+        chromaOrbs = 0;
     }
 }

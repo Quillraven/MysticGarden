@@ -14,7 +14,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -50,7 +49,6 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     private final RayHandler rayHandler;
     private final OrthographicCamera gameCamera;
     private final Vector3 renderOffsetVector;
-    private final Matrix4 b2dCombinedMatrix;
 
     private final ImmutableArray<Entity> gameObjectsForRender;
     private final ImmutableArray<Entity> charactersForRender;
@@ -70,7 +68,6 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
         this.rayHandler = rayHandler;
         viewport = new FitViewport(9, 16, gameCamera);
         renderOffsetVector = new Vector3();
-        b2dCombinedMatrix = new Matrix4();
 
         MapManager.INSTANCE.addMapListener(this);
     }
@@ -101,7 +98,7 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
         rayHandler.setCombinedMatrix(gameCamera);
         rayHandler.updateAndRender();
         if (DEBUG) {
-            b2dRenderer.render(world, b2dCombinedMatrix);
+            b2dRenderer.render(world, gameCamera.combined);
             Gdx.app.debug(TAG, "Last number of render calls: " + spriteBatch.renderCalls);
         }
     }

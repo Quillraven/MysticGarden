@@ -1,6 +1,5 @@
 package com.quillraven.game.map;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
@@ -11,8 +10,6 @@ import com.quillraven.game.ecs.component.GameObjectComponent;
 import static com.quillraven.game.MysticGarden.UNIT_SCALE;
 
 class GameObject {
-    private static final String TAG = GameObject.class.getSimpleName();
-
     private final TiledMapTileMapObject tileMapObjectRef;
     private final Rectangle boundaries;
     private final float animationInterval;
@@ -32,8 +29,7 @@ class GameObject {
         if (tileProps.containsKey("type")) {
             type = GameObjectComponent.GameObjectType.valueOf(tileProps.get("type", String.class));
         } else {
-            Gdx.app.error(TAG, "There is a gameobject in the map that has a tile without 'type' property. Location: " + boundaries.x + ", " + boundaries.y + ". TileID: " + tileMapObject.getTile().getId());
-            type = null;
+            type = GameObjectComponent.GameObjectType.NOT_DEFINED;
         }
 
         if (tileMapObject.getTile() instanceof AnimatedTiledMapTile) {

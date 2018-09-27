@@ -1,9 +1,6 @@
 package com.quillraven.game.ui;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.quillraven.game.core.ui.HUD;
@@ -87,9 +84,10 @@ public class GameUI extends Table {
     }
 
     public void setCrystals(final int crystalsFound) {
-        crystalText.getLabel().getText().setLength(0);
-        crystalText.getLabel().getText().append(crystalsFound);
-        crystalText.getLabel().invalidateHierarchy();
+        final Label crystalLbl = crystalText.getLabel();
+        crystalLbl.getText().setLength(0);
+        crystalLbl.getText().append(crystalsFound);
+        crystalLbl.invalidateHierarchy();
     }
 
     public void setAxe(final boolean hasAxe) {
@@ -105,5 +103,21 @@ public class GameUI extends Table {
         infoBox.setVisible(true);
         infoBox.setColor(1, 1, 1, 0);
         infoBox.addAction(sequence(alpha(1, 1), delay(displayTime), alpha(0, 1)));
+    }
+
+    public void setChromaOrb(final int chromaOrbsFound) {
+        if (slots.get(3).getChildren().size == 1) {
+            slots.get(3).add(new Image(skin.getDrawable("chromaorb")));
+            final TextButton txt = new TextButton("", skin, "normal");
+            txt.getLabel().setAlignment(Align.bottomRight);
+            txt.getLabelCell().padRight(7).padBottom(10);
+            slots.get(3).add(txt);
+        }
+
+        final Label chromaOrbLbl = ((TextButton) slots.get(3).getChildren().get(2)).getLabel();
+        chromaOrbLbl.getText().setLength(0);
+        chromaOrbLbl.getText().append("[Highlight]");
+        chromaOrbLbl.getText().append(chromaOrbsFound);
+        chromaOrbLbl.invalidateHierarchy();
     }
 }

@@ -6,10 +6,10 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.utils.Array;
 import com.quillraven.game.WorldContactManager;
 import com.quillraven.game.core.AudioManager;
+import com.quillraven.game.core.ecs.component.RemoveComponent;
 import com.quillraven.game.ecs.ECSEngine;
 import com.quillraven.game.ecs.component.GameObjectComponent;
 import com.quillraven.game.ecs.component.PlayerComponent;
-import com.quillraven.game.core.ecs.component.RemoveComponent;
 
 public class PlayerContactSystem extends EntitySystem implements WorldContactManager.WorldContactListener {
     private final ComponentMapper<PlayerComponent> playerCmpMapper;
@@ -35,9 +35,16 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
             case CRYSTAL:
                 AudioManager.INSTANCE.playAudio(AudioManager.AudioType.CRYSTAL_PICKUP);
                 gameObject.add(((ECSEngine) this.getEngine()).createComponent(RemoveComponent.class));
-                ++playerCmp.crystals;
                 for (final PlayerContactListener listener : listeners) {
-                    listener.crystalContact(playerCmp.crystals);
+                    listener.crystalContact(++playerCmp.crystals);
+                }
+                break;
+            case CHROMA_ORB:
+                AudioManager.INSTANCE.playAudio(AudioManager.AudioType.JINGLE);
+                playerCmp.sleepTime = 1.5f;
+                gameObject.add(((ECSEngine) this.getEngine()).createComponent(RemoveComponent.class));
+                for (final PlayerContactListener listener : listeners) {
+                    listener.chromaOrbContact(++playerCmp.chromaOrbs);
                 }
                 break;
             case AXE:
@@ -65,5 +72,7 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
         void crystalContact(final int crystalsFound);
 
         void itemContact(final GameObjectComponent.GameObjectType type);
+
+        void chromaOrbContact(final int chromaOrbsFound);
     }
 }

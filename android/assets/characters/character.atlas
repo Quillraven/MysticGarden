@@ -1,12 +1,19 @@
 
 character.png
-size: 1024,256
+size: 1024,1024
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-hero
+girl
   rotate: false
   xy: 0, 0
+  size: 48, 64
+  orig: 48, 64
+  offset: 0, 0
+  index: -1
+hero
+  rotate: false
+  xy: 0, 258
   size: 576, 256
   orig: 576, 256
   offset: 0, 0

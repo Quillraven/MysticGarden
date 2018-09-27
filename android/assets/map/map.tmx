@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-up" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextobjectid="109">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-up" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextobjectid="110">
  <properties>
-  <property name="playerStartTileX" type="float" value="47"/>
-  <property name="playerStartTileY" type="float" value="3"/>
+  <property name="playerStartTileX" type="float" value="32.5"/>
+  <property name="playerStartTileY" type="float" value="31"/>
  </properties>
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer name="background" width="64" height="64">

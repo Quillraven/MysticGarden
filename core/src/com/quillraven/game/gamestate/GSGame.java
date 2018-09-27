@@ -2,6 +2,7 @@ package com.quillraven.game.gamestate;
 
 import box2dLight.Light;
 import box2dLight.RayHandler;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
@@ -21,12 +22,12 @@ import com.quillraven.game.ecs.system.PlayerMovementSystem;
 import com.quillraven.game.map.MapManager;
 import com.quillraven.game.ui.GameUI;
 
-import static com.quillraven.game.MysticGarden.BIT_GROUND;
-import static com.quillraven.game.MysticGarden.BIT_PLAYER;
+import static com.quillraven.game.MysticGarden.*;
 
 public class GSGame extends GameState<GameUI> implements PlayerContactSystem.PlayerContactListener {
     private final ECSEngine ecsEngine;
     private final RayHandler rayHandler;
+    private final Color ambientLightColor;
     private final World world;
     private float elapsedTime;
 
@@ -46,9 +47,10 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         world = new World(new Vector2(0, 0), true);
         world.setContactListener(WorldContactManager.INSTANCE);
         rayHandler = new RayHandler(world);
-        rayHandler.setAmbientLight(0, 0, 0, 0.05f);
-        // player light should only collide with ground objects. Water for example should not throw shadows
-        Light.setGlobalContactFilter(BIT_PLAYER, (short) 1, BIT_GROUND);
+        ambientLightColor = new Color(0, 0, 0, 0.05f);
+        rayHandler.setAmbientLight(ambientLightColor);
+        // player light should not collide with water because water should not throw shadows
+        Light.setGlobalContactFilter(BIT_PLAYER, (short) 1, (short) (BIT_GROUND | BIT_GAME_OBJECT));
 
         // entity component system
         this.ecsEngine = new ECSEngine(world, rayHandler, new OrthographicCamera());
@@ -144,14 +146,19 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
 
     @Override
     public void itemContact(final GameObjectComponent.GameObjectType type) {
-        switch (type) {
-            case AXE:
-                gameStateHUD.setAxe(true);
-                gameStateHUD.showInfoMessage(hud.getLocalizedString("axeInfo"), 7.0f);
-                break;
-            default:
-                // nothing to do
-                break;
+        if (type == GameObjectComponent.GameObjectType.AXE) {
+            gameStateHUD.setAxe(true);
+            gameStateHUD.showInfoMessage(hud.getLocalizedString("axeInfo"), 7.0f);
+        }
+    }
+
+    @Override
+    public void chromaOrbContact(final int chromaOrbsFound) {
+        ambientLightColor.a += 0.05f;
+        rayHandler.setAmbientLight(ambientLightColor);
+        gameStateHUD.setChromaOrb(chromaOrbsFound);
+        if (chromaOrbsFound == 1) {
+            gameStateHUD.showInfoMessage(hud.getLocalizedString("chromaOrbInfo"), 7.0f);
         }
     }
 }

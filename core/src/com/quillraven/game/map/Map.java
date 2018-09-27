@@ -68,6 +68,25 @@ public class Map {
             if (mapObj instanceof PolylineMapObject) {
                 final Polyline polyline = ((PolylineMapObject) mapObj).getPolyline();
                 collisionAreas.add(new CollisionArea(polyline.getX(), polyline.getY(), polyline.getVertices(), mapObj.getProperties().get("isWater", false, Boolean.class)));
+            } else if (mapObj instanceof RectangleMapObject) {
+                final Rectangle rect = ((RectangleMapObject) mapObj).getRectangle();
+                final float[] rectVertices = new float[10];
+                // left-bot
+                rectVertices[0] = 0;
+                rectVertices[1] = 0;
+                // left-top
+                rectVertices[2] = 0;
+                rectVertices[3] = rect.height;
+                // right-top
+                rectVertices[4] = rect.width;
+                rectVertices[5] = rect.height;
+                // right-bot
+                rectVertices[6] = rect.width;
+                rectVertices[7] = 0;
+                // left-bot
+                rectVertices[8] = 0;
+                rectVertices[9] = 0;
+                collisionAreas.add(new CollisionArea(rect.x, rect.y, rectVertices, mapObj.getProperties().get("isWater", false, Boolean.class)));
             } else {
                 Gdx.app.log(TAG, "Unsupported mapObject for collision layer: " + mapObj);
             }
