@@ -17,6 +17,7 @@ public class TTFSkin extends com.badlogic.gdx.scenes.scene2d.ui.Skin {
         super(atlas);
 
         Colors.put("Highlight", new Color(0xff7f50ff));
+        Colors.put("Deactivated", new Color(0x88888877));
         Colors.put("Normal", new Color(0xffffffff));
     }
 

@@ -82,7 +82,7 @@ public enum MapManager {
             fixtureDef.shape = shape;
             fixtureDef.friction = 0;
             fixtureDef.isSensor = false;
-            fixtureDef.filter.categoryBits = collArea.isWater() ? BIT_WATER : BIT_GROUND;
+            fixtureDef.filter.categoryBits = collArea.isWater() ? BIT_WATER : BIT_WORLD;
             fixtureDef.filter.maskBits = BIT_PLAYER;
             body.createFixture(fixtureDef);
             shape.dispose();

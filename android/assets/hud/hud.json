@@ -64,5 +64,17 @@
       "knob": "knob",
       "knobBefore": "knobBefore"
     }
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle": {
+    "default": {
+      "background": "knobAfter",
+      "knob": "knob",
+      "knobBefore": "knobBefore"
+    },
+    "deactivated": {
+      "background": "knobAfter",
+      "knob": "knobDeactivated",
+      "knobBefore": "knobBeforeDeactivated"
+    }
   }
 }

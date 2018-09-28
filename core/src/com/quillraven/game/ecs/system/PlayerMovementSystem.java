@@ -71,6 +71,9 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
                 directionChange = true;
                 yFactor = -1;
                 break;
+            default:
+                // nothing to do
+                break;
         }
     }
 
@@ -92,6 +95,9 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
             case DOWN:
                 directionChange = true;
                 yFactor = manager.isKeyDown(UP) ? 1 : 0;
+                break;
+            default:
+                // nothing to do
                 break;
         }
     }

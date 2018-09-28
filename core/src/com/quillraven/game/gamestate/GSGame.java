@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 import com.quillraven.game.WorldContactManager;
 import com.quillraven.game.core.AudioManager;
+import com.quillraven.game.core.Utils;
 import com.quillraven.game.core.gamestate.EGameState;
 import com.quillraven.game.core.gamestate.GameState;
 import com.quillraven.game.core.input.EKey;
@@ -38,7 +39,7 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         world.setContactListener(WorldContactManager.INSTANCE);
         rayHandler = new RayHandler(world);
         // player light should not collide with water because water should not throw shadows
-        Light.setGlobalContactFilter(BIT_PLAYER, (short) 1, (short) (BIT_GROUND | BIT_GAME_OBJECT));
+        Light.setGlobalContactFilter(BIT_PLAYER, (short) 1, (short) (BIT_WORLD | BIT_GAME_OBJECT));
 
         // entity component system
         this.ecsEngine = new ECSEngine(world, rayHandler, new OrthographicCamera());
@@ -101,7 +102,9 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
 
     @Override
     public void keyDown(final InputManager manager, final EKey key) {
-        // input handling is done within ECS systems
+        if (key == EKey.BACK) {
+            Utils.setGameState(EGameState.MENU);
+        }
     }
 
     @Override

@@ -68,7 +68,7 @@ public class GSLoading extends GameState<LoadingUI> {
     public void keyDown(final InputManager manager, final EKey key) {
         if (resourceManager.getProgress() == 1) {
             AudioManager.INSTANCE.playAudio(AudioManager.AudioType.SELECT);
-            Utils.setGameState(EGameState.GAME, true);
+            Utils.setGameState(EGameState.MENU, true);
         }
     }
 

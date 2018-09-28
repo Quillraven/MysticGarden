@@ -82,7 +82,7 @@ knob
   index: -1
 knobAfter
   rotate: false
-  xy: 353, 57
+  xy: 351, 182
   size: 21, 30
   split: 12, 2, 1, 1
   pad: 0, 0, 0, 0
@@ -91,11 +91,29 @@ knobAfter
   index: -1
 knobBefore
   rotate: false
+  xy: 353, 57
+  size: 21, 30
+  split: 12, 2, 1, 1
+  pad: 0, 0, 0, 0
+  orig: 21, 30
+  offset: 0, 0
+  index: -1
+knobBeforeDeactivated
+  rotate: false
   xy: 353, 25
   size: 21, 30
   split: 12, 2, 1, 1
   pad: 0, 0, 0, 0
   orig: 21, 30
+  offset: 0, 0
+  index: -1
+knobDeactivated
+  rotate: false
+  xy: 371, 214
+  size: 2, 30
+  split: 0, 1, 1, 1
+  pad: 0, 0, 0, 0
+  orig: 2, 30
   offset: 0, 0
   index: -1
 leftPress

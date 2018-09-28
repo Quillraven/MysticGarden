@@ -9,8 +9,7 @@ import com.quillraven.game.core.gamestate.EGameState;
 
 
 /*TODO
- *) add main menu screen to show credits and adjust sound volume
- *) add save/load to continue game where player left it
+ *) add save/load to continue game where player left it and to save volume from main menu and to activate/deactivate continue menuitem
  *) add a "story info table" to GameUI that is shown until map is loaded + 3 seconds
  *) add victory gamestate to show beloved couple and score ;)
  *) finalize map and remaining game logic
@@ -26,7 +25,7 @@ public class MysticGarden extends ApplicationAdapter {
     public static final float UNIT_SCALE = 1 / 32f;
     public static final short BIT_PLAYER = 1 << 1;
     public static final short BIT_GAME_OBJECT = 1 << 2;
-    public static final short BIT_GROUND = 1 << 3;
+    public static final short BIT_WORLD = 1 << 3;
     public static final short BIT_WATER = 1 << 4;
 
     private ResourceManager resourceManager;

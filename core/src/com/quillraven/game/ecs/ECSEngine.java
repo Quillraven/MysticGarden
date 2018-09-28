@@ -83,7 +83,7 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         fixtureDef.isSensor = false;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = BIT_PLAYER;
-        fixtureDef.filter.maskBits = BIT_GAME_OBJECT | BIT_GROUND | BIT_WATER;
+        fixtureDef.filter.maskBits = BIT_GAME_OBJECT | BIT_WORLD | BIT_WATER;
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
         player.add(b2dCmp);
