@@ -53,6 +53,13 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         addSystem(new PlayerContactSystem(playerCmpMapper, gameObjCmpMapper));
         getSystem(PlayerContactSystem.class).setProcessing(false);
         addSystem(new LightSystem(b2dCmpMapper));
+        // ambient light system does not need processing because it is triggered by PlayerContactSystem
+        addSystem(new AmbientLightSystem(rayHandler));
+        getSystem(AmbientLightSystem.class).setProcessing(false);
+
+        // interval systems
+        addSystem(new GameTimeSystem());
+
         // render systems
         addRenderSystem(new GameRenderSystem(this, world, rayHandler, gameCamera, b2dCmpMapper, aniCmpMapper));
     }

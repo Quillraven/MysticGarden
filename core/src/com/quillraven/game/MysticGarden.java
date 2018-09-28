@@ -9,7 +9,6 @@ import com.quillraven.game.core.gamestate.EGameState;
 
 
 /*TODO
- *) refactoring: move gametime logic and chromaorb logic into an ECS system
  *) add main menu screen to show credits and adjust sound volume
  *) add save/load to continue game where player left it
  *) add a "story info table" to GameUI that is shown until map is loaded + 3 seconds

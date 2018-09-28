@@ -34,6 +34,7 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
     protected void processEntity(final Entity entity, final float deltaTime) {
         final Box2DComponent b2dCmp = b2dCmpMapper.get(entity);
         final PlayerComponent playerCmp = playerCmpMapper.get(entity);
+        b2dCmp.positionBeforeUpdate.set(b2dCmp.body.getPosition());
 
         if (playerCmp.sleepTime > 0) {
             playerCmp.sleepTime -= deltaTime;
@@ -49,7 +50,6 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
 
         final Vector2 worldCenter = b2dCmp.body.getWorldCenter();
         b2dCmp.body.applyLinearImpulse((playerCmp.speed.x - b2dCmp.body.getLinearVelocity().x) * b2dCmp.body.getMass(), (playerCmp.speed.y - b2dCmp.body.getLinearVelocity().y) * b2dCmp.body.getMass(), worldCenter.x, worldCenter.y, true);
-        b2dCmp.positionBeforeUpdate.set(b2dCmp.body.getPosition());
     }
 
     @Override

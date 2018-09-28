@@ -35,16 +35,18 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
             case CRYSTAL:
                 AudioManager.INSTANCE.playAudio(AudioManager.AudioType.CRYSTAL_PICKUP);
                 gameObject.add(((ECSEngine) this.getEngine()).createComponent(RemoveComponent.class));
+                ++playerCmp.crystals;
                 for (final PlayerContactListener listener : listeners) {
-                    listener.crystalContact(++playerCmp.crystals);
+                    listener.crystalContact(playerCmp.crystals);
                 }
                 break;
             case CHROMA_ORB:
                 AudioManager.INSTANCE.playAudio(AudioManager.AudioType.JINGLE);
                 playerCmp.sleepTime = 1.5f;
                 gameObject.add(((ECSEngine) this.getEngine()).createComponent(RemoveComponent.class));
+                ++playerCmp.chromaOrbs;
                 for (final PlayerContactListener listener : listeners) {
-                    listener.chromaOrbContact(++playerCmp.chromaOrbs);
+                    listener.chromaOrbContact(playerCmp.chromaOrbs);
                 }
                 break;
             case AXE:
