@@ -40,10 +40,28 @@ public class GameTimeSystem extends IntervalSystem {
                     }
                 }
             }
+            setTime(hours, minutes, seconds);
+        }
+    }
 
-            for (final GameTimeListener listener : listeners) {
-                listener.gameTimeUpdated(hours, minutes, seconds);
-            }
+    public int getSeconds() {
+        return seconds;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public void setTime(final int hours, final int minutes, final int seconds) {
+        this.hours = hours;
+        this.minutes = minutes;
+        this.seconds = seconds;
+        for (final GameTimeListener listener : listeners) {
+            listener.gameTimeUpdated(hours, minutes, seconds);
         }
     }
 

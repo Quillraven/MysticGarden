@@ -119,5 +119,8 @@ public class GameUI extends Table {
         chromaOrbLbl.getText().append("[Highlight]");
         chromaOrbLbl.getText().append(chromaOrbsFound);
         chromaOrbLbl.invalidateHierarchy();
+
+        slots.get(3).getChildren().get(1).setVisible(chromaOrbsFound > 0);
+        slots.get(3).getChildren().get(2).setVisible(chromaOrbsFound > 0);
     }
 }

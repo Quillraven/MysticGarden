@@ -34,7 +34,7 @@ public class AmbientLightSystem extends EntitySystem implements PlayerContactSys
 
     @Override
     public void chromaOrbContact(final int chromaOrbsFound) {
-        ambientLightColor.a += 0.05f;
+        ambientLightColor.a = 0.05f + chromaOrbsFound * 0.05f;
         rayHandler.setAmbientLight(ambientLightColor);
     }
 }

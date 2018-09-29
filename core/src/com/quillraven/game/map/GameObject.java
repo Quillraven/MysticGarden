@@ -10,6 +10,7 @@ import com.quillraven.game.ecs.component.GameObjectComponent;
 import static com.quillraven.game.MysticGarden.UNIT_SCALE;
 
 class GameObject {
+    private final int id;
     private final TiledMapTileMapObject tileMapObjectRef;
     private final Rectangle boundaries;
     private final float animationInterval;
@@ -17,11 +18,12 @@ class GameObject {
 
     private final LightData lightData;
 
-    public GameObject(final TiledMapTileMapObject tileMapObject) {
+    GameObject(final TiledMapTileMapObject tileMapObject) {
         final MapProperties props = tileMapObject.getProperties();
         final MapProperties tileProps = tileMapObject.getTile().getProperties();
 
         this.tileMapObjectRef = tileMapObject;
+        this.id = props.get("id", Integer.class);
         this.boundaries = new Rectangle();
         boundaries.setPosition(props.get("x", Float.class) * UNIT_SCALE, props.get("y", Float.class) * UNIT_SCALE);
         boundaries.setSize(props.get("width", Float.class) * UNIT_SCALE, props.get("height", Float.class) * UNIT_SCALE);
@@ -46,15 +48,19 @@ class GameObject {
 
     }
 
-    public Rectangle getBoundaries() {
+    int getId() {
+        return id;
+    }
+
+    Rectangle getBoundaries() {
         return boundaries;
     }
 
-    public float getAnimationInterval() {
+    float getAnimationInterval() {
         return animationInterval;
     }
 
-    public TiledMapTile getTile() {
+    TiledMapTile getTile() {
         return tileMapObjectRef.getTile();
     }
 
@@ -62,7 +68,7 @@ class GameObject {
         return type;
     }
 
-    public LightData getLightData() {
+    LightData getLightData() {
         return lightData;
     }
 }

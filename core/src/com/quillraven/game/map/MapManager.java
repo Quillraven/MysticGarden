@@ -1,5 +1,7 @@
 package com.quillraven.game.map;
 
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -12,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.quillraven.game.core.ResourceManager;
 import com.quillraven.game.core.Utils;
+import com.quillraven.game.core.ecs.component.RemoveComponent;
 import com.quillraven.game.ecs.ECSEngine;
 
 import static com.quillraven.game.MysticGarden.*;
@@ -45,29 +48,32 @@ public enum MapManager {
         return currentMap;
     }
 
-    public void loadMap() {
+    public void loadMap(final World world) {
         if (currentMap == null) {
             currentMap = new Map(resourceManager.get("map/map.tmx", TiledMap.class));
         }
         for (final MapListener mapListener : mapListeners) {
             mapListener.mapChanged(currentMap);
         }
+        spawnCollisionAreas(world);
     }
 
-    public void spawnGameObjects(final ECSEngine ecsEngine) {
-        //TODO remove old gameobjects in ECSEngine
+    public void spawnGameObjects(final ECSEngine ecsEngine, final ImmutableArray<Entity> gameObjects) {
+        for (final Entity gameObj : gameObjects) {
+            gameObj.add(ecsEngine.createComponent(RemoveComponent.class));
+        }
+
         if (currentMap == null) {
             Gdx.app.error(TAG, "Cannot spawn game objects of null map");
             return;
         }
 
         for (final GameObject gameObj : currentMap.getGameObjects()) {
-            ecsEngine.addGameObject(gameObj.getBoundaries(), getAnimation(gameObj), gameObj.getType(), gameObj.getLightData());
+            ecsEngine.addGameObject(gameObj.getId(), gameObj.getBoundaries(), getAnimation(gameObj), gameObj.getType(), gameObj.getLightData());
         }
     }
 
-    public void spawnCollisionAreas(final World world) {
-        //TODO remove old collision areas
+    private void spawnCollisionAreas(final World world) {
         if (currentMap == null) {
             Gdx.app.error(TAG, "Cannot spawn collision areas of null map");
             return;

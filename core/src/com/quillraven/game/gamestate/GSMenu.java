@@ -1,6 +1,9 @@
 package com.quillraven.game.gamestate;
 
 import com.badlogic.gdx.Gdx;
+import com.quillraven.game.SaveState;
+import com.quillraven.game.core.AudioManager;
+import com.quillraven.game.core.PreferenceManager;
 import com.quillraven.game.core.Utils;
 import com.quillraven.game.core.gamestate.EGameState;
 import com.quillraven.game.core.gamestate.GameState;
@@ -24,12 +27,23 @@ public class GSMenu extends GameState<MenuUI> {
     }
 
     @Override
+    public void activate() {
+        super.activate();
+        gameStateHUD.activateContinueItem(PreferenceManager.INSTANCE.containsKey(SaveState.SAVE_STATE_PREFERENCE_KEY));
+    }
+
+    @Override
     public void step(final float fixedTimeStep) {
         super.step(fixedTimeStep);
-        if (changeVolumne > 0) {
-            gameStateHUD.moveSelectionRight();
-        } else if (changeVolumne < 0) {
-            gameStateHUD.moveSelectionLeft();
+        if (changeVolumne != 0) {
+            if (changeVolumne > 0) {
+                gameStateHUD.moveSelectionRight();
+            } else {
+                gameStateHUD.moveSelectionLeft();
+            }
+            final float volume = gameStateHUD.getVolume();
+            PreferenceManager.INSTANCE.setFloatValue("volume", volume);
+            AudioManager.INSTANCE.setVolume(volume);
         }
     }
 
@@ -42,7 +56,12 @@ public class GSMenu extends GameState<MenuUI> {
     public void keyDown(final InputManager manager, final EKey key) {
         switch (key) {
             case SELECT:
+                AudioManager.INSTANCE.playAudio(AudioManager.AudioType.SELECT);
                 if (gameStateHUD.isNewGameSelected()) {
+                    PreferenceManager.INSTANCE.removeKey(SaveState.SAVE_STATE_PREFERENCE_KEY);
+                    Utils.setGameState(EGameState.GAME);
+                    return;
+                } else if (gameStateHUD.isContinueSelected()) {
                     Utils.setGameState(EGameState.GAME);
                     return;
                 } else if (gameStateHUD.isQuitGameSelected()) {
@@ -52,9 +71,11 @@ public class GSMenu extends GameState<MenuUI> {
                 gameStateHUD.selectCurrentItem();
                 break;
             case UP:
+                AudioManager.INSTANCE.playAudio(AudioManager.AudioType.SELECT);
                 gameStateHUD.moveSelectionUp();
                 break;
             case DOWN:
+                AudioManager.INSTANCE.playAudio(AudioManager.AudioType.SELECT);
                 gameStateHUD.moveSelectionDown();
                 break;
             case LEFT:

@@ -2,10 +2,14 @@ package com.quillraven.game.gamestate;
 
 import box2dLight.Light;
 import box2dLight.RayHandler;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
+import com.quillraven.game.SaveState;
 import com.quillraven.game.WorldContactManager;
 import com.quillraven.game.core.AudioManager;
 import com.quillraven.game.core.Utils;
@@ -17,6 +21,7 @@ import com.quillraven.game.core.ui.HUD;
 import com.quillraven.game.core.ui.TTFSkin;
 import com.quillraven.game.ecs.ECSEngine;
 import com.quillraven.game.ecs.component.GameObjectComponent;
+import com.quillraven.game.ecs.component.PlayerComponent;
 import com.quillraven.game.ecs.system.GameTimeSystem;
 import com.quillraven.game.ecs.system.PlayerContactSystem;
 import com.quillraven.game.ecs.system.PlayerMovementSystem;
@@ -27,11 +32,17 @@ import static com.quillraven.game.MysticGarden.*;
 
 public class GSGame extends GameState<GameUI> implements PlayerContactSystem.PlayerContactListener, GameTimeSystem.GameTimeListener {
     private final ECSEngine ecsEngine;
+    private final ImmutableArray<Entity> playerEntities;
+    private final ImmutableArray<Entity> gameObjEntities;
+
     private final RayHandler rayHandler;
     private final World world;
 
+    private final SaveState saveState;
+
     public GSGame(final EGameState type, final HUD hud) {
         super(type, hud);
+        saveState = new SaveState();
 
         // box2d
         Box2D.init();
@@ -45,11 +56,11 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         this.ecsEngine = new ECSEngine(world, rayHandler, new OrthographicCamera());
         ecsEngine.getSystem(PlayerContactSystem.class).addPlayerContactListener(this);
         ecsEngine.getSystem(GameTimeSystem.class).addGameTimeListener(this);
+        playerEntities = ecsEngine.getEntitiesFor(Family.all(PlayerComponent.class).get());
+        gameObjEntities = ecsEngine.getEntitiesFor(Family.all(GameObjectComponent.class).get());
 
         // init map -> this needs to happen after ECSEngine creation because some systems need to register as listeners first
-        MapManager.INSTANCE.loadMap();
-        MapManager.INSTANCE.spawnGameObjects(ecsEngine);
-        MapManager.INSTANCE.spawnCollisionAreas(world);
+        MapManager.INSTANCE.loadMap(world);
         ecsEngine.addPlayer(MapManager.INSTANCE.getCurrentMap().getStartLocation());
 
         AudioManager.INSTANCE.playAudio(AudioManager.AudioType.ALMOST_FINISHED);
@@ -64,12 +75,14 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
     public void activate() {
         super.activate();
         InputManager.INSTANCE.addKeyInputListener(ecsEngine.getSystem(PlayerMovementSystem.class));
+        saveState.loadState(playerEntities.first(), gameObjEntities, ecsEngine, gameStateHUD);
     }
 
     @Override
     public void deactivate() {
         super.deactivate();
         InputManager.INSTANCE.removeKeyInputListener(ecsEngine.getSystem(PlayerMovementSystem.class));
+        saveState.updateState(playerEntities.first(), gameObjEntities, ecsEngine);
     }
 
     @Override

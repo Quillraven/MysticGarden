@@ -9,7 +9,6 @@ import com.quillraven.game.core.gamestate.EGameState;
 
 
 /*TODO
- *) add save/load to continue game where player left it and to save volume from main menu and to activate/deactivate continue menuitem
  *) add a "story info table" to GameUI that is shown until map is loaded + 3 seconds
  *) add victory gamestate to show beloved couple and score ;)
  *) finalize map and remaining game logic

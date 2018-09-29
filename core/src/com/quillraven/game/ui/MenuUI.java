@@ -1,8 +1,10 @@
 package com.quillraven.game.ui;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.quillraven.game.core.AudioManager;
 import com.quillraven.game.core.ui.HUD;
 import com.quillraven.game.core.ui.TTFSkin;
 
@@ -25,8 +27,8 @@ public class MenuUI extends Table {
 
         menuItems = new Array<>();
         final Stack menuPages = new Stack();
-        volumeSlider = new Slider(0, 100, 1, false, skin, "default");
-        volumeSlider.setValue(80);
+        volumeSlider = new Slider(0, 1, 0.01f, false, skin, "default");
+        volumeSlider.setValue(AudioManager.INSTANCE.getVolume());
         continueItem = new TextButton("[Deactivated]Continue", skin, "big");
         mainPage = createMainPage(hud, skin);
         menuPages.add(mainPage);
@@ -136,7 +138,7 @@ public class MenuUI extends Table {
     public void moveSelectionRight() {
         if (currentItemIdx == volumeIdx) {
             volumeSlider.setValue(volumeSlider.getValue() + volumeSlider.getStepSize());
-            if (volumeSlider.getValue() == 1) {
+            if (MathUtils.isEqual(volumeSlider.getValue(), 0.01f)) {
                 volumeSlider.setStyle(skin.get("default", Slider.SliderStyle.class));
             }
         }
@@ -152,13 +154,20 @@ public class MenuUI extends Table {
             }
             ++volumeIdx;
             ++creditsIdx;
-            ++currentItemIdx;
+            if (currentItemIdx == 0 || currentItemIdx > 1) {
+                // if selection is new game then switch it to continue
+                // if selection is after continue then fix index position because continue is now an additional option before
+                ++currentItemIdx;
+            }
         } else {
             menuItems.removeValue(continueItem, true);
             label.getText().insert(0, "[Deactivated]");
             --volumeIdx;
             --creditsIdx;
-            --currentItemIdx;
+            if (currentItemIdx >= 1) {
+                // if selection is after or on continue then fix index position because continue is no longer an option
+                --currentItemIdx;
+            }
         }
         label.invalidateHierarchy();
         highlightCurrentItem(true);
@@ -168,7 +177,15 @@ public class MenuUI extends Table {
         return currentItemIdx == 0;
     }
 
+    public boolean isContinueSelected() {
+        return currentItemIdx == 1;
+    }
+
     public boolean isQuitGameSelected() {
         return currentItemIdx == menuItems.size - 1;
+    }
+
+    public float getVolume() {
+        return volumeSlider.getValue();
     }
 }

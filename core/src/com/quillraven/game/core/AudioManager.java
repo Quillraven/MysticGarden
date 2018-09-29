@@ -2,33 +2,52 @@ package com.quillraven.game.core;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.math.MathUtils;
 
 public enum AudioManager {
     INSTANCE;
 
+    private AudioType currentMusicType;
     private Music currentMusic;
     private final ResourceManager resourceManager;
+    private float volume;
 
     AudioManager() {
         this.resourceManager = Utils.getResourceManager();
         this.currentMusic = null;
+        if (PreferenceManager.INSTANCE.containsKey("volume")) {
+            volume = PreferenceManager.INSTANCE.getFloatValue("volume");
+        } else {
+            volume = 1f;
+        }
+    }
+
+    public void setVolume(final float volume) {
+        this.volume = MathUtils.clamp(volume, 0f, 1f);
+        if (currentMusic != null) {
+            currentMusic.setVolume(currentMusicType.volume * volume);
+        }
+    }
+
+    public float getVolume() {
+        return this.volume;
     }
 
     public void playAudio(final AudioType type) {
         if (type.isMusic) {
-            final Music music = resourceManager.get(type.filePath, Music.class);
-            if (music.equals(currentMusic)) {
+            if (type == currentMusicType) {
                 // continue current music
                 return;
             } else if (currentMusic != null) {
                 currentMusic.stop();
             }
-            currentMusic = music;
+            currentMusicType = type;
+            currentMusic = resourceManager.get(type.filePath, Music.class);
             currentMusic.setLooping(true);
-            currentMusic.setVolume(type.volume);
+            currentMusic.setVolume(type.volume * volume);
             currentMusic.play();
         } else {
-            resourceManager.get(type.filePath, Sound.class).play(type.volume);
+            resourceManager.get(type.filePath, Sound.class).play(type.volume * volume);
         }
     }
 

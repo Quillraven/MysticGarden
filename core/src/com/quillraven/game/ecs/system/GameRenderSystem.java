@@ -26,6 +26,7 @@ import com.quillraven.game.core.ecs.EntityEngine;
 import com.quillraven.game.core.ecs.RenderSystem;
 import com.quillraven.game.core.ecs.component.AnimationComponent;
 import com.quillraven.game.core.ecs.component.Box2DComponent;
+import com.quillraven.game.core.ecs.component.RemoveComponent;
 import com.quillraven.game.ecs.component.GameObjectComponent;
 import com.quillraven.game.ecs.component.PlayerComponent;
 import com.quillraven.game.map.Map;
@@ -37,7 +38,7 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     private static final String TAG = GameRenderSystem.class.getSimpleName();
     private static final boolean DEBUG = false;
 
-    public static final int RENDER_OFFSET_Y = 4;
+    static final int RENDER_OFFSET_Y = 4;
 
     private final Viewport viewport;
     private final OrthogonalTiledMapRenderer mapRenderer;
@@ -58,8 +59,8 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     public GameRenderSystem(final EntityEngine entityEngine, final World world, final RayHandler rayHandler, final OrthographicCamera gameCamera, final ComponentMapper<Box2DComponent> b2dCmpMapper, final ComponentMapper<AnimationComponent> aniCmpMapper) {
         this.b2dCmpMapper = b2dCmpMapper;
         this.aniCmpMapper = aniCmpMapper;
-        gameObjectsForRender = entityEngine.getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class, GameObjectComponent.class).get());
-        charactersForRender = entityEngine.getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class, PlayerComponent.class).get());
+        gameObjectsForRender = entityEngine.getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class, GameObjectComponent.class).exclude(RemoveComponent.class).get());
+        charactersForRender = entityEngine.getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class, PlayerComponent.class).exclude(RemoveComponent.class).get());
         this.spriteBatch = Utils.getSpriteBatch();
         mapRenderer = new OrthogonalTiledMapRenderer(null, UNIT_SCALE, spriteBatch);
         b2dRenderer = DEBUG ? new Box2DDebugRenderer() : null;

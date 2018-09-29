@@ -104,7 +104,7 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         addEntity(player);
     }
 
-    public void addGameObject(final Rectangle boundaries, final Animation<Sprite> animation, GameObjectComponent.GameObjectType type, final LightData lightData) {
+    public void addGameObject(final int tiledMapID, final Rectangle boundaries, final Animation<Sprite> animation, GameObjectComponent.GameObjectType type, final LightData lightData) {
         final Entity gameObj = createEntity();
 
         final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
@@ -136,6 +136,7 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
 
         final GameObjectComponent gameObjCmp = createComponent(GameObjectComponent.class);
         gameObjCmp.type = type;
+        gameObjCmp.tiledMapID = tiledMapID;
         gameObj.add(gameObjCmp);
 
         if (lightData != null) {
