@@ -6,7 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.quillraven.game.core.ecs.component.AnimationComponent;
+import com.quillraven.game.core.ecs.component.ParticleEffectComponent;
 import com.quillraven.game.core.ecs.system.AnimationSystem;
+import com.quillraven.game.core.ecs.system.ParticleSystem;
 import com.quillraven.game.core.ecs.system.RemoveSystem;
 
 public abstract class EntityEngine extends PooledEngine implements Disposable {
@@ -14,14 +16,17 @@ public abstract class EntityEngine extends PooledEngine implements Disposable {
 
     private final Array<RenderSystem> renderSystems;
     protected final ComponentMapper<AnimationComponent> aniCmpMapper;
+    protected final ComponentMapper<ParticleEffectComponent> peCmpMapper;
 
     protected EntityEngine() {
         super();
         this.renderSystems = new Array<>();
 
         aniCmpMapper = ComponentMapper.getFor(AnimationComponent.class);
+        peCmpMapper = ComponentMapper.getFor(ParticleEffectComponent.class);
         addSystem(new RemoveSystem());
         addSystem(new AnimationSystem(aniCmpMapper));
+        addSystem(new ParticleSystem(peCmpMapper));
     }
 
     protected void addRenderSystem(final RenderSystem renderSystem) {

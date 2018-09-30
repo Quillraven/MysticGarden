@@ -69,7 +69,7 @@ public enum MapManager {
         }
 
         for (final GameObject gameObj : currentMap.getGameObjects()) {
-            ecsEngine.addGameObject(gameObj.getId(), gameObj.getBoundaries(), getAnimation(gameObj), gameObj.getType(), gameObj.getLightData());
+            ecsEngine.addGameObject(gameObj, getAnimation(gameObj));
         }
     }
 

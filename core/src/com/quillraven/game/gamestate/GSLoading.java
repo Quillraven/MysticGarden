@@ -1,12 +1,15 @@
 package com.quillraven.game.gamestate;
 
+import com.badlogic.gdx.assets.loaders.ParticleEffectLoader;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.quillraven.game.core.AudioManager;
 import com.quillraven.game.core.ResourceManager;
 import com.quillraven.game.core.Utils;
+import com.quillraven.game.core.ecs.component.ParticleEffectComponent;
 import com.quillraven.game.core.gamestate.EGameState;
 import com.quillraven.game.core.gamestate.GameState;
 import com.quillraven.game.core.input.EKey;
@@ -24,10 +27,18 @@ public class GSLoading extends GameState<LoadingUI> {
         isMusicLoaded = false;
 
         resourceManager = Utils.getResourceManager();
-        resourceManager.load("characters/character.atlas", TextureAtlas.class);
+        resourceManager.load("characters_and_effects/character_and_effect.atlas", TextureAtlas.class);
         resourceManager.load("map/tiles/map.atlas", TextureAtlas.class);
         resourceManager.load("map/map.tmx", TiledMap.class);
         loadAudio();
+        for (final ParticleEffectComponent.ParticleEffectType peType : ParticleEffectComponent.ParticleEffectType.values()) {
+            if (peType == ParticleEffectComponent.ParticleEffectType.NOT_DEFINED) {
+                continue;
+            }
+            final ParticleEffectLoader.ParticleEffectParameter peParams = new ParticleEffectLoader.ParticleEffectParameter();
+            peParams.atlasFile = peType.getAtlasFilePath();
+            resourceManager.load(peType.getEffectFilePath(), ParticleEffect.class, peParams);
+        }
     }
 
     @Override

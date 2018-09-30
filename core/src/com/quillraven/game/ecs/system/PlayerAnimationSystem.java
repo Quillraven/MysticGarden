@@ -34,7 +34,7 @@ public class PlayerAnimationSystem extends IteratingSystem {
         this.b2dCmpMapper = b2dCmpMapper;
 
         // create player animations
-        final TextureAtlas.AtlasRegion atlasRegion = Utils.getResourceManager().get("characters/character.atlas", TextureAtlas.class).findRegion("hero");
+        final TextureAtlas.AtlasRegion atlasRegion = Utils.getResourceManager().get("characters_and_effects/character_and_effect.atlas", TextureAtlas.class).findRegion("hero");
         final TextureRegion[][] textureRegions = atlasRegion.split(64, 64);
         aniUp = new Animation<>(0.05f, getKeyFrames(textureRegions[0]), Animation.PlayMode.LOOP);
         aniLeft = new Animation<>(0.05f, getKeyFrames(textureRegions[1]), Animation.PlayMode.LOOP);

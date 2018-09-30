@@ -5,16 +5,22 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.Rectangle;
+import com.quillraven.game.core.ecs.component.ParticleEffectComponent;
 import com.quillraven.game.ecs.component.GameObjectComponent;
 
 import static com.quillraven.game.MysticGarden.UNIT_SCALE;
 
-class GameObject {
+public class GameObject {
     private final int id;
     private final TiledMapTileMapObject tileMapObjectRef;
     private final Rectangle boundaries;
     private final float animationInterval;
     private final GameObjectComponent.GameObjectType type;
+
+    private final ParticleEffectComponent.ParticleEffectType peType;
+    private final float peOffsetX;
+    private final float peOffsetY;
+    private final float peScale;
 
     private final LightData lightData;
 
@@ -46,13 +52,24 @@ class GameObject {
             lightData = null;
         }
 
+        if (tileProps.containsKey("effect_type")) {
+            peType = ParticleEffectComponent.ParticleEffectType.valueOf(tileProps.get("effect_type", String.class));
+            peOffsetX = tileProps.get("effect_offset_x", 0f, Float.class);
+            peOffsetY = tileProps.get("effect_offset_y", 0f, Float.class);
+            peScale = tileProps.get("effect_scale", 1f, Float.class);
+        } else {
+            peType = ParticleEffectComponent.ParticleEffectType.NOT_DEFINED;
+            peOffsetX = 0;
+            peOffsetY = 0;
+            peScale = 1;
+        }
     }
 
-    int getId() {
+    public int getId() {
         return id;
     }
 
-    Rectangle getBoundaries() {
+    public Rectangle getBoundaries() {
         return boundaries;
     }
 
@@ -68,7 +85,23 @@ class GameObject {
         return type;
     }
 
-    LightData getLightData() {
+    public LightData getLightData() {
         return lightData;
+    }
+
+    public ParticleEffectComponent.ParticleEffectType getParticleType() {
+        return peType;
+    }
+
+    public float getParticleOffsetX() {
+        return peOffsetX;
+    }
+
+    public float getParticleOffsetY() {
+        return peOffsetY;
+    }
+
+    public float getParticleScale() {
+        return peScale;
     }
 }

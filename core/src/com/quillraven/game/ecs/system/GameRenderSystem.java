@@ -7,6 +7,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -26,6 +27,7 @@ import com.quillraven.game.core.ecs.EntityEngine;
 import com.quillraven.game.core.ecs.RenderSystem;
 import com.quillraven.game.core.ecs.component.AnimationComponent;
 import com.quillraven.game.core.ecs.component.Box2DComponent;
+import com.quillraven.game.core.ecs.component.ParticleEffectComponent;
 import com.quillraven.game.core.ecs.component.RemoveComponent;
 import com.quillraven.game.ecs.component.GameObjectComponent;
 import com.quillraven.game.ecs.component.PlayerComponent;
@@ -53,14 +55,18 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
 
     private final ImmutableArray<Entity> gameObjectsForRender;
     private final ImmutableArray<Entity> charactersForRender;
+    private final ImmutableArray<Entity> particleEffectsForRender;
     private final ComponentMapper<Box2DComponent> b2dCmpMapper;
     private final ComponentMapper<AnimationComponent> aniCmpMapper;
+    private final ComponentMapper<ParticleEffectComponent> peCmpMapper;
 
-    public GameRenderSystem(final EntityEngine entityEngine, final World world, final RayHandler rayHandler, final OrthographicCamera gameCamera, final ComponentMapper<Box2DComponent> b2dCmpMapper, final ComponentMapper<AnimationComponent> aniCmpMapper) {
+    public GameRenderSystem(final EntityEngine entityEngine, final World world, final RayHandler rayHandler, final OrthographicCamera gameCamera, final ComponentMapper<Box2DComponent> b2dCmpMapper, final ComponentMapper<AnimationComponent> aniCmpMapper, final ComponentMapper<ParticleEffectComponent> peCmpMapper) {
         this.b2dCmpMapper = b2dCmpMapper;
         this.aniCmpMapper = aniCmpMapper;
+        this.peCmpMapper = peCmpMapper;
         gameObjectsForRender = entityEngine.getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class, GameObjectComponent.class).exclude(RemoveComponent.class).get());
         charactersForRender = entityEngine.getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class, PlayerComponent.class).exclude(RemoveComponent.class).get());
+        particleEffectsForRender = entityEngine.getEntitiesFor(Family.all(ParticleEffectComponent.class).exclude(RemoveComponent.class).get());
         this.spriteBatch = Utils.getSpriteBatch();
         mapRenderer = new OrthogonalTiledMapRenderer(null, UNIT_SCALE, spriteBatch);
         b2dRenderer = DEBUG ? new Box2DDebugRenderer() : null;
@@ -93,6 +99,18 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
         for (final Entity entity : charactersForRender) {
             renderEntity(entity, alpha);
         }
+
+        // render particle effects
+        for (final Entity entity : particleEffectsForRender) {
+            final ParticleEffectComponent peCmp = peCmpMapper.get(entity);
+            if (peCmp.effect != null) {
+                peCmp.effect.draw(spriteBatch);
+            }
+        }
+        // we need to manually reset the blend function because all effects have setEmittersCleanUpBlendFunction set to false
+        // to increase render performance (refer to ParticleEffectManager)
+        spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
         spriteBatch.end();
 
         // draw lights

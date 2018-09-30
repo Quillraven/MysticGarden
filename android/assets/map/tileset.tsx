@@ -27,6 +27,8 @@
  </tile>
  <tile id="10">
   <properties>
+   <property name="effect_scale" type="float" value="0.5"/>
+   <property name="effect_type" value="CRYSTAL"/>
    <property name="light_color" value="0022FFCC"/>
    <property name="light_distance" type="float" value="2"/>
    <property name="light_type" value="point"/>
@@ -60,13 +62,16 @@
  </tile>
  <tile id="88">
   <properties>
+   <property name="effect_offset_y" type="float" value="-0.3"/>
+   <property name="effect_scale" type="float" value="0.3"/>
+   <property name="effect_type" value="TORCH"/>
    <property name="light_color" value="FF2200FF"/>
    <property name="light_cone_degree" type="float" value="45"/>
    <property name="light_direction" type="float" value="270"/>
    <property name="light_distance" type="float" value="4"/>
    <property name="light_fluctuation" type="float" value="0.05"/>
    <property name="light_fluctuation_speed" type="float" value="16"/>
-   <property name="light_offset_x" type="float" value="-0.3"/>
+   <property name="light_offset_x" type="float" value="-0.6"/>
    <property name="light_offset_y" type="float" value="0"/>
    <property name="light_type" value="cone"/>
   </properties>

@@ -9,11 +9,11 @@ public class GameObjectComponent implements Pool.Poolable, Component {
     }
 
     public GameObjectType type;
-    public int tiledMapID;
+    public int id;
 
     @Override
     public void reset() {
         type = null;
-        tiledMapID = 0;
+        id = 0;
     }
 }

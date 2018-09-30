@@ -75,7 +75,7 @@ public class SaveState implements Json.Serializable {
 
         gameObjectIDs.clear();
         for (final Entity gameObj : gameObjects) {
-            gameObjectIDs.add(gameObjCmpMapper.get(gameObj).tiledMapID);
+            gameObjectIDs.add(gameObjCmpMapper.get(gameObj).id);
         }
 
         PreferenceManager.INSTANCE.setStringValue(SAVE_STATE_PREFERENCE_KEY, json.toJson(this));
@@ -96,7 +96,7 @@ public class SaveState implements Json.Serializable {
             seconds = 0;
             gameObjectIDs.clear();
             for (final Entity gameObj : gameObjects) {
-                gameObjectIDs.add(gameObjCmpMapper.get(gameObj).tiledMapID);
+                gameObjectIDs.add(gameObjCmpMapper.get(gameObj).id);
             }
         } else {
             // load values from preference
@@ -126,7 +126,7 @@ public class SaveState implements Json.Serializable {
         playerCmp.chromaOrbs = chromaOrbs;
         playerCmp.hasAxe = hasAxe;
         for (final Entity gameObj : gameObjects) {
-            if (removeCmpMapper.get(gameObj) == null && !gameObjectIDs.contains(gameObjCmpMapper.get(gameObj).tiledMapID, true)) {
+            if (removeCmpMapper.get(gameObj) == null && !gameObjectIDs.contains(gameObjCmpMapper.get(gameObj).id, true)) {
                 gameObj.add(ecsEngine.createComponent(RemoveComponent.class));
             }
         }

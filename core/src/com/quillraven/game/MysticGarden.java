@@ -9,7 +9,6 @@ import com.quillraven.game.core.gamestate.EGameState;
 
 
 /*TODO
- *) add particle effects to some areas of the map (f.e. torches and fire stones)
  *) finalize map and remaining game logic
  *) add a "story info table" to GameUI that is shown until map is loaded + 3 seconds
  *) add victory gamestate to show beloved couple and score ;)

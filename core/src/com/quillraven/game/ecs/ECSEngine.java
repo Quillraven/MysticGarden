@@ -19,10 +19,12 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.quillraven.game.core.ecs.component.AnimationComponent;
 import com.quillraven.game.core.ecs.component.Box2DComponent;
-import com.quillraven.game.core.ecs.component.LightSystem;
+import com.quillraven.game.core.ecs.component.ParticleEffectComponent;
+import com.quillraven.game.core.ecs.system.LightSystem;
 import com.quillraven.game.ecs.component.GameObjectComponent;
 import com.quillraven.game.ecs.component.PlayerComponent;
 import com.quillraven.game.ecs.system.*;
+import com.quillraven.game.map.GameObject;
 import com.quillraven.game.map.LightData;
 
 import static com.quillraven.game.MysticGarden.*;
@@ -61,7 +63,7 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         addSystem(new GameTimeSystem());
 
         // render systems
-        addRenderSystem(new GameRenderSystem(this, world, rayHandler, gameCamera, b2dCmpMapper, aniCmpMapper));
+        addRenderSystem(new GameRenderSystem(this, world, rayHandler, gameCamera, b2dCmpMapper, aniCmpMapper, peCmpMapper));
     }
 
     public void addPlayer(final Vector2 spawnLocation) {
@@ -104,19 +106,23 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         addEntity(player);
     }
 
-    public void addGameObject(final int tiledMapID, final Rectangle boundaries, final Animation<Sprite> animation, GameObjectComponent.GameObjectType type, final LightData lightData) {
-        final Entity gameObj = createEntity();
+    public void addGameObject(final GameObject gameObject, final Animation<Sprite> animation) {
+        final Entity gameObjEntity = createEntity();
+        final Rectangle boundaries = gameObject.getBoundaries();
+        final LightData lightData = gameObject.getLightData();
+        final float spawnX = boundaries.x + boundaries.width * 0.5f;
+        final float spawnY = boundaries.y + boundaries.height * 0.5f;
 
         final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
         b2dCmp.width = boundaries.width;
         b2dCmp.height = boundaries.height;
         // body
         bodyDef.gravityScale = 0;
-        bodyDef.position.set(boundaries.x + boundaries.width * 0.5f, boundaries.y + boundaries.height * 0.5f);
+        bodyDef.position.set(spawnX, spawnY);
         b2dCmp.positionBeforeUpdate.set(bodyDef.position);
         bodyDef.type = BodyDef.BodyType.StaticBody;
         b2dCmp.body = world.createBody(bodyDef);
-        b2dCmp.body.setUserData(gameObj);
+        b2dCmp.body.setUserData(gameObjEntity);
         // fixtures
         final PolygonShape shape = new PolygonShape();
         shape.setAsBox(b2dCmp.width * 0.5f, b2dCmp.height * 0.5f);
@@ -126,18 +132,18 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         fixtureDef.filter.maskBits = BIT_PLAYER;
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
-        gameObj.add(b2dCmp);
+        gameObjEntity.add(b2dCmp);
 
         final AnimationComponent aniCmp = createComponent(AnimationComponent.class);
         aniCmp.width = boundaries.width;
         aniCmp.height = boundaries.height;
         aniCmp.animation = animation;
-        gameObj.add(aniCmp);
+        gameObjEntity.add(aniCmp);
 
         final GameObjectComponent gameObjCmp = createComponent(GameObjectComponent.class);
-        gameObjCmp.type = type;
-        gameObjCmp.tiledMapID = tiledMapID;
-        gameObj.add(gameObjCmp);
+        gameObjCmp.type = gameObject.getType();
+        gameObjCmp.id = gameObject.getId();
+        gameObjEntity.add(gameObjCmp);
 
         if (lightData != null) {
             b2dCmp.lightDistance = lightData.getDistance();
@@ -160,6 +166,14 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
             }
         }
 
-        addEntity(gameObj);
+        if (gameObject.getParticleType() != ParticleEffectComponent.ParticleEffectType.NOT_DEFINED) {
+            final ParticleEffectComponent peCmp = createComponent(ParticleEffectComponent.class);
+            peCmp.scaling = gameObject.getParticleScale();
+            peCmp.position.set(spawnX + gameObject.getParticleOffsetX(), spawnY + gameObject.getParticleOffsetY());
+            peCmp.type = gameObject.getParticleType();
+            gameObjEntity.add(peCmp);
+        }
+
+        addEntity(gameObjEntity);
     }
 }

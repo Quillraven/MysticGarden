@@ -1,4 +1,4 @@
-package com.quillraven.game.core.ecs.component;
+package com.quillraven.game.core.ecs.system;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;

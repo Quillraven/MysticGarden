@@ -113,8 +113,8 @@ task buildMapTextureAtlas(description: "Rebuilds the map atlas located in assets
     }
 }
 
-task buildCharacterTextureAtlas(description: "Rebuilds the character atlas located in assets/characters folder. Images are taken from assets/characters/input folder.", group: "game") {
+task buildCharacterAndEffectTextureAtlas(description: "Rebuilds the character_and_effect atlas located in assets/characters_and_effects folder. Images are taken from assets/characters_and_effects/input folder.", group: "game") {
     doLast {
-        TexturePacker.process('android/assets/characters/input', 'android/assets/characters', 'character.atlas')
+        TexturePacker.process('android/assets/characters_and_effects/input', 'android/assets/characters_and_effects', 'character_and_effect.atlas')
     }
 }
