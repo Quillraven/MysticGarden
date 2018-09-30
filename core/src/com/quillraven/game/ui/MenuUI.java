@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import com.quillraven.game.core.AudioManager;
 import com.quillraven.game.core.ui.HUD;
 import com.quillraven.game.core.ui.TTFSkin;
 
@@ -21,14 +20,14 @@ public class MenuUI extends Table {
     private int volumeIdx;
     private int creditsIdx;
 
-    public MenuUI(final HUD hud, final TTFSkin skin) {
+    public MenuUI(final HUD hud, final TTFSkin skin, final float initialVolumeValue) {
         super();
         this.skin = skin;
 
         menuItems = new Array<>();
         final Stack menuPages = new Stack();
         volumeSlider = new Slider(0, 1, 0.01f, false, skin, "default");
-        volumeSlider.setValue(AudioManager.INSTANCE.getVolume());
+        volumeSlider.setValue(initialVolumeValue);
         continueItem = new TextButton("[Deactivated]Continue", skin, "big");
         mainPage = createMainPage(hud, skin);
         menuPages.add(mainPage);
@@ -146,24 +145,30 @@ public class MenuUI extends Table {
 
     public void activateContinueItem(final boolean activate) {
         highlightCurrentItem(false);
+        final boolean alreadyAvailable = menuItems.contains(continueItem, true);
         final Label label = continueItem.getLabel();
+
         if (activate) {
-            if (!menuItems.contains(continueItem, true)) {
+            // add option to menu items
+            if (!alreadyAvailable) {
                 menuItems.insert(1, continueItem);
                 label.getText().replace("[Deactivated]", "");
+                ++volumeIdx;
+                ++creditsIdx;
             }
-            ++volumeIdx;
-            ++creditsIdx;
             if (currentItemIdx == 0 || currentItemIdx > 1) {
                 // if selection is new game then switch it to continue
                 // if selection is after continue then fix index position because continue is now an additional option before
                 ++currentItemIdx;
             }
         } else {
-            menuItems.removeValue(continueItem, true);
-            label.getText().insert(0, "[Deactivated]");
-            --volumeIdx;
-            --creditsIdx;
+            // remove option from menu items
+            if (alreadyAvailable) {
+                menuItems.removeValue(continueItem, true);
+                label.getText().insert(0, "[Deactivated]");
+                --volumeIdx;
+                --creditsIdx;
+            }
             if (currentItemIdx >= 1) {
                 // if selection is after or on continue then fix index position because continue is no longer an option
                 --currentItemIdx;

@@ -62,8 +62,6 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         // init map -> this needs to happen after ECSEngine creation because some systems need to register as listeners first
         MapManager.INSTANCE.loadMap(world);
         ecsEngine.addPlayer(MapManager.INSTANCE.getCurrentMap().getStartLocation());
-
-        AudioManager.INSTANCE.playAudio(AudioManager.AudioType.ALMOST_FINISHED);
     }
 
     @Override
@@ -76,6 +74,7 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         super.activate();
         InputManager.INSTANCE.addKeyInputListener(ecsEngine.getSystem(PlayerMovementSystem.class));
         saveState.loadState(playerEntities.first(), gameObjEntities, ecsEngine, gameStateHUD);
+        AudioManager.INSTANCE.playAudio(AudioManager.AudioType.ALMOST_FINISHED);
     }
 
     @Override

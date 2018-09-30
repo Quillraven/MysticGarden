@@ -23,13 +23,20 @@ public class GSMenu extends GameState<MenuUI> {
 
     @Override
     protected MenuUI createHUD(final HUD hud, final TTFSkin skin) {
-        return new MenuUI(hud, skin);
+        return new MenuUI(hud, skin, AudioManager.INSTANCE.getVolume());
     }
 
     @Override
     public void activate() {
         super.activate();
         gameStateHUD.activateContinueItem(PreferenceManager.INSTANCE.containsKey(SaveState.SAVE_STATE_PREFERENCE_KEY));
+        AudioManager.INSTANCE.playAudio(AudioManager.AudioType.INTRO);
+    }
+
+    @Override
+    public void deactivate() {
+        super.deactivate();
+        PreferenceManager.INSTANCE.setFloatValue("volume", gameStateHUD.getVolume());
     }
 
     @Override
@@ -41,9 +48,7 @@ public class GSMenu extends GameState<MenuUI> {
             } else {
                 gameStateHUD.moveSelectionLeft();
             }
-            final float volume = gameStateHUD.getVolume();
-            PreferenceManager.INSTANCE.setFloatValue("volume", volume);
-            AudioManager.INSTANCE.setVolume(volume);
+            AudioManager.INSTANCE.setVolume(gameStateHUD.getVolume());
         }
     }
 

@@ -21,6 +21,15 @@ import com.quillraven.game.ui.GameUI;
 
 public class SaveState implements Json.Serializable {
     public static final String SAVE_STATE_PREFERENCE_KEY = "saveState";
+    private static final String SAVE_STATE_POS_X_KEY = "playerPosX";
+    private static final String SAVE_STATE_POS_Y_KEY = "playerPosY";
+    private static final String SAVE_STATE_CRYSTALS_KEY = "crystals";
+    private static final String SAVE_STATE_CHROMAORB_KEY = "chromaOrbs";
+    private static final String SAVE_STATE_HAS_AXE_KEY = "hasAxe";
+    private static final String SAVE_STATE_REMAINING_GAME_OBJ_IDS_KEY = "remainingGameObjects";
+    private static final String SAVE_STATE_SECONDS_KEY = "seconds";
+    private static final String SAVE_STATE_MINUTES_KEY = "minutes";
+    private static final String SAVE_STATE_HOURS_KEY = "hours";
 
     private final Vector2 playerPos;
     private int crystals;
@@ -92,16 +101,16 @@ public class SaveState implements Json.Serializable {
         } else {
             // load values from preference
             final JsonValue saveStateJsonVal = jsonReader.parse(PreferenceManager.INSTANCE.getStringValue(SAVE_STATE_PREFERENCE_KEY));
-            playerPos.x = saveStateJsonVal.getFloat("playerPosX");
-            playerPos.y = saveStateJsonVal.getFloat("playerPosY");
-            crystals = saveStateJsonVal.getInt("crystals");
-            chromaOrbs = saveStateJsonVal.getInt("chromaOrbs");
-            hasAxe = saveStateJsonVal.getBoolean("hasAxe");
-            hours = saveStateJsonVal.getInt("hours", 0);
-            minutes = saveStateJsonVal.getInt("minutes", 0);
-            seconds = saveStateJsonVal.getInt("seconds", 0);
+            playerPos.x = saveStateJsonVal.getFloat(SAVE_STATE_POS_X_KEY);
+            playerPos.y = saveStateJsonVal.getFloat(SAVE_STATE_POS_Y_KEY);
+            crystals = saveStateJsonVal.getInt(SAVE_STATE_CRYSTALS_KEY);
+            chromaOrbs = saveStateJsonVal.getInt(SAVE_STATE_CHROMAORB_KEY);
+            hasAxe = saveStateJsonVal.getBoolean(SAVE_STATE_HAS_AXE_KEY);
+            hours = saveStateJsonVal.getInt(SAVE_STATE_HOURS_KEY, 0);
+            minutes = saveStateJsonVal.getInt(SAVE_STATE_MINUTES_KEY, 0);
+            seconds = saveStateJsonVal.getInt(SAVE_STATE_SECONDS_KEY, 0);
 
-            final JsonValue remainingIDsJsonVal = saveStateJsonVal.get("remainingGameObjIDs");
+            final JsonValue remainingIDsJsonVal = saveStateJsonVal.get(SAVE_STATE_REMAINING_GAME_OBJ_IDS_KEY);
             if (remainingIDsJsonVal != null) {
                 gameObjectIDs.clear();
                 final int[] remainingGameObjIDs = remainingIDsJsonVal.asIntArray();
@@ -134,15 +143,15 @@ public class SaveState implements Json.Serializable {
 
     @Override
     public void write(final Json json) {
-        json.writeValue("playerPosX", playerPos.x);
-        json.writeValue("playerPosY", playerPos.y);
-        json.writeValue("crystals", crystals);
-        json.writeValue("chromaOrbs", chromaOrbs);
-        json.writeValue("hasAxe", hasAxe);
-        json.writeValue("remainingGameObjects", gameObjectIDs, Array.class, Integer.class);
-        json.writeValue("seconds", seconds);
-        json.writeValue("minutes", minutes);
-        json.writeValue("hours", hours);
+        json.writeValue(SAVE_STATE_POS_X_KEY, playerPos.x);
+        json.writeValue(SAVE_STATE_POS_Y_KEY, playerPos.y);
+        json.writeValue(SAVE_STATE_CRYSTALS_KEY, crystals);
+        json.writeValue(SAVE_STATE_CHROMAORB_KEY, chromaOrbs);
+        json.writeValue(SAVE_STATE_HAS_AXE_KEY, hasAxe);
+        json.writeValue(SAVE_STATE_REMAINING_GAME_OBJ_IDS_KEY, gameObjectIDs, Array.class, Integer.class);
+        json.writeValue(SAVE_STATE_SECONDS_KEY, seconds);
+        json.writeValue(SAVE_STATE_MINUTES_KEY, minutes);
+        json.writeValue(SAVE_STATE_HOURS_KEY, hours);
     }
 
     @Override
