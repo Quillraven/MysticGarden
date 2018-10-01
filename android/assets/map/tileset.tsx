@@ -45,7 +45,20 @@
    <frame tileid="17" duration="150"/>
   </animation>
  </tile>
+ <tile id="18">
+  <properties>
+   <property name="type" value="FIRESTONE"/>
+  </properties>
+ </tile>
+ <tile id="32">
+  <properties>
+   <property name="type" value="CLUB"/>
+  </properties>
+ </tile>
  <tile id="62">
+  <properties>
+   <property name="type" value="PORTAL"/>
+  </properties>
   <animation>
    <frame tileid="62" duration="200"/>
    <frame tileid="63" duration="200"/>
@@ -59,6 +72,11 @@
    <frame tileid="82" duration="200"/>
    <frame tileid="83" duration="200"/>
   </animation>
+ </tile>
+ <tile id="86">
+  <properties>
+   <property name="type" value="WALL"/>
+  </properties>
  </tile>
  <tile id="88">
   <properties>
@@ -85,6 +103,11 @@
  <tile id="92">
   <properties>
    <property name="type" value="TREE"/>
+  </properties>
+ </tile>
+ <tile id="93">
+  <properties>
+   <property name="type" value="WAND"/>
   </properties>
  </tile>
  <tile id="94">

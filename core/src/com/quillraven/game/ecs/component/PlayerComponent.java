@@ -9,6 +9,8 @@ public class PlayerComponent implements Pool.Poolable, Component {
     public float maxSpeed;
     public int crystals;
     public boolean hasAxe;
+    public boolean hasClub;
+    public boolean hasWand;
     public float sleepTime;
     public int chromaOrbs;
 

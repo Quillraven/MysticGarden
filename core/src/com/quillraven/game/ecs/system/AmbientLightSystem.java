@@ -37,4 +37,9 @@ public class AmbientLightSystem extends EntitySystem implements PlayerContactSys
         ambientLightColor.a = 0.05f + chromaOrbsFound * 0.05f;
         rayHandler.setAmbientLight(ambientLightColor);
     }
+
+    @Override
+    public void portalContact(final boolean hasAllCrystals) {
+        // nothing to do
+    }
 }

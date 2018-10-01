@@ -34,7 +34,11 @@ public class GameObject {
         boundaries.setPosition(props.get("x", Float.class) * UNIT_SCALE, props.get("y", Float.class) * UNIT_SCALE);
         boundaries.setSize(props.get("width", Float.class) * UNIT_SCALE, props.get("height", Float.class) * UNIT_SCALE);
 
-        if (tileProps.containsKey("type")) {
+        if (props.containsKey("type")) {
+            // type is specified specifically for that object
+            type = GameObjectComponent.GameObjectType.valueOf(props.get("type", String.class));
+        } else if (tileProps.containsKey("type")) {
+            // type is specified generally in the tileset
             type = GameObjectComponent.GameObjectType.valueOf(tileProps.get("type", String.class));
         } else {
             type = GameObjectComponent.GameObjectType.NOT_DEFINED;

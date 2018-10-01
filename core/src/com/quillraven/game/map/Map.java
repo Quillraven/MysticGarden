@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Polyline;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.quillraven.game.ecs.component.GameObjectComponent;
 
 import static com.quillraven.game.MysticGarden.UNIT_SCALE;
 
@@ -23,14 +24,16 @@ public class Map {
     private final Array<CollisionArea> collisionAreas;
     private final Vector2 startLocation;
     private final Array<Rectangle> camBoundaries;
+    private int numCrystals;
 
-    public Map(final TiledMap tiledMap) {
+    Map(final TiledMap tiledMap) {
         final MapProperties mapProps = tiledMap.getProperties();
         this.tiledMap = tiledMap;
         this.gameObjects = new Array<>();
         this.collisionAreas = new Array<>();
         this.camBoundaries = new Array<>();
         this.startLocation = new Vector2(mapProps.get("playerStartTileX", 0f, Float.class), mapProps.get("playerStartTileY", 0f, Float.class));
+        this.numCrystals = 0;
         parseGameObjects();
         parseCollision();
         parseBoundaries();
@@ -102,7 +105,11 @@ public class Map {
 
         for (final MapObject mapObj : objectsLayer.getObjects()) {
             if (mapObj instanceof TiledMapTileMapObject) {
-                gameObjects.add(new GameObject((TiledMapTileMapObject) mapObj));
+                final GameObject gameObj = new GameObject((TiledMapTileMapObject) mapObj);
+                gameObjects.add(gameObj);
+                if (gameObj.getType() == GameObjectComponent.GameObjectType.CRYSTAL) {
+                    ++numCrystals;
+                }
             } else {
                 Gdx.app.log(TAG, "Unsupported mapObject for objects layer: " + mapObj);
             }
@@ -113,11 +120,11 @@ public class Map {
         return tiledMap;
     }
 
-    public Array<GameObject> getGameObjects() {
+    Array<GameObject> getGameObjects() {
         return gameObjects;
     }
 
-    public Array<CollisionArea> getCollisionAreas() {
+    Array<CollisionArea> getCollisionAreas() {
         return collisionAreas;
     }
 
@@ -127,5 +134,9 @@ public class Map {
 
     public Array<Rectangle> getCamBoundaries() {
         return camBoundaries;
+    }
+
+    public int getNumCrystals() {
+        return numCrystals;
     }
 }

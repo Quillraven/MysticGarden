@@ -5,6 +5,8 @@ import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -37,12 +39,15 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
     private final BodyDef bodyDef;
     private final FixtureDef fixtureDef;
 
+    private final ImmutableArray<Entity> gameObjEntities;
+
     public ECSEngine(final World world, final RayHandler rayHandler, final OrthographicCamera gameCamera) {
         super();
         this.world = world;
         this.rayHandler = rayHandler;
         bodyDef = new BodyDef();
         fixtureDef = new FixtureDef();
+        gameObjEntities = getEntitiesFor(Family.all(GameObjectComponent.class).get());
 
         final ComponentMapper<PlayerComponent> playerCmpMapper = ComponentMapper.getFor(PlayerComponent.class);
         final ComponentMapper<GameObjectComponent> gameObjCmpMapper = ComponentMapper.getFor(GameObjectComponent.class);
@@ -52,7 +57,7 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         addSystem(new PlayerMovementSystem(playerCmpMapper, b2dCmpMapper));
         addSystem(new PlayerCameraSystem(gameCamera, b2dCmpMapper));
         // player contact system does not need processing because it is triggered by WorldContactManager
-        addSystem(new PlayerContactSystem(playerCmpMapper, gameObjCmpMapper));
+        addSystem(new PlayerContactSystem(gameObjEntities, playerCmpMapper, gameObjCmpMapper));
         getSystem(PlayerContactSystem.class).setProcessing(false);
         addSystem(new LightSystem(b2dCmpMapper));
         // ambient light system does not need processing because it is triggered by PlayerContactSystem
@@ -64,6 +69,10 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
 
         // render systems
         addRenderSystem(new GameRenderSystem(this, world, rayHandler, gameCamera, b2dCmpMapper, aniCmpMapper, peCmpMapper));
+    }
+
+    public ImmutableArray<Entity> getGameObjectEntities() {
+        return gameObjEntities;
     }
 
     public void addPlayer(final Vector2 spawnLocation) {

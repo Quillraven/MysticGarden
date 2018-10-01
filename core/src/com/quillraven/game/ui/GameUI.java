@@ -98,10 +98,28 @@ public class GameUI extends Table {
         }
     }
 
+
+    public void setClub(final boolean hasClub) {
+        if (slots.get(1).getChildren().size > 1) {
+            slots.get(1).getChildren().get(1).setVisible(hasClub);
+        } else if (hasClub) {
+            slots.get(1).add(new Image(skin.getDrawable("club")));
+        }
+    }
+
+    public void setWand(final boolean hasWand) {
+        if (slots.get(2).getChildren().size > 1) {
+            slots.get(2).getChildren().get(1).setVisible(hasWand);
+        } else if (hasWand) {
+            slots.get(2).add(new Image(skin.getDrawable("wand")));
+        }
+    }
+
     public void showInfoMessage(final String message, final float displayTime) {
         infoBox.setText(message);
         infoBox.setVisible(true);
         infoBox.setColor(1, 1, 1, 0);
+        infoBox.clearActions();
         infoBox.addAction(sequence(alpha(1, 1), delay(displayTime), alpha(0, 1)));
     }
 

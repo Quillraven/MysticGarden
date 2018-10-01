@@ -9,7 +9,7 @@ import com.quillraven.game.core.gamestate.EGameState;
 
 
 /*TODO
- *) finalize map and remaining game logic
+ *) Android: onDisplay controls
  *) add a "story info table" to GameUI that is shown until map is loaded + 3 seconds
  *) add victory gamestate to show beloved couple and score ;)
  *) add background for mainmenu

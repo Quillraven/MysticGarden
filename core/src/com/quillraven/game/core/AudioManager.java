@@ -58,6 +58,8 @@ public enum AudioManager {
         // sounds
         SELECT("audio/select.wav", false, 0.5f),
         CHOP("audio/chop.ogg", false, 1),
+        SMASH("audio/smash.ogg", false, 1),
+        SWING("audio/swing.ogg", false, 1),
         CRYSTAL_PICKUP("audio/crystal_pickup.ogg", false, 1),
         JINGLE("audio/jingle.wav", false, 0.7f);
 

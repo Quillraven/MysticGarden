@@ -33,7 +33,6 @@ import static com.quillraven.game.MysticGarden.*;
 public class GSGame extends GameState<GameUI> implements PlayerContactSystem.PlayerContactListener, GameTimeSystem.GameTimeListener {
     private final ECSEngine ecsEngine;
     private final ImmutableArray<Entity> playerEntities;
-    private final ImmutableArray<Entity> gameObjEntities;
 
     private final RayHandler rayHandler;
     private final World world;
@@ -57,7 +56,6 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         ecsEngine.getSystem(PlayerContactSystem.class).addPlayerContactListener(this);
         ecsEngine.getSystem(GameTimeSystem.class).addGameTimeListener(this);
         playerEntities = ecsEngine.getEntitiesFor(Family.all(PlayerComponent.class).get());
-        gameObjEntities = ecsEngine.getEntitiesFor(Family.all(GameObjectComponent.class).get());
 
         // init map -> this needs to happen after ECSEngine creation because some systems need to register as listeners first
         MapManager.INSTANCE.loadMap(world);
@@ -73,7 +71,7 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
     public void activate() {
         super.activate();
         InputManager.INSTANCE.addKeyInputListener(ecsEngine.getSystem(PlayerMovementSystem.class));
-        saveState.loadState(playerEntities.first(), gameObjEntities, ecsEngine, gameStateHUD);
+        saveState.loadState(playerEntities.first(), ecsEngine, gameStateHUD);
         AudioManager.INSTANCE.playAudio(AudioManager.AudioType.ALMOST_FINISHED);
     }
 
@@ -81,7 +79,7 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
     public void deactivate() {
         super.deactivate();
         InputManager.INSTANCE.removeKeyInputListener(ecsEngine.getSystem(PlayerMovementSystem.class));
-        saveState.updateState(playerEntities.first(), gameObjEntities, ecsEngine);
+        saveState.updateState(playerEntities.first(), ecsEngine);
     }
 
     @Override
@@ -134,9 +132,22 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
 
     @Override
     public void itemContact(final GameObjectComponent.GameObjectType type) {
-        if (type == GameObjectComponent.GameObjectType.AXE) {
-            gameStateHUD.setAxe(true);
-            gameStateHUD.showInfoMessage(hud.getLocalizedString("axeInfo"), 7.0f);
+        switch (type) {
+            case AXE:
+                gameStateHUD.setAxe(true);
+                gameStateHUD.showInfoMessage(hud.getLocalizedString("axeInfo"), 7.0f);
+                break;
+            case CLUB:
+                gameStateHUD.setClub(true);
+                gameStateHUD.showInfoMessage(hud.getLocalizedString("clubInfo"), 7.0f);
+                break;
+            case WAND:
+                gameStateHUD.setWand(true);
+                gameStateHUD.showInfoMessage(hud.getLocalizedString("wandInfo"), 7.0f);
+                break;
+            default:
+                // nothing to do
+                break;
         }
     }
 
@@ -145,6 +156,15 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         gameStateHUD.setChromaOrb(chromaOrbsFound);
         if (chromaOrbsFound == 1) {
             gameStateHUD.showInfoMessage(hud.getLocalizedString("chromaOrbInfo"), 7.0f);
+        }
+    }
+
+    @Override
+    public void portalContact(final boolean hasAllCrystals) {
+        if(hasAllCrystals){
+            //TODO change to victory gamestate
+        } else {
+            gameStateHUD.showInfoMessage(hud.getLocalizedString("portalInfo"), 5.0f);
         }
     }
 

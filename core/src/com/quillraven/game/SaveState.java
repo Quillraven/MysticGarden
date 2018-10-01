@@ -26,6 +26,8 @@ public class SaveState implements Json.Serializable {
     private static final String SAVE_STATE_CRYSTALS_KEY = "crystals";
     private static final String SAVE_STATE_CHROMAORB_KEY = "chromaOrbs";
     private static final String SAVE_STATE_HAS_AXE_KEY = "hasAxe";
+    private static final String SAVE_STATE_HAS_CLUB_KEY = "hasClub";
+    private static final String SAVE_STATE_HAS_WAND_KEY = "hasWand";
     private static final String SAVE_STATE_REMAINING_GAME_OBJ_IDS_KEY = "remainingGameObjects";
     private static final String SAVE_STATE_SECONDS_KEY = "seconds";
     private static final String SAVE_STATE_MINUTES_KEY = "minutes";
@@ -35,6 +37,8 @@ public class SaveState implements Json.Serializable {
     private int crystals;
     private int chromaOrbs;
     private boolean hasAxe;
+    private boolean hasClub;
+    private boolean hasWand;
     private final Array<Integer> gameObjectIDs;
     private int hours;
     private int minutes;
@@ -59,7 +63,7 @@ public class SaveState implements Json.Serializable {
         jsonReader = new JsonReader();
     }
 
-    public void updateState(final Entity player, final ImmutableArray<Entity> gameObjects, final ECSEngine ecsEngine) {
+    public void updateState(final Entity player, final ECSEngine ecsEngine) {
         final Box2DComponent b2dCmp = b2dCmpMapper.get(player);
         final PlayerComponent playerCmp = playerCmpMapper.get(player);
 
@@ -67,6 +71,8 @@ public class SaveState implements Json.Serializable {
         crystals = playerCmp.crystals;
         chromaOrbs = playerCmp.chromaOrbs;
         hasAxe = playerCmp.hasAxe;
+        hasClub = playerCmp.hasClub;
+        hasWand = playerCmp.hasWand;
 
         final GameTimeSystem gameTimeSystem = ecsEngine.getSystem(GameTimeSystem.class);
         seconds = gameTimeSystem.getSeconds();
@@ -74,15 +80,16 @@ public class SaveState implements Json.Serializable {
         hours = gameTimeSystem.getHours();
 
         gameObjectIDs.clear();
-        for (final Entity gameObj : gameObjects) {
+        for (final Entity gameObj : ecsEngine.getGameObjectEntities()) {
             gameObjectIDs.add(gameObjCmpMapper.get(gameObj).id);
         }
 
         PreferenceManager.INSTANCE.setStringValue(SAVE_STATE_PREFERENCE_KEY, json.toJson(this));
     }
 
-    public void loadState(final Entity player, final ImmutableArray<Entity> gameObjects, final ECSEngine ecsEngine, final GameUI gameStateHUD) {
+    public void loadState(final Entity player, final ECSEngine ecsEngine, final GameUI gameStateHUD) {
         final PlayerComponent playerCmp = playerCmpMapper.get(player);
+        final ImmutableArray<Entity> gameObjects = ecsEngine.getGameObjectEntities();
 
         MapManager.INSTANCE.spawnGameObjects(ecsEngine, gameObjects);
         if (!PreferenceManager.INSTANCE.containsKey(SAVE_STATE_PREFERENCE_KEY)) {
@@ -91,6 +98,8 @@ public class SaveState implements Json.Serializable {
             crystals = 0;
             chromaOrbs = 0;
             hasAxe = false;
+            hasClub = false;
+            hasWand = false;
             hours = 0;
             minutes = 0;
             seconds = 0;
@@ -106,6 +115,8 @@ public class SaveState implements Json.Serializable {
             crystals = saveStateJsonVal.getInt(SAVE_STATE_CRYSTALS_KEY);
             chromaOrbs = saveStateJsonVal.getInt(SAVE_STATE_CHROMAORB_KEY);
             hasAxe = saveStateJsonVal.getBoolean(SAVE_STATE_HAS_AXE_KEY);
+            hasClub = saveStateJsonVal.getBoolean(SAVE_STATE_HAS_CLUB_KEY);
+            hasWand = saveStateJsonVal.getBoolean(SAVE_STATE_HAS_WAND_KEY);
             hours = saveStateJsonVal.getInt(SAVE_STATE_HOURS_KEY, 0);
             minutes = saveStateJsonVal.getInt(SAVE_STATE_MINUTES_KEY, 0);
             seconds = saveStateJsonVal.getInt(SAVE_STATE_SECONDS_KEY, 0);
@@ -125,8 +136,10 @@ public class SaveState implements Json.Serializable {
         playerCmp.crystals = crystals;
         playerCmp.chromaOrbs = chromaOrbs;
         playerCmp.hasAxe = hasAxe;
+        playerCmp.hasClub = hasClub;
+        playerCmp.hasWand = hasWand;
         for (final Entity gameObj : gameObjects) {
-            if (removeCmpMapper.get(gameObj) == null && !gameObjectIDs.contains(gameObjCmpMapper.get(gameObj).id, true)) {
+            if (removeCmpMapper.get(gameObj) == null && !gameObjectIDs.contains(gameObjCmpMapper.get(gameObj).id, false)) {
                 gameObj.add(ecsEngine.createComponent(RemoveComponent.class));
             }
         }
@@ -137,6 +150,8 @@ public class SaveState implements Json.Serializable {
 
         // update HUD
         gameStateHUD.setAxe(hasAxe);
+        gameStateHUD.setClub(hasClub);
+        gameStateHUD.setWand(hasWand);
         gameStateHUD.setCrystals(crystals);
         gameStateHUD.setChromaOrb(chromaOrbs);
     }
@@ -148,6 +163,8 @@ public class SaveState implements Json.Serializable {
         json.writeValue(SAVE_STATE_CRYSTALS_KEY, crystals);
         json.writeValue(SAVE_STATE_CHROMAORB_KEY, chromaOrbs);
         json.writeValue(SAVE_STATE_HAS_AXE_KEY, hasAxe);
+        json.writeValue(SAVE_STATE_HAS_CLUB_KEY, hasClub);
+        json.writeValue(SAVE_STATE_HAS_WAND_KEY, hasWand);
         json.writeValue(SAVE_STATE_REMAINING_GAME_OBJ_IDS_KEY, gameObjectIDs, Array.class, Integer.class);
         json.writeValue(SAVE_STATE_SECONDS_KEY, seconds);
         json.writeValue(SAVE_STATE_MINUTES_KEY, minutes);

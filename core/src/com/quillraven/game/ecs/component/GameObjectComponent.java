@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Pool;
 
 public class GameObjectComponent implements Pool.Poolable, Component {
     public enum GameObjectType {
-        NOT_DEFINED, CRYSTAL, TREE, AXE, CHROMA_ORB
+        NOT_DEFINED, CRYSTAL, TREE, AXE, CHROMA_ORB, FIRESTONE, WALL, PORTAL, WAND, CLUB, TUTORIAL_TREE
     }
 
     public GameObjectType type;
