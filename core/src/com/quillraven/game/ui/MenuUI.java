@@ -28,7 +28,7 @@ public class MenuUI extends Table {
         final Stack menuPages = new Stack();
         volumeSlider = new Slider(0, 1, 0.01f, false, skin, "default");
         volumeSlider.setValue(initialVolumeValue);
-        continueItem = new TextButton("[Deactivated]Continue", skin, "big");
+        continueItem = new TextButton("[Deactivated]Continue", skin, "huge");
         mainPage = createMainPage(hud, skin);
         menuPages.add(mainPage);
         currentItemIdx = 0;
@@ -46,19 +46,19 @@ public class MenuUI extends Table {
     private Table createMainPage(final HUD hud, final TTFSkin skin) {
         final Table content = new Table();
 
-        menuItems.add(new TextButton(hud.getLocalizedString("newGame"), skin, "big"));
+        menuItems.add(new TextButton(hud.getLocalizedString("newGame"), skin, "huge"));
         content.add(menuItems.peek()).fill().expand().row();
         content.add(continueItem).fill().expand().row();
 
         final Table soundTable = new Table();
-        menuItems.add(new TextButton(hud.getLocalizedString("volume"), skin, "big"));
+        menuItems.add(new TextButton(hud.getLocalizedString("volume"), skin, "huge"));
         soundTable.add(menuItems.peek()).fillX().expandX().row();
         soundTable.add(volumeSlider).expandX().width(250);
         content.add(soundTable).fill().expand().row();
 
-        menuItems.add(new TextButton(hud.getLocalizedString("creditsMenuItem"), skin, "big"));
+        menuItems.add(new TextButton(hud.getLocalizedString("creditsMenuItem"), skin, "huge"));
         content.add(menuItems.peek()).fill().expand().row();
-        menuItems.add(new TextButton(hud.getLocalizedString("quitGame"), skin, "big"));
+        menuItems.add(new TextButton(hud.getLocalizedString("quitGame"), skin, "huge"));
         content.add(menuItems.peek()).fill().expand().row();
 
         content.padTop(200).padBottom(200);
@@ -72,7 +72,7 @@ public class MenuUI extends Table {
         final TextButton creditsTxt = new TextButton(hud.getLocalizedString("credits"), skin, "normal");
         creditsTxt.getLabel().setWrap(true);
         creditsTxt.getLabel().setAlignment(Align.topLeft);
-        content.add(new TextButton(hud.getLocalizedString("creditsMenuItem") + ":", skin, "big")).fillX().expandX().top().padTop(25).row();
+        content.add(new TextButton(hud.getLocalizedString("creditsMenuItem") + ":", skin, "huge")).fillX().expandX().top().padTop(75).row();
         content.add(creditsTxt).fill().expand().top().pad(50, 25, 0, 25);
 
         content.top();

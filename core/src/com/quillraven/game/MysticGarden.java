@@ -9,16 +9,14 @@ import com.quillraven.game.core.gamestate.EGameState;
 
 
 /*TODO
- *) Android: onDisplay controls
  *) add a "story info table" to GameUI that is shown until map is loaded + 3 seconds
  *) add victory gamestate to show beloved couple and score ;)
- *) add background for mainmenu
+ *) add background for mainmenu/loading state
+ *) check singletons if they cause issues on android
  */
 public class MysticGarden extends ApplicationAdapter {
     private static final String TAG = MysticGarden.class.getSimpleName();
 
-    public static final int V_WIDTH = 450;
-    public static final int V_HEIGHT = 800;
     public static final String TITLE = "MysticGarden";
 
     public static final float UNIT_SCALE = 1 / 32f;

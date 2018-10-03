@@ -2,6 +2,8 @@ package com.quillraven.game.core.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -10,16 +12,20 @@ import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.quillraven.game.core.ResourceManager;
 import com.quillraven.game.core.Utils;
+import com.quillraven.game.core.input.EKey;
+import com.quillraven.game.core.input.InputManager;
+import com.quillraven.game.core.input.KeyInputListener;
 
 import static com.quillraven.game.core.Game.TARGET_FRAME_TIME;
 
-public class HUD implements Disposable {
+public class HUD extends InputListener implements Disposable, KeyInputListener {
     private static final String TAG = HUD.class.getSimpleName();
 
     private final Stage stage;
     private final TTFSkin skin;
     private final I18NBundle i18NBundle;
     private final Stack gameStateHUDs;
+    private final OnScreenUI onScreenUI;
 
     public HUD() {
         stage = new Stage(new ScreenViewport(new OrthographicCamera(0, 0)), Utils.getSpriteBatch());
@@ -29,8 +35,14 @@ public class HUD implements Disposable {
 
         final ResourceManager resourceManager = Utils.getResourceManager();
         resourceManager.load("i18n/strings", I18NBundle.class);
-        skin = resourceManager.loadSkinSynchronously("hud/hud.json", "hud/font.ttf", 16, 24, 48);
+        skin = resourceManager.loadSkinSynchronously("hud/hud.json", "hud/font.ttf", 16, 24, 32, 48);
         this.i18NBundle = resourceManager.get("i18n/strings", I18NBundle.class);
+
+        onScreenUI = new OnScreenUI(this, skin);
+        gameStateHUDs.add(onScreenUI);
+        stage.addListener(this);
+
+        InputManager.INSTANCE.addKeyInputListener(this);
     }
 
     public Stage getStage() {
@@ -47,6 +59,7 @@ public class HUD implements Disposable {
 
     public void addGameStateHUD(final Table table) {
         gameStateHUDs.add(table);
+        onScreenUI.toFront();
     }
 
     public void removeGameStateHUD(final Table table) {
@@ -69,9 +82,36 @@ public class HUD implements Disposable {
     }
 
     @Override
+    public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer, final int button) {
+        final EKey relatedKey = onScreenUI.getRelatedKey(event.getListenerActor());
+        if (relatedKey != null) {
+            InputManager.INSTANCE.notifyKeyDown(relatedKey);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void touchUp(final InputEvent event, final float x, final float y, final int pointer, final int button) {
+        final EKey relatedKey = onScreenUI.getRelatedKey(event.getListenerActor());
+        if (relatedKey != null) {
+            InputManager.INSTANCE.notifyKeyUp(relatedKey);
+        }
+    }
+
+    @Override
     public void dispose() {
         Gdx.app.debug(TAG, "Disposing HUD");
         stage.dispose();
     }
 
+    @Override
+    public void keyDown(final InputManager manager, final EKey key) {
+        onScreenUI.setChecked(key, true);
+    }
+
+    @Override
+    public void keyUp(final InputManager manager, final EKey key) {
+        onScreenUI.setChecked(key, false);
+    }
 }

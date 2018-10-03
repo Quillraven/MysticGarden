@@ -29,6 +29,20 @@ public enum InputManager implements InputProcessor {
         listeners.removeValue(listener, true);
     }
 
+    public void notifyKeyDown(final EKey key) {
+        keyState[key.ordinal()] = true;
+        for (final KeyInputListener listener : listeners) {
+            listener.keyDown(this, key);
+        }
+    }
+
+    public void notifyKeyUp(final EKey key) {
+        keyState[key.ordinal()] = false;
+        for (final KeyInputListener listener : listeners) {
+            listener.keyUp(this, key);
+        }
+    }
+
     public boolean isKeyDown(final EKey key) {
         return keyState[key.ordinal()];
     }
@@ -41,10 +55,7 @@ public enum InputManager implements InputProcessor {
             return false;
         }
 
-        keyState[key.ordinal()] = true;
-        for (final KeyInputListener listener : listeners) {
-            listener.keyDown(this, key);
-        }
+        notifyKeyDown(key);
         return true;
     }
 
@@ -56,10 +67,7 @@ public enum InputManager implements InputProcessor {
             return false;
         }
 
-        keyState[key.ordinal()] = false;
-        for (final KeyInputListener listener : listeners) {
-            listener.keyUp(this, key);
-        }
+        notifyKeyUp(key);
         return true;
     }
 

@@ -17,13 +17,13 @@ public class LoadingUI extends Table {
 
         progressBar = new ProgressBar(0, 1, 0.01f, false, skin, "default");
 
-        pressAnyButtonInfo = new TextButton(hud.getLocalizedString("pressAnyKey"), skin, "big");
+        pressAnyButtonInfo = new TextButton(hud.getLocalizedString("pressAnyKey"), skin, "huge");
         pressAnyButtonInfo.setVisible(false);
         pressAnyButtonInfo.getLabel().setWrap(true);
 
-        add(pressAnyButtonInfo).expand().fill().center().row();
+        add(pressAnyButtonInfo).expandX().fillX().bottom().padBottom(100).row();
         add(new TextButton(hud.getLocalizedString("loading") + "...", skin, "normal")).expandX().fillX().padBottom(15).bottom().row();
-        add(progressBar).expandX().fillX().pad(0, 50, 25, 50).bottom();
+        add(progressBar).expandX().fillX().pad(0, 50, 225, 50).bottom();
         bottom();
     }
 

@@ -12,11 +12,15 @@
       "font": "font_24",
       "fontColor": "white"
     },
+    "big": {
+      "font": "font_32",
+      "fontColor": "white"
+    },
     "small": {
       "font": "font_16",
       "fontColor": "white"
     },
-    "big": {
+    "huge": {
       "font": "font_48",
       "fontColor": "white"
     },

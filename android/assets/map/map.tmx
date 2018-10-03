@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-up" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextobjectid="256">
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-up" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextobjectid="261">
  <properties>
   <property name="playerStartTileX" type="float" value="32.5"/>
   <property name="playerStartTileY" type="float" value="31"/>
@@ -244,6 +244,21 @@
    </properties>
   </object>
   <object id="255" x="707" y="1634" width="28" height="27"/>
+  <object id="256" x="1024.13" y="1727">
+   <polyline points="0,0 31.75,0.25"/>
+  </object>
+  <object id="257" x="608" y="1470">
+   <polyline points="0,0 31.5,0.5"/>
+  </object>
+  <object id="258" x="607.75" y="1439.5">
+   <polyline points="0,0 31.75,0.75"/>
+  </object>
+  <object id="259" x="831.75" y="736">
+   <polyline points="0,0 31.75,0.25 32.5,31.5 -0.25,31.25 0,0.25"/>
+  </object>
+  <object id="260" x="639.75" y="735.75">
+   <polyline points="0,0 31.25,0.25 32.25,32.75 0,32 0,0.5"/>
+  </object>
  </objectgroup>
  <objectgroup name="objects">
   <object id="59" gid="11" x="1022.86" y="991.457" width="32" height="32"/>
