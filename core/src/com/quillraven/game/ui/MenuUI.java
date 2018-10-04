@@ -45,6 +45,8 @@ public class MenuUI extends Table {
 
     private Table createMainPage(final HUD hud, final TTFSkin skin) {
         final Table content = new Table();
+        content.setBackground(skin.getDrawable("menu_background"));
+        content.add(new Image(skin.getDrawable("banner"))).expand().top().padTop(65).row();
 
         menuItems.add(new TextButton(hud.getLocalizedString("newGame"), skin, "huge"));
         content.add(menuItems.peek()).fill().expand().row();
@@ -59,15 +61,15 @@ public class MenuUI extends Table {
         menuItems.add(new TextButton(hud.getLocalizedString("creditsMenuItem"), skin, "huge"));
         content.add(menuItems.peek()).fill().expand().row();
         menuItems.add(new TextButton(hud.getLocalizedString("quitGame"), skin, "huge"));
-        content.add(menuItems.peek()).fill().expand().row();
+        content.add(menuItems.peek()).fill().expand().padBottom(175).row();
 
-        content.padTop(200).padBottom(200);
         return content;
     }
 
 
     private Table createCreditsPage(final HUD hud, final TTFSkin skin) {
         final Table content = new Table();
+        content.setBackground(skin.getDrawable("menu_background"));
 
         final TextButton creditsTxt = new TextButton(hud.getLocalizedString("credits"), skin, "normal");
         creditsTxt.getLabel().setWrap(true);

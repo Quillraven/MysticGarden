@@ -1,5 +1,6 @@
 package com.quillraven.game.ui;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -21,10 +22,10 @@ public class LoadingUI extends Table {
         pressAnyButtonInfo.setVisible(false);
         pressAnyButtonInfo.getLabel().setWrap(true);
 
-        add(pressAnyButtonInfo).expandX().fillX().bottom().padBottom(100).row();
-        add(new TextButton(hud.getLocalizedString("loading") + "...", skin, "normal")).expandX().fillX().padBottom(15).bottom().row();
-        add(progressBar).expandX().fillX().pad(0, 50, 225, 50).bottom();
-        bottom();
+        add(new Image(skin.getDrawable("banner"))).expand().top().padTop(65).row();
+        add(pressAnyButtonInfo).expand().fillX().center().row();
+        add(new TextButton(hud.getLocalizedString("loading") + "...", skin, "normal")).expand().fillX().bottom().row();
+        add(progressBar).expandX().fillX().pad(15, 50, 175, 50).bottom();
     }
 
     public void setProgress(final float progress) {

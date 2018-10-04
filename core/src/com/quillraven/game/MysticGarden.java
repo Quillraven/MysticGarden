@@ -11,7 +11,6 @@ import com.quillraven.game.core.gamestate.EGameState;
 /*TODO
  *) add a "story info table" to GameUI that is shown until map is loaded + 3 seconds
  *) add victory gamestate to show beloved couple and score ;)
- *) add background for mainmenu/loading state
  *) check singletons if they cause issues on android
  */
 public class MysticGarden extends ApplicationAdapter {
