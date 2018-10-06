@@ -3,7 +3,6 @@ package com.quillraven.game.gamestate;
 import com.badlogic.gdx.Gdx;
 import com.quillraven.game.SaveState;
 import com.quillraven.game.core.AudioManager;
-import com.quillraven.game.core.PreferenceManager;
 import com.quillraven.game.core.Utils;
 import com.quillraven.game.core.gamestate.EGameState;
 import com.quillraven.game.core.gamestate.GameState;
@@ -23,20 +22,20 @@ public class GSMenu extends GameState<MenuUI> {
 
     @Override
     protected MenuUI createHUD(final HUD hud, final TTFSkin skin) {
-        return new MenuUI(hud, skin, AudioManager.INSTANCE.getVolume());
+        return new MenuUI(hud, skin, Utils.getAudioManager().getVolume());
     }
 
     @Override
     public void activate() {
         super.activate();
-        gameStateHUD.activateContinueItem(PreferenceManager.INSTANCE.containsKey(SaveState.SAVE_STATE_PREFERENCE_KEY));
-        AudioManager.INSTANCE.playAudio(AudioManager.AudioType.INTRO);
+        gameStateHUD.activateContinueItem(Utils.getPreferenceManager().containsKey(SaveState.SAVE_STATE_PREFERENCE_KEY));
+        Utils.getAudioManager().playAudio(AudioManager.AudioType.INTRO);
     }
 
     @Override
     public void deactivate() {
         super.deactivate();
-        PreferenceManager.INSTANCE.setFloatValue("volume", gameStateHUD.getVolume());
+        Utils.getPreferenceManager().setFloatValue("volume", gameStateHUD.getVolume());
     }
 
     @Override
@@ -48,7 +47,7 @@ public class GSMenu extends GameState<MenuUI> {
             } else {
                 gameStateHUD.moveSelectionLeft();
             }
-            AudioManager.INSTANCE.setVolume(gameStateHUD.getVolume());
+            Utils.getAudioManager().setVolume(gameStateHUD.getVolume());
         }
     }
 
@@ -61,9 +60,9 @@ public class GSMenu extends GameState<MenuUI> {
     public void keyDown(final InputManager manager, final EKey key) {
         switch (key) {
             case SELECT:
-                AudioManager.INSTANCE.playAudio(AudioManager.AudioType.SELECT);
+                Utils.getAudioManager().playAudio(AudioManager.AudioType.SELECT);
                 if (gameStateHUD.isNewGameSelected()) {
-                    PreferenceManager.INSTANCE.removeKey(SaveState.SAVE_STATE_PREFERENCE_KEY);
+                    Utils.getPreferenceManager().removeKey(SaveState.SAVE_STATE_PREFERENCE_KEY);
                     Utils.setGameState(EGameState.GAME);
                     return;
                 } else if (gameStateHUD.isContinueSelected()) {
@@ -76,11 +75,11 @@ public class GSMenu extends GameState<MenuUI> {
                 gameStateHUD.selectCurrentItem();
                 break;
             case UP:
-                AudioManager.INSTANCE.playAudio(AudioManager.AudioType.SELECT);
+                Utils.getAudioManager().playAudio(AudioManager.AudioType.SELECT);
                 gameStateHUD.moveSelectionUp();
                 break;
             case DOWN:
-                AudioManager.INSTANCE.playAudio(AudioManager.AudioType.SELECT);
+                Utils.getAudioManager().playAudio(AudioManager.AudioType.SELECT);
                 gameStateHUD.moveSelectionDown();
                 break;
             case LEFT:

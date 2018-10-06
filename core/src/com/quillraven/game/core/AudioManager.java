@@ -4,19 +4,17 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 
-public enum AudioManager {
-    INSTANCE;
-
+public class AudioManager {
     private AudioType currentMusicType;
     private Music currentMusic;
     private final ResourceManager resourceManager;
     private float volume;
 
-    AudioManager() {
+    public AudioManager() {
         this.resourceManager = Utils.getResourceManager();
         this.currentMusic = null;
-        if (PreferenceManager.INSTANCE.containsKey("volume")) {
-            volume = PreferenceManager.INSTANCE.getFloatValue("volume");
+        if (Utils.getPreferenceManager().containsKey("volume")) {
+            volume = Utils.getPreferenceManager().getFloatValue("volume");
         } else {
             volume = 1f;
         }

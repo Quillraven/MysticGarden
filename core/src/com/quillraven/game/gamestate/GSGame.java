@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 import com.quillraven.game.SaveState;
-import com.quillraven.game.WorldContactManager;
 import com.quillraven.game.core.AudioManager;
 import com.quillraven.game.core.Utils;
 import com.quillraven.game.core.gamestate.EGameState;
@@ -25,7 +24,6 @@ import com.quillraven.game.ecs.component.PlayerComponent;
 import com.quillraven.game.ecs.system.GameTimeSystem;
 import com.quillraven.game.ecs.system.PlayerContactSystem;
 import com.quillraven.game.ecs.system.PlayerMovementSystem;
-import com.quillraven.game.map.MapManager;
 import com.quillraven.game.ui.GameUI;
 
 import static com.quillraven.game.MysticGarden.*;
@@ -46,7 +44,7 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         // box2d
         Box2D.init();
         world = new World(new Vector2(0, 0), true);
-        world.setContactListener(WorldContactManager.INSTANCE);
+        world.setContactListener(Utils.getWorldContactManager());
         rayHandler = new RayHandler(world);
         // player light should not collide with water because water should not throw shadows
         Light.setGlobalContactFilter(BIT_PLAYER, (short) 1, (short) (BIT_WORLD | BIT_GAME_OBJECT));
@@ -58,8 +56,8 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         playerEntities = ecsEngine.getEntitiesFor(Family.all(PlayerComponent.class).get());
 
         // init map -> this needs to happen after ECSEngine creation because some systems need to register as listeners first
-        MapManager.INSTANCE.loadMap(world);
-        ecsEngine.addPlayer(MapManager.INSTANCE.getCurrentMap().getStartLocation());
+        Utils.getMapManager().loadMap(world);
+        ecsEngine.addPlayer(Utils.getMapManager().getCurrentMap().getStartLocation());
     }
 
     @Override
@@ -70,15 +68,15 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
     @Override
     public void activate() {
         super.activate();
-        InputManager.INSTANCE.addKeyInputListener(ecsEngine.getSystem(PlayerMovementSystem.class));
+        Utils.getInputManager().addKeyInputListener(ecsEngine.getSystem(PlayerMovementSystem.class));
         saveState.loadState(playerEntities.first(), ecsEngine, gameStateHUD);
-        AudioManager.INSTANCE.playAudio(AudioManager.AudioType.ALMOST_FINISHED);
+        Utils.getAudioManager().playAudio(AudioManager.AudioType.ALMOST_FINISHED);
     }
 
     @Override
     public void deactivate() {
         super.deactivate();
-        InputManager.INSTANCE.removeKeyInputListener(ecsEngine.getSystem(PlayerMovementSystem.class));
+        Utils.getInputManager().removeKeyInputListener(ecsEngine.getSystem(PlayerMovementSystem.class));
         saveState.updateState(playerEntities.first(), ecsEngine);
     }
 
@@ -161,7 +159,7 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
 
     @Override
     public void portalContact(final boolean hasAllCrystals) {
-        if(hasAllCrystals){
+        if (hasAllCrystals) {
             //TODO change to victory gamestate
         } else {
             gameStateHUD.showInfoMessage(hud.getLocalizedString("portalInfo"), 5.0f);

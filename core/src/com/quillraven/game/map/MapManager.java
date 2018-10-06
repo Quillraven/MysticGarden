@@ -19,9 +19,7 @@ import com.quillraven.game.ecs.ECSEngine;
 
 import static com.quillraven.game.MysticGarden.*;
 
-public enum MapManager {
-    INSTANCE;
-
+public class MapManager {
     private static final String TAG = MapManager.class.getSimpleName();
 
     private Map currentMap;
@@ -31,7 +29,7 @@ public enum MapManager {
     private final BodyDef bodyDef;
     private final FixtureDef fixtureDef;
 
-    MapManager() {
+    public MapManager() {
         this.currentMap = null;
         this.resourceManager = Utils.getResourceManager();
         this.gameObjAnimationCache = new IntMap<>();

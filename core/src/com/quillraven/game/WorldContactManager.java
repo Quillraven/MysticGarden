@@ -10,16 +10,14 @@ import com.badlogic.gdx.utils.Array;
 import com.quillraven.game.ecs.component.GameObjectComponent;
 import com.quillraven.game.ecs.component.PlayerComponent;
 
-public enum WorldContactManager implements ContactListener {
-    INSTANCE;
-
+public class WorldContactManager implements ContactListener {
     private final ComponentMapper<PlayerComponent> playerCmpMapper;
     private final ComponentMapper<GameObjectComponent> gameObjectCmpMapper;
     private final Array<WorldContactListener> listeners;
     private Entity player;
     private Entity gameObj;
 
-    WorldContactManager() {
+    public WorldContactManager() {
         playerCmpMapper = ComponentMapper.getFor(PlayerComponent.class);
         gameObjectCmpMapper = ComponentMapper.getFor(GameObjectComponent.class);
         listeners = new Array<>();

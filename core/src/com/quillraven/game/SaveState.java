@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import com.quillraven.game.core.PreferenceManager;
+import com.quillraven.game.core.Utils;
 import com.quillraven.game.core.ecs.component.Box2DComponent;
 import com.quillraven.game.core.ecs.component.RemoveComponent;
 import com.quillraven.game.ecs.ECSEngine;
@@ -16,7 +16,6 @@ import com.quillraven.game.ecs.component.GameObjectComponent;
 import com.quillraven.game.ecs.component.PlayerComponent;
 import com.quillraven.game.ecs.system.AmbientLightSystem;
 import com.quillraven.game.ecs.system.GameTimeSystem;
-import com.quillraven.game.map.MapManager;
 import com.quillraven.game.ui.GameUI;
 
 public class SaveState implements Json.Serializable {
@@ -84,17 +83,17 @@ public class SaveState implements Json.Serializable {
             gameObjectIDs.add(gameObjCmpMapper.get(gameObj).id);
         }
 
-        PreferenceManager.INSTANCE.setStringValue(SAVE_STATE_PREFERENCE_KEY, json.toJson(this));
+        Utils.getPreferenceManager().setStringValue(SAVE_STATE_PREFERENCE_KEY, json.toJson(this));
     }
 
     public void loadState(final Entity player, final ECSEngine ecsEngine, final GameUI gameStateHUD) {
         final PlayerComponent playerCmp = playerCmpMapper.get(player);
         final ImmutableArray<Entity> gameObjects = ecsEngine.getGameObjectEntities();
 
-        MapManager.INSTANCE.spawnGameObjects(ecsEngine, gameObjects);
-        if (!PreferenceManager.INSTANCE.containsKey(SAVE_STATE_PREFERENCE_KEY)) {
+        Utils.getMapManager().spawnGameObjects(ecsEngine, gameObjects);
+        if (!Utils.getPreferenceManager().containsKey(SAVE_STATE_PREFERENCE_KEY)) {
             // no save state yet or old state was cleared -> load default settings
-            playerPos.set(MapManager.INSTANCE.getCurrentMap().getStartLocation());
+            playerPos.set(Utils.getMapManager().getCurrentMap().getStartLocation());
             crystals = 0;
             chromaOrbs = 0;
             hasAxe = false;
@@ -109,7 +108,7 @@ public class SaveState implements Json.Serializable {
             }
         } else {
             // load values from preference
-            final JsonValue saveStateJsonVal = jsonReader.parse(PreferenceManager.INSTANCE.getStringValue(SAVE_STATE_PREFERENCE_KEY));
+            final JsonValue saveStateJsonVal = jsonReader.parse(Utils.getPreferenceManager().getStringValue(SAVE_STATE_PREFERENCE_KEY));
             playerPos.x = saveStateJsonVal.getFloat(SAVE_STATE_POS_X_KEY);
             playerPos.y = saveStateJsonVal.getFloat(SAVE_STATE_POS_Y_KEY);
             crystals = saveStateJsonVal.getInt(SAVE_STATE_CRYSTALS_KEY);

@@ -3,15 +3,17 @@ package com.quillraven.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.quillraven.game.core.AudioManager;
 import com.quillraven.game.core.Game;
+import com.quillraven.game.core.PreferenceManager;
 import com.quillraven.game.core.ResourceManager;
 import com.quillraven.game.core.gamestate.EGameState;
+import com.quillraven.game.map.MapManager;
 
 
 /*TODO
  *) add a "story info table" to GameUI that is shown until map is loaded + 3 seconds
  *) add victory gamestate to show beloved couple and score ;)
- *) check singletons if they cause issues on android
  */
 public class MysticGarden extends ApplicationAdapter {
     private static final String TAG = MysticGarden.class.getSimpleName();
@@ -26,13 +28,38 @@ public class MysticGarden extends ApplicationAdapter {
 
     private ResourceManager resourceManager;
     private SpriteBatch spriteBatch;
+    private WorldContactManager contactManager;
+    private AudioManager audioManager;
+    private PreferenceManager preferenceManager;
+    private MapManager mapManager;
     private Game game;
 
     @Override
     public void create() {
         resourceManager = new ResourceManager();
+        preferenceManager = new PreferenceManager();
+        contactManager = new WorldContactManager();
+        audioManager = new AudioManager();
+        mapManager = new MapManager();
+
         spriteBatch = new SpriteBatch();
         this.game = new Game(EGameState.LOADING);
+    }
+
+    public WorldContactManager getWorldContactManager() {
+        return contactManager;
+    }
+
+    public AudioManager getAudioManager() {
+        return audioManager;
+    }
+
+    public PreferenceManager getPreferenceManager() {
+        return preferenceManager;
+    }
+
+    public MapManager getMapManager() {
+        return mapManager;
     }
 
     public ResourceManager getResourceManager() {

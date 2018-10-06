@@ -7,6 +7,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.Array;
+import com.quillraven.game.core.Utils;
 import com.quillraven.game.core.ecs.component.Box2DComponent;
 import com.quillraven.game.ecs.component.PlayerComponent;
 import com.quillraven.game.map.Map;
@@ -30,7 +31,7 @@ public class PlayerCameraSystem extends IteratingSystem implements MapManager.Ma
         this.camLerpTime = 1.75f;
         this.camTime = this.camLerpTime;
         this.lerpTarget = new Vector3();
-        MapManager.INSTANCE.addMapListener(this);
+        Utils.getMapManager().addMapListener(this);
     }
 
     private void findCurrentBoundary(final Vector2 playerPosition) {

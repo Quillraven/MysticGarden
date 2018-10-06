@@ -7,24 +7,26 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.utils.Array;
 import com.quillraven.game.WorldContactManager;
 import com.quillraven.game.core.AudioManager;
+import com.quillraven.game.core.Utils;
 import com.quillraven.game.core.ecs.component.RemoveComponent;
 import com.quillraven.game.ecs.ECSEngine;
 import com.quillraven.game.ecs.component.GameObjectComponent;
 import com.quillraven.game.ecs.component.PlayerComponent;
-import com.quillraven.game.map.MapManager;
 
 public class PlayerContactSystem extends EntitySystem implements WorldContactManager.WorldContactListener {
     private final ImmutableArray<Entity> gameObjEntities;
     private final ComponentMapper<PlayerComponent> playerCmpMapper;
     private final ComponentMapper<GameObjectComponent> gameObjCmpMapper;
     private final Array<PlayerContactListener> listeners;
+    private final AudioManager audioManager;
 
     public PlayerContactSystem(final ImmutableArray<Entity> gameObjEntities, final ComponentMapper<PlayerComponent> playerCmpMapper, final ComponentMapper<GameObjectComponent> gameObjCmpMapper) {
         this.gameObjEntities = gameObjEntities;
         this.playerCmpMapper = playerCmpMapper;
         this.gameObjCmpMapper = gameObjCmpMapper;
         listeners = new Array<>();
-        WorldContactManager.INSTANCE.addWorldContactListener(this);
+        Utils.getWorldContactManager().addWorldContactListener(this);
+        this.audioManager = Utils.getAudioManager();
     }
 
     public void addPlayerContactListener(final PlayerContactListener listener) {
@@ -49,25 +51,25 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
                 break;
             case TREE:
                 if (playerCmp.hasAxe) {
-                    AudioManager.INSTANCE.playAudio(AudioManager.AudioType.CHOP);
+                    audioManager.playAudio(AudioManager.AudioType.CHOP);
                     gameObject.add(((ECSEngine) this.getEngine()).createComponent(RemoveComponent.class));
                 }
                 break;
             case WALL:
                 if (playerCmp.hasClub) {
-                    AudioManager.INSTANCE.playAudio(AudioManager.AudioType.SMASH);
+                    audioManager.playAudio(AudioManager.AudioType.SMASH);
                     gameObject.add(((ECSEngine) this.getEngine()).createComponent(RemoveComponent.class));
                 }
                 break;
             case FIRESTONE:
                 if (playerCmp.hasWand) {
-                    AudioManager.INSTANCE.playAudio(AudioManager.AudioType.SWING);
+                    audioManager.playAudio(AudioManager.AudioType.SWING);
                     gameObject.add(((ECSEngine) this.getEngine()).createComponent(RemoveComponent.class));
                 }
                 break;
             case PORTAL:
                 for (final PlayerContactListener listener : listeners) {
-                    listener.portalContact(playerCmp.crystals == MapManager.INSTANCE.getCurrentMap().getNumCrystals());
+                    listener.portalContact(playerCmp.crystals == Utils.getMapManager().getCurrentMap().getNumCrystals());
                 }
                 break;
             default:
@@ -77,7 +79,7 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
     }
 
     private void itemContact(final PlayerComponent playerCmp, final Entity gameObject, final GameObjectComponent gameObjCmp) {
-        AudioManager.INSTANCE.playAudio(AudioManager.AudioType.JINGLE);
+        audioManager.playAudio(AudioManager.AudioType.JINGLE);
         playerCmp.sleepTime = 3f;
         gameObject.add(((ECSEngine) this.getEngine()).createComponent(RemoveComponent.class));
         if (gameObjCmp.type == GameObjectComponent.GameObjectType.AXE) {
@@ -93,7 +95,7 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
     }
 
     private void chromaOrbContact(final PlayerComponent playerCmp, final Entity gameObject) {
-        AudioManager.INSTANCE.playAudio(AudioManager.AudioType.JINGLE);
+        audioManager.playAudio(AudioManager.AudioType.JINGLE);
         playerCmp.sleepTime = 1.5f;
         gameObject.add(((ECSEngine) this.getEngine()).createComponent(RemoveComponent.class));
         ++playerCmp.chromaOrbs;
@@ -103,7 +105,7 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
     }
 
     private void crystalContact(final PlayerComponent playerCmp, final Entity gameObject) {
-        AudioManager.INSTANCE.playAudio(AudioManager.AudioType.CRYSTAL_PICKUP);
+        audioManager.playAudio(AudioManager.AudioType.CRYSTAL_PICKUP);
         gameObject.add(((ECSEngine) this.getEngine()).createComponent(RemoveComponent.class));
         ++playerCmp.crystals;
         for (final PlayerContactListener listener : listeners) {

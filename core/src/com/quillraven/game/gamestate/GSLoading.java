@@ -64,7 +64,7 @@ public class GSLoading extends GameState<LoadingUI> {
         resourceManager.update();
         gameStateHUD.setProgress(resourceManager.getProgress());
         if (!isMusicLoaded && resourceManager.isLoaded(AudioManager.AudioType.INTRO.getFilePath())) {
-            AudioManager.INSTANCE.playAudio(AudioManager.AudioType.INTRO);
+            Utils.getAudioManager().playAudio(AudioManager.AudioType.INTRO);
             isMusicLoaded = true;
         }
         super.step(fixedTimeStep);
@@ -78,7 +78,7 @@ public class GSLoading extends GameState<LoadingUI> {
     @Override
     public void keyDown(final InputManager manager, final EKey key) {
         if (resourceManager.getProgress() == 1) {
-            AudioManager.INSTANCE.playAudio(AudioManager.AudioType.SELECT);
+            Utils.getAudioManager().playAudio(AudioManager.AudioType.SELECT);
             Utils.setGameState(EGameState.MENU, true);
         }
     }

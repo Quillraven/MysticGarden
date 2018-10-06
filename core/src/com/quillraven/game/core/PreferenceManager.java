@@ -3,14 +3,12 @@ package com.quillraven.game.core;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
-public enum PreferenceManager {
-    INSTANCE;
-
+public class PreferenceManager {
     private static final String TAG = PreferenceManager.class.getSimpleName();
 
     private final Preferences preferences;
 
-    PreferenceManager() {
+    public PreferenceManager() {
         // creates new preference under %UserProfile%/.prefs
         preferences = Gdx.app.getPreferences("mysticGarden");
     }

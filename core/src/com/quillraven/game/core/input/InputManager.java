@@ -3,14 +3,12 @@ package com.quillraven.game.core.input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.Array;
 
-public enum InputManager implements InputProcessor {
-    INSTANCE;
-
+public class InputManager implements InputProcessor {
     private final EKey[] keyMapping;
     private final boolean[] keyState;
     private final Array<KeyInputListener> listeners;
 
-    InputManager() {
+    public InputManager() {
         this.keyMapping = new EKey[256];
         for (final EKey key : EKey.values()) {
             for (final int code : key.keyCode) {

@@ -2,6 +2,7 @@ package com.quillraven.game.core.gamestate;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
+import com.quillraven.game.core.Utils;
 import com.quillraven.game.core.input.InputManager;
 import com.quillraven.game.core.input.KeyInputListener;
 import com.quillraven.game.core.ui.HUD;
@@ -27,12 +28,12 @@ public abstract class GameState<T extends Table> implements Disposable, KeyInput
     }
 
     public void activate() {
-        InputManager.INSTANCE.addKeyInputListener(this);
+        Utils.getInputManager().addKeyInputListener(this);
         gameStateHUD.setVisible(true);
     }
 
     public void deactivate() {
-        InputManager.INSTANCE.removeKeyInputListener(this);
+        Utils.getInputManager().removeKeyInputListener(this);
         gameStateHUD.setVisible(false);
     }
 

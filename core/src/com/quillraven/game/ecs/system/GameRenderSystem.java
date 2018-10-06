@@ -76,7 +76,7 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
         viewport = new FitViewport(9, 16, gameCamera);
         renderOffsetVector = new Vector3();
 
-        MapManager.INSTANCE.addMapListener(this);
+        Utils.getMapManager().addMapListener(this);
     }
 
     @Override

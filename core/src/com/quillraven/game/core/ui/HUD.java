@@ -41,8 +41,6 @@ public class HUD extends InputListener implements Disposable, KeyInputListener {
         onScreenUI = new OnScreenUI(this, skin);
         gameStateHUDs.add(onScreenUI);
         stage.addListener(this);
-
-        InputManager.INSTANCE.addKeyInputListener(this);
     }
 
     public Stage getStage() {
@@ -85,7 +83,7 @@ public class HUD extends InputListener implements Disposable, KeyInputListener {
     public boolean touchDown(final InputEvent event, final float x, final float y, final int pointer, final int button) {
         final EKey relatedKey = onScreenUI.getRelatedKey(event.getListenerActor());
         if (relatedKey != null) {
-            InputManager.INSTANCE.notifyKeyDown(relatedKey);
+            Utils.getInputManager().notifyKeyDown(relatedKey);
             return true;
         }
         return false;
@@ -95,7 +93,7 @@ public class HUD extends InputListener implements Disposable, KeyInputListener {
     public void touchUp(final InputEvent event, final float x, final float y, final int pointer, final int button) {
         final EKey relatedKey = onScreenUI.getRelatedKey(event.getListenerActor());
         if (relatedKey != null) {
-            InputManager.INSTANCE.notifyKeyUp(relatedKey);
+            Utils.getInputManager().notifyKeyUp(relatedKey);
         }
     }
 

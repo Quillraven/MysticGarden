@@ -2,7 +2,6 @@ package com.quillraven.game.ui;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.quillraven.game.core.ui.HUD;
 import com.quillraven.game.core.ui.TTFSkin;
@@ -28,7 +27,7 @@ public class MenuUI extends Table {
         final Stack menuPages = new Stack();
         volumeSlider = new Slider(0, 1, 0.01f, false, skin, "default");
         volumeSlider.setValue(initialVolumeValue);
-        continueItem = new TextButton("[Deactivated]Continue", skin, "huge");
+        continueItem = new TextButton("[Deactivated]" + hud.getLocalizedString("continue"), skin, "huge");
         mainPage = createMainPage(hud, skin);
         menuPages.add(mainPage);
         currentItemIdx = 0;
@@ -70,14 +69,13 @@ public class MenuUI extends Table {
     private Table createCreditsPage(final HUD hud, final TTFSkin skin) {
         final Table content = new Table();
         content.setBackground(skin.getDrawable("menu_background"));
+        content.add(new Image(skin.getDrawable("banner"))).expandX().top().padTop(65).row();
 
         final TextButton creditsTxt = new TextButton(hud.getLocalizedString("credits"), skin, "normal");
         creditsTxt.getLabel().setWrap(true);
-        creditsTxt.getLabel().setAlignment(Align.topLeft);
-        content.add(new TextButton(hud.getLocalizedString("creditsMenuItem") + ":", skin, "huge")).fillX().expandX().top().padTop(75).row();
-        content.add(creditsTxt).fill().expand().top().pad(50, 25, 0, 25);
+        content.add(new TextButton(hud.getLocalizedString("creditsMenuItem") + ":", skin, "huge")).expandX().top().padTop(75).row();
+        content.add(creditsTxt).expand().fill().top().pad(10, 25, 175, 25);
 
-        content.top();
         return content;
     }
 
