@@ -11,10 +11,6 @@ import com.quillraven.game.core.gamestate.EGameState;
 import com.quillraven.game.map.MapManager;
 
 
-/*TODO
- *) add a "story info table" to GameUI that is shown until map is loaded + 3 seconds
- *) add victory gamestate to show beloved couple and score ;)
- */
 public class MysticGarden extends ApplicationAdapter {
     private static final String TAG = MysticGarden.class.getSimpleName();
 

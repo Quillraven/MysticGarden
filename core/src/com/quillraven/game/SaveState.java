@@ -28,9 +28,9 @@ public class SaveState implements Json.Serializable {
     private static final String SAVE_STATE_HAS_CLUB_KEY = "hasClub";
     private static final String SAVE_STATE_HAS_WAND_KEY = "hasWand";
     private static final String SAVE_STATE_REMAINING_GAME_OBJ_IDS_KEY = "remainingGameObjects";
-    private static final String SAVE_STATE_SECONDS_KEY = "seconds";
-    private static final String SAVE_STATE_MINUTES_KEY = "minutes";
-    private static final String SAVE_STATE_HOURS_KEY = "hours";
+    public static final String SAVE_STATE_SECONDS_KEY = "seconds";
+    public static final String SAVE_STATE_MINUTES_KEY = "minutes";
+    public static final String SAVE_STATE_HOURS_KEY = "hours";
 
     private final Vector2 playerPos;
     private int crystals;
@@ -109,9 +109,15 @@ public class SaveState implements Json.Serializable {
         } else {
             // load values from preference
             final JsonValue saveStateJsonVal = jsonReader.parse(Utils.getPreferenceManager().getStringValue(SAVE_STATE_PREFERENCE_KEY));
-            playerPos.x = saveStateJsonVal.getFloat(SAVE_STATE_POS_X_KEY);
-            playerPos.y = saveStateJsonVal.getFloat(SAVE_STATE_POS_Y_KEY);
             crystals = saveStateJsonVal.getInt(SAVE_STATE_CRYSTALS_KEY);
+            if (crystals == Utils.getMapManager().getCurrentMap().getNumCrystals()) {
+                // player already found all crystals --> spawn him close to the portal
+                playerPos.x = 38;
+                playerPos.y = 18;
+            } else {
+                playerPos.x = saveStateJsonVal.getFloat(SAVE_STATE_POS_X_KEY);
+                playerPos.y = saveStateJsonVal.getFloat(SAVE_STATE_POS_Y_KEY);
+            }
             chromaOrbs = saveStateJsonVal.getInt(SAVE_STATE_CHROMAORB_KEY);
             hasAxe = saveStateJsonVal.getBoolean(SAVE_STATE_HAS_AXE_KEY);
             hasClub = saveStateJsonVal.getBoolean(SAVE_STATE_HAS_CLUB_KEY);
@@ -137,6 +143,7 @@ public class SaveState implements Json.Serializable {
         playerCmp.hasAxe = hasAxe;
         playerCmp.hasClub = hasClub;
         playerCmp.hasWand = hasWand;
+        playerCmp.speed.set(0, 0);
         for (final Entity gameObj : gameObjects) {
             if (removeCmpMapper.get(gameObj) == null && !gameObjectIDs.contains(gameObjCmpMapper.get(gameObj).id, false)) {
                 gameObj.add(ecsEngine.createComponent(RemoveComponent.class));

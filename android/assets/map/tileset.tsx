@@ -57,6 +57,8 @@
  </tile>
  <tile id="62">
   <properties>
+   <property name="effect_offset_x" type="float" value="0.3"/>
+   <property name="effect_type" value="PORTAL"/>
    <property name="type" value="PORTAL"/>
   </properties>
   <animation>

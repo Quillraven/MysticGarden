@@ -28,6 +28,9 @@ public class MenuUI extends Table {
         final Stack menuPages = new Stack();
         volumeSlider = new Slider(0, 1, 0.01f, false, skin, "default");
         volumeSlider.setValue(initialVolumeValue);
+        if (volumeSlider.getValue() == 0) {
+            volumeSlider.setStyle(skin.get("deactivated", Slider.SliderStyle.class));
+        }
         continueItem = new TextButton(HIGHLIGHT_TEXT_DEACTIVATE + hud.getLocalizedString("continue"), skin, "huge");
         mainPage = createMainPage(hud, skin);
         menuPages.add(mainPage);

@@ -53,6 +53,7 @@ public class AudioManager {
         // music
         INTRO("audio/intro.mp3", true, 0.3f),
         ALMOST_FINISHED("audio/almost_finished.ogg", true, 0.35f),
+        VICTORY("audio/victory.mp3", true, 0.3f),
         // sounds
         SELECT("audio/select.wav", false, 0.5f),
         CHOP("audio/chop.ogg", false, 1),

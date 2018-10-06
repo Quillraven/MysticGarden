@@ -3,6 +3,7 @@ package com.quillraven.game.ui;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.StringBuilder;
 import com.quillraven.game.core.ui.HUD;
 import com.quillraven.game.core.ui.TTFSkin;
 
@@ -68,21 +69,22 @@ public class GameUI extends Table {
     }
 
     public void setGameTime(final int hours, final int minutes, final int seconds) {
-        timeText.getLabel().getText().setLength(0);
+        final StringBuilder timeLbl = timeText.getLabel().getText();
+        timeLbl.setLength(0);
         if (hours < 10) {
-            timeText.getLabel().getText().append('0');
+            timeLbl.append('0');
         }
-        timeText.getLabel().getText().append(hours);
-        timeText.getLabel().getText().append(':');
+        timeLbl.append(hours);
+        timeLbl.append(':');
         if (minutes < 10) {
-            timeText.getLabel().getText().append('0');
+            timeLbl.append('0');
         }
-        timeText.getLabel().getText().append(minutes);
-        timeText.getLabel().getText().append(':');
+        timeLbl.append(minutes);
+        timeLbl.append(':');
         if (seconds < 10) {
-            timeText.getLabel().getText().append('0');
+            timeLbl.append('0');
         }
-        timeText.getLabel().getText().append(seconds);
+        timeLbl.append(seconds);
         timeText.getLabel().invalidateHierarchy();
     }
 

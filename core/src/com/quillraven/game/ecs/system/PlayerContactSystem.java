@@ -68,8 +68,9 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
                 }
                 break;
             case PORTAL:
+                final boolean hasAllCrystals = playerCmp.crystals == Utils.getMapManager().getCurrentMap().getNumCrystals();
                 for (final PlayerContactListener listener : listeners) {
-                    listener.portalContact(playerCmp.crystals == Utils.getMapManager().getCurrentMap().getNumCrystals());
+                    listener.portalContact(hasAllCrystals);
                 }
                 break;
             default:

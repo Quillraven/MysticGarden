@@ -160,7 +160,7 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
     @Override
     public void portalContact(final boolean hasAllCrystals) {
         if (hasAllCrystals) {
-            //TODO change to victory gamestate
+            Utils.setGameState(EGameState.VICTORY);
         } else {
             gameStateHUD.showInfoMessage(hud.getLocalizedString("portalInfo"), 5.0f);
         }

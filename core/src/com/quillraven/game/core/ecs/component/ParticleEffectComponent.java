@@ -25,7 +25,8 @@ public class ParticleEffectComponent implements Pool.Poolable, Component {
     public enum ParticleEffectType {
         NOT_DEFINED("", ""),
         TORCH("characters_and_effects/torch.p", "characters_and_effects/character_and_effect.atlas"),
-        CRYSTAL("characters_and_effects/crystal.p", "characters_and_effects/character_and_effect.atlas");
+        CRYSTAL("characters_and_effects/crystal.p", "characters_and_effects/character_and_effect.atlas"),
+        PORTAL("characters_and_effects/portal.p", "characters_and_effects/character_and_effect.atlas");
 
         private final String effectFilePath;
         private final String atlasFilePath;
