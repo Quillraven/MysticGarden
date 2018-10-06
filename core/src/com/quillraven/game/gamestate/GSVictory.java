@@ -37,7 +37,7 @@ public class GSVictory extends GameState<VictoryUI> {
 
     @Override
     public void dispose() {
-
+        // nothing to dispose
     }
 
     @Override
@@ -49,6 +49,6 @@ public class GSVictory extends GameState<VictoryUI> {
 
     @Override
     public void keyUp(final InputManager manager, final EKey key) {
-
+        // nothing to do
     }
 }

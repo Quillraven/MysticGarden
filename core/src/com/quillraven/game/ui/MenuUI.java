@@ -7,7 +7,7 @@ import com.quillraven.game.core.ui.HUD;
 import com.quillraven.game.core.ui.TTFSkin;
 
 public class MenuUI extends Table {
-    public static final String HIGHLIGHT_TEXT_DEACTIVATE = "[Deactivated]";
+    private static final String HIGHLIGHT_TEXT_DEACTIVATE = "[Deactivated]";
     private final TTFSkin skin;
 
     private final Table mainPage;

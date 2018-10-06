@@ -93,47 +93,10 @@ public class SaveState implements Json.Serializable {
         Utils.getMapManager().spawnGameObjects(ecsEngine, gameObjects);
         if (!Utils.getPreferenceManager().containsKey(SAVE_STATE_PREFERENCE_KEY)) {
             // no save state yet or old state was cleared -> load default settings
-            playerPos.set(Utils.getMapManager().getCurrentMap().getStartLocation());
-            crystals = 0;
-            chromaOrbs = 0;
-            hasAxe = false;
-            hasClub = false;
-            hasWand = false;
-            hours = 0;
-            minutes = 0;
-            seconds = 0;
-            gameObjectIDs.clear();
-            for (final Entity gameObj : gameObjects) {
-                gameObjectIDs.add(gameObjCmpMapper.get(gameObj).id);
-            }
+            loadInitialValues(gameObjects);
         } else {
             // load values from preference
-            final JsonValue saveStateJsonVal = jsonReader.parse(Utils.getPreferenceManager().getStringValue(SAVE_STATE_PREFERENCE_KEY));
-            crystals = saveStateJsonVal.getInt(SAVE_STATE_CRYSTALS_KEY);
-            if (crystals == Utils.getMapManager().getCurrentMap().getNumCrystals()) {
-                // player already found all crystals --> spawn him close to the portal
-                playerPos.x = 38;
-                playerPos.y = 18;
-            } else {
-                playerPos.x = saveStateJsonVal.getFloat(SAVE_STATE_POS_X_KEY);
-                playerPos.y = saveStateJsonVal.getFloat(SAVE_STATE_POS_Y_KEY);
-            }
-            chromaOrbs = saveStateJsonVal.getInt(SAVE_STATE_CHROMAORB_KEY);
-            hasAxe = saveStateJsonVal.getBoolean(SAVE_STATE_HAS_AXE_KEY);
-            hasClub = saveStateJsonVal.getBoolean(SAVE_STATE_HAS_CLUB_KEY);
-            hasWand = saveStateJsonVal.getBoolean(SAVE_STATE_HAS_WAND_KEY);
-            hours = saveStateJsonVal.getInt(SAVE_STATE_HOURS_KEY, 0);
-            minutes = saveStateJsonVal.getInt(SAVE_STATE_MINUTES_KEY, 0);
-            seconds = saveStateJsonVal.getInt(SAVE_STATE_SECONDS_KEY, 0);
-
-            final JsonValue remainingIDsJsonVal = saveStateJsonVal.get(SAVE_STATE_REMAINING_GAME_OBJ_IDS_KEY);
-            if (remainingIDsJsonVal != null) {
-                gameObjectIDs.clear();
-                final int[] remainingGameObjIDs = remainingIDsJsonVal.asIntArray();
-                for (final int id : remainingGameObjIDs) {
-                    gameObjectIDs.add(id);
-                }
-            }
+            loadValuesFromPreference();
         }
 
         // set real game model values
@@ -160,6 +123,51 @@ public class SaveState implements Json.Serializable {
         gameStateHUD.setWand(hasWand);
         gameStateHUD.setCrystals(crystals);
         gameStateHUD.setChromaOrb(chromaOrbs);
+    }
+
+    private void loadValuesFromPreference() {
+        final JsonValue saveStateJsonVal = jsonReader.parse(Utils.getPreferenceManager().getStringValue(SAVE_STATE_PREFERENCE_KEY));
+        crystals = saveStateJsonVal.getInt(SAVE_STATE_CRYSTALS_KEY);
+        if (crystals == Utils.getMapManager().getCurrentMap().getNumCrystals()) {
+            // player already found all crystals --> spawn him close to the portal
+            playerPos.x = 38;
+            playerPos.y = 18;
+        } else {
+            playerPos.x = saveStateJsonVal.getFloat(SAVE_STATE_POS_X_KEY);
+            playerPos.y = saveStateJsonVal.getFloat(SAVE_STATE_POS_Y_KEY);
+        }
+        chromaOrbs = saveStateJsonVal.getInt(SAVE_STATE_CHROMAORB_KEY);
+        hasAxe = saveStateJsonVal.getBoolean(SAVE_STATE_HAS_AXE_KEY);
+        hasClub = saveStateJsonVal.getBoolean(SAVE_STATE_HAS_CLUB_KEY);
+        hasWand = saveStateJsonVal.getBoolean(SAVE_STATE_HAS_WAND_KEY);
+        hours = saveStateJsonVal.getInt(SAVE_STATE_HOURS_KEY, 0);
+        minutes = saveStateJsonVal.getInt(SAVE_STATE_MINUTES_KEY, 0);
+        seconds = saveStateJsonVal.getInt(SAVE_STATE_SECONDS_KEY, 0);
+
+        final JsonValue remainingIDsJsonVal = saveStateJsonVal.get(SAVE_STATE_REMAINING_GAME_OBJ_IDS_KEY);
+        if (remainingIDsJsonVal != null) {
+            gameObjectIDs.clear();
+            final int[] remainingGameObjIDs = remainingIDsJsonVal.asIntArray();
+            for (final int id : remainingGameObjIDs) {
+                gameObjectIDs.add(id);
+            }
+        }
+    }
+
+    private void loadInitialValues(final ImmutableArray<Entity> gameObjects) {
+        playerPos.set(Utils.getMapManager().getCurrentMap().getStartLocation());
+        crystals = 0;
+        chromaOrbs = 0;
+        hasAxe = false;
+        hasClub = false;
+        hasWand = false;
+        hours = 0;
+        minutes = 0;
+        seconds = 0;
+        gameObjectIDs.clear();
+        for (final Entity gameObj : gameObjects) {
+            gameObjectIDs.add(gameObjCmpMapper.get(gameObj).id);
+        }
     }
 
     @Override
