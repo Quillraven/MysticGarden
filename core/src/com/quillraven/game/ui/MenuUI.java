@@ -7,6 +7,7 @@ import com.quillraven.game.core.ui.HUD;
 import com.quillraven.game.core.ui.TTFSkin;
 
 public class MenuUI extends Table {
+    public static final String HIGHLIGHT_TEXT_DEACTIVATE = "[Deactivated]";
     private final TTFSkin skin;
 
     private final Table mainPage;
@@ -27,7 +28,7 @@ public class MenuUI extends Table {
         final Stack menuPages = new Stack();
         volumeSlider = new Slider(0, 1, 0.01f, false, skin, "default");
         volumeSlider.setValue(initialVolumeValue);
-        continueItem = new TextButton("[Deactivated]" + hud.getLocalizedString("continue"), skin, "huge");
+        continueItem = new TextButton(HIGHLIGHT_TEXT_DEACTIVATE + hud.getLocalizedString("continue"), skin, "huge");
         mainPage = createMainPage(hud, skin);
         menuPages.add(mainPage);
         currentItemIdx = 0;
@@ -152,7 +153,7 @@ public class MenuUI extends Table {
             // add option to menu items
             if (!alreadyAvailable) {
                 menuItems.insert(1, continueItem);
-                label.getText().replace("[Deactivated]", "");
+                label.getText().replace(HIGHLIGHT_TEXT_DEACTIVATE, "");
                 ++volumeIdx;
                 ++creditsIdx;
             }
@@ -165,7 +166,7 @@ public class MenuUI extends Table {
             // remove option from menu items
             if (alreadyAvailable) {
                 menuItems.removeValue(continueItem, true);
-                label.getText().insert(0, "[Deactivated]");
+                label.getText().insert(0, HIGHLIGHT_TEXT_DEACTIVATE);
                 --volumeIdx;
                 --creditsIdx;
             }

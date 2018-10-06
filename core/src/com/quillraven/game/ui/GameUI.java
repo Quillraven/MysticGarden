@@ -9,6 +9,7 @@ import com.quillraven.game.core.ui.TTFSkin;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class GameUI extends Table {
+    private static final String TEXT_STYLE_NORMAL = "normal";
     private final TTFSkin skin;
 
     private final TextButton timeText;
@@ -24,16 +25,16 @@ public class GameUI extends Table {
         final Table contentTable = new Table();
         contentTable.setBackground(skin.getDrawable("frame_brown"));
 
-        final TextButton timeLabel = new TextButton(hud.getLocalizedString("time") + ":", skin, "normal");
+        final TextButton timeLabel = new TextButton(hud.getLocalizedString("time") + ":", skin, TEXT_STYLE_NORMAL);
         timeLabel.getLabel().setAlignment(Align.right);
-        timeText = new TextButton("00:00:00", skin, "normal");
+        timeText = new TextButton("00:00:00", skin, TEXT_STYLE_NORMAL);
         timeText.getLabel().setAlignment(Align.left);
 
         final Table crystalInfoTable = new Table();
         final Image crystalImg = new Image(skin.getDrawable("crystal"));
         crystalInfoTable.add(crystalImg).expand().fill().right();
-        crystalInfoTable.add(new TextButton(":", skin, "normal")).expand().fill().left();
-        crystalText = new TextButton("0", skin, "normal");
+        crystalInfoTable.add(new TextButton(":", skin, TEXT_STYLE_NORMAL)).expand().fill().left();
+        crystalText = new TextButton("0", skin, TEXT_STYLE_NORMAL);
         crystalText.getLabel().setAlignment(Align.left);
 
         slots = new Array<>();

@@ -3,7 +3,6 @@ package com.quillraven.game.core.gamestate;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.quillraven.game.core.Utils;
-import com.quillraven.game.core.input.InputManager;
 import com.quillraven.game.core.input.KeyInputListener;
 import com.quillraven.game.core.ui.HUD;
 import com.quillraven.game.core.ui.TTFSkin;
