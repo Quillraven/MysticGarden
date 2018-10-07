@@ -54,9 +54,10 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     private final RayHandler rayHandler;
     private final OrthographicCamera gameCamera;
 
-    private final Vector3 renderOffsetVector;
+    private final Vector3 tmpVec3;
     private final Rectangle scissors;
     private final Rectangle clipBounds;
+    private int lightScissorHeight;
 
     private final ImmutableArray<Entity> gameObjectsForRender;
     private final ImmutableArray<Entity> charactersForRender;
@@ -80,7 +81,7 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
         this.rayHandler = rayHandler;
         viewport = new FitViewport(9, 16, gameCamera);
 
-        renderOffsetVector = new Vector3();
+        tmpVec3 = new Vector3();
         scissors = new Rectangle();
         clipBounds = new Rectangle();
 
@@ -127,12 +128,15 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
         ScissorStack.popScissors();
 
         // draw lights
+        scissors.set(0, 0, Gdx.graphics.getWidth(), lightScissorHeight);
+        ScissorStack.pushScissors(scissors);
         rayHandler.setCombinedMatrix(gameCamera);
         rayHandler.updateAndRender();
         if (DEBUG) {
             b2dRenderer.render(world, gameCamera.combined);
             Gdx.app.debug(TAG, "Last number of render calls: " + spriteBatch.renderCalls);
         }
+        ScissorStack.popScissors();
     }
 
     private void renderEntity(final Entity entity, final float alpha) {
@@ -154,10 +158,15 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     @Override
     public void resize(final int width, final int height) {
         viewport.update(width, height, false);
-        // offset viewport by y-axis (get distance from viewport to viewport with offset)
-        renderOffsetVector.set(gameCamera.position.x - gameCamera.viewportWidth * 0.5f, RENDER_OFFSET_Y + gameCamera.position.y - gameCamera.viewportHeight * 0.5f, 0);
-        gameCamera.project(renderOffsetVector, viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
-        viewport.setScreenY((int) renderOffsetVector.y);
+
+        // get bottom left corner + RENDER_OFFSET_Y position and convert it to screen coordinates to get the height offset in pixels for the viewport
+        tmpVec3.set(gameCamera.position.x - gameCamera.viewportWidth * 0.5f, RENDER_OFFSET_Y + gameCamera.position.y - gameCamera.viewportHeight * 0.5f, 0);
+        gameCamera.project(tmpVec3, viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
+        viewport.setScreenY((int) (1 + tmpVec3.y));
+
+        // get top right corner of the game world which is still rendered to find out the maximum height that is used for rendering
+        gameCamera.project(tmpVec3.set(gameCamera.position.x + gameCamera.viewportWidth * 0.5f, gameCamera.position.y - 4 + gameCamera.viewportHeight * 0.5f, 0), viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
+        lightScissorHeight = (int) (tmpVec3.y + 1);
 
         rayHandler.useCustomViewport(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
     }
