@@ -15,10 +15,12 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -51,7 +53,10 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     private final World world;
     private final RayHandler rayHandler;
     private final OrthographicCamera gameCamera;
+
     private final Vector3 renderOffsetVector;
+    private final Rectangle scissors;
+    private final Rectangle clipBounds;
 
     private final ImmutableArray<Entity> gameObjectsForRender;
     private final ImmutableArray<Entity> charactersForRender;
@@ -74,7 +79,10 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
         this.world = world;
         this.rayHandler = rayHandler;
         viewport = new FitViewport(9, 16, gameCamera);
+
         renderOffsetVector = new Vector3();
+        scissors = new Rectangle();
+        clipBounds = new Rectangle();
 
         Utils.getMapManager().addMapListener(this);
     }
@@ -82,6 +90,10 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     @Override
     public void render(final float alpha) {
         viewport.apply();
+
+        clipBounds.set(gameCamera.position.x - gameCamera.viewportWidth * 0.5f, gameCamera.position.y - gameCamera.viewportHeight * 0.5f, 9, 12);
+        ScissorStack.calculateScissors(gameCamera, viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight(), spriteBatch.getTransformMatrix(), clipBounds, scissors);
+        ScissorStack.pushScissors(scissors);
 
         spriteBatch.begin();
         AnimatedTiledMapTile.updateAnimationBaseTime();
@@ -112,6 +124,7 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
         spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         spriteBatch.end();
+        ScissorStack.popScissors();
 
         // draw lights
         rayHandler.setCombinedMatrix(gameCamera);

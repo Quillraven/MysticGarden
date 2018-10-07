@@ -28,7 +28,7 @@ public class HUD extends InputListener implements Disposable, KeyInputListener {
     private final OnScreenUI onScreenUI;
 
     public HUD() {
-        stage = new Stage(new FitViewport(450, 800, new OrthographicCamera(450, 800)), Utils.getSpriteBatch());
+        stage = new Stage(new FitViewport(450, 800, new OrthographicCamera()), Utils.getSpriteBatch());
         gameStateHUDs = new Stack();
         gameStateHUDs.setFillParent(true);
         this.stage.addActor(gameStateHUDs);
@@ -76,7 +76,7 @@ public class HUD extends InputListener implements Disposable, KeyInputListener {
 
     public void resize(final int width, final int height) {
         Gdx.app.debug(TAG, "Resizing HUD to " + width + "x" + height);
-        stage.getViewport().update(width, height, false);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
