@@ -11,6 +11,6 @@ public class DesktopLauncher {
         config.width = 450;
         config.height = 800;
         config.title = MysticGarden.TITLE;
-        new LwjglApplication(new MysticGarden(), config).setLogLevel(Application.LOG_DEBUG);
+        new LwjglApplication(new MysticGarden(), config);
     }
 }

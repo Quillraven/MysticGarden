@@ -10,7 +10,7 @@ import com.quillraven.game.core.ui.TTFSkin;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class GameUI extends Table {
-    private static final String TEXT_STYLE_NORMAL = "normal";
+    private static final String TXT_STYLE_INFO = "info";
     private final TTFSkin skin;
 
     private final TextButton timeText;
@@ -26,16 +26,16 @@ public class GameUI extends Table {
         final Table contentTable = new Table();
         contentTable.setBackground(skin.getDrawable("frame_brown"));
 
-        final TextButton timeLabel = new TextButton(hud.getLocalizedString("time") + ":", skin, TEXT_STYLE_NORMAL);
+        final TextButton timeLabel = new TextButton(hud.getLocalizedString("time") + ":", skin, TXT_STYLE_INFO);
         timeLabel.getLabel().setAlignment(Align.right);
-        timeText = new TextButton("00:00:00", skin, TEXT_STYLE_NORMAL);
+        timeText = new TextButton("00:00:00", skin, TXT_STYLE_INFO);
         timeText.getLabel().setAlignment(Align.left);
 
         final Table crystalInfoTable = new Table();
         final Image crystalImg = new Image(skin.getDrawable("crystal"));
         crystalInfoTable.add(crystalImg).expand().fill().right();
-        crystalInfoTable.add(new TextButton(":", skin, TEXT_STYLE_NORMAL)).expand().fill().left();
-        crystalText = new TextButton("0", skin, TEXT_STYLE_NORMAL);
+        crystalInfoTable.add(new TextButton(":", skin, TXT_STYLE_INFO)).expand().fill().left();
+        crystalText = new TextButton("0", skin, TXT_STYLE_INFO);
         crystalText.getLabel().setAlignment(Align.left);
 
         slots = new Array<>();
@@ -51,7 +51,7 @@ public class GameUI extends Table {
             }
         }
 
-        contentTable.add(timeLabel).expand().fill().right().padLeft(130).padTop(15);
+        contentTable.add(timeLabel).expand().fill().right().padLeft(140).padTop(15);
         contentTable.add(timeText).expand().fill().left().padTop(15).row();
 
         contentTable.add(crystalInfoTable).expand().right().padTop(5);
@@ -59,11 +59,11 @@ public class GameUI extends Table {
 
         contentTable.add(slotTable).colspan(2).padLeft(70).padBottom(5);
 
-        infoBox = new TextButton("", skin, "info");
+        infoBox = new TextButton("", skin, "info_frame");
         infoBox.getLabel().setWrap(true);
         infoBox.setVisible(false);
 
-        add(infoBox).expand().fillX().top().padTop(25).padLeft(55).padRight(15).row();
+        add(infoBox).expand().fillX().top().pad(15, 65, 45, 15).row();
         add(contentTable).expandX().fill().bottom();
         bottom();
     }

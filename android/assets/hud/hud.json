@@ -9,11 +9,11 @@
   },
   "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
     "normal": {
-      "font": "font_24",
+      "font": "font_20",
       "fontColor": "white"
     },
     "big": {
-      "font": "font_32",
+      "font": "font_26",
       "fontColor": "white"
     },
     "small": {
@@ -21,13 +21,17 @@
       "fontColor": "white"
     },
     "huge": {
-      "font": "font_48",
+      "font": "font_32",
       "fontColor": "white"
     },
-    "info": {
-      "font": "font_24",
+    "info_frame": {
+      "font": "font_16",
       "fontColor": "white",
       "up": "frame_brown"
+    },
+    "info": {
+      "font": "font_16",
+      "fontColor": "white"
     }
   },
   "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {

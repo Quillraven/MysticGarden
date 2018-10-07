@@ -1,5 +1,6 @@
 package com.quillraven.game;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -32,6 +33,8 @@ public class MysticGarden extends ApplicationAdapter {
 
     @Override
     public void create() {
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
+
         resourceManager = new ResourceManager();
         preferenceManager = new PreferenceManager();
         contactManager = new WorldContactManager();

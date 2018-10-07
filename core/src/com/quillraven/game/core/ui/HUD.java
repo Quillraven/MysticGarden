@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.I18NBundle;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.quillraven.game.core.ResourceManager;
 import com.quillraven.game.core.Utils;
 import com.quillraven.game.core.input.EKey;
@@ -28,14 +28,14 @@ public class HUD extends InputListener implements Disposable, KeyInputListener {
     private final OnScreenUI onScreenUI;
 
     public HUD() {
-        stage = new Stage(new ScreenViewport(new OrthographicCamera(0, 0)), Utils.getSpriteBatch());
+        stage = new Stage(new FitViewport(450, 800, new OrthographicCamera(450, 800)), Utils.getSpriteBatch());
         gameStateHUDs = new Stack();
         gameStateHUDs.setFillParent(true);
         this.stage.addActor(gameStateHUDs);
 
         final ResourceManager resourceManager = Utils.getResourceManager();
         resourceManager.load("i18n/strings", I18NBundle.class);
-        skin = resourceManager.loadSkinSynchronously("hud/hud.json", "hud/font.ttf", 16, 24, 32, 48);
+        skin = resourceManager.loadSkinSynchronously("hud/hud.json", "hud/font.ttf", 16, 20, 26, 32);
         this.i18NBundle = resourceManager.get("i18n/strings", I18NBundle.class);
 
         onScreenUI = new OnScreenUI(this, skin);
@@ -76,7 +76,7 @@ public class HUD extends InputListener implements Disposable, KeyInputListener {
 
     public void resize(final int width, final int height) {
         Gdx.app.debug(TAG, "Resizing HUD to " + width + "x" + height);
-        stage.getViewport().update(width, height, true);
+        stage.getViewport().update(width, height, false);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.quillraven.game.core.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
@@ -49,7 +48,7 @@ public class SkinLoader extends AsynchronousAssetLoader<TTFSkin, SkinLoader.Skin
             fontParam.fontParameters.minFilter = Texture.TextureFilter.Linear;
             fontParam.fontParameters.magFilter = Texture.TextureFilter.Linear;
             // create font according to density of target device display
-            fontParam.fontParameters.size = (int) (fontSize * Gdx.graphics.getDensity());
+            fontParam.fontParameters.size = fontSize;
             dependencies.add(new AssetDescriptor("font" + fontSize + ".ttf", BitmapFont.class, fontParam));
         }
 
