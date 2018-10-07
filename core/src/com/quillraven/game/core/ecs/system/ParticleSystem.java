@@ -36,19 +36,18 @@ public class ParticleSystem extends IteratingSystem {
             }
         } else if (peCmp.type != ParticleEffectComponent.ParticleEffectType.NOT_DEFINED) {
             // type defined but effect not spawned yet -> spawn it
-            final ParticleEffectPool effectPool = effectPools.computeIfAbsent(peCmp.type, this::createEffectPool);
+            ParticleEffectPool effectPool = effectPools.get(peCmp.type);
+            if (effectPool == null) {
+                final ParticleEffect effect = resourceManager.get(peCmp.type.getEffectFilePath(), ParticleEffect.class);
+                // set blend function cleanup to false to increase render performance because otherwise every effect
+                // rendering will cause a spriteBatch flush.
+                // this means that we need to take care of setting back the blend function by hand in the GameRenderSystem
+                effect.setEmittersCleanUpBlendFunction(false);
+                effectPool = new ParticleEffectPool(effect, 1, 128);
+            }
             peCmp.effect = effectPool.obtain();
             peCmp.effect.setPosition(peCmp.position.x, peCmp.position.y);
             peCmp.effect.scaleEffect(peCmp.scaling);
         }
-    }
-
-    private ParticleEffectPool createEffectPool(final ParticleEffectComponent.ParticleEffectType type) {
-        final ParticleEffect effect = resourceManager.get(type.getEffectFilePath(), ParticleEffect.class);
-        // set blend function cleanup to false to increase render performance because otherwise every effect
-        // rendering will cause a spriteBatch flush.
-        // this means that we need to take care of setting back the blend function by hand in the GameRenderSystem
-        effect.setEmittersCleanUpBlendFunction(false);
-        return new ParticleEffectPool(effect, 1, 128);
     }
 }

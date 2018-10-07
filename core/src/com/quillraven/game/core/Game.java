@@ -47,22 +47,21 @@ public class Game implements Disposable {
             }
         }
 
-        activeState = gameStateCache.computeIfAbsent(gameStateType, this::createGameState);
+        activeState = gameStateCache.get(gameStateType);
+        if (activeState == null) {
+            Gdx.app.debug(TAG, "Creating new gamestate: " + gameStateType);
+
+            try {
+                activeState = (GameState) ClassReflection.getConstructor(gameStateType.getGameStateType(), EGameState.class, HUD.class).newInstance(gameStateType, hud);
+                gameStateCache.put(gameStateType, activeState);
+            } catch (ReflectionException e) {
+                throw new GdxRuntimeException("Could not create gamestate of type " + gameStateType, e);
+            }
+        }
+
         Gdx.app.debug(TAG, "Activating gamestate " + activeState.getType());
         activeState.activate();
         activeState.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-    }
-
-    private GameState createGameState(final EGameState gameStateType) {
-        Gdx.app.debug(TAG, "Creating new gamestate: " + gameStateType);
-
-        try {
-            final GameState newGS = (GameState) ClassReflection.getConstructor(gameStateType.getGameStateType(), EGameState.class, HUD.class).newInstance(gameStateType, hud);
-            gameStateCache.put(gameStateType, newGS);
-            return newGS;
-        } catch (ReflectionException e) {
-            throw new GdxRuntimeException("Could not create gamestate of type " + gameStateType, e);
-        }
     }
 
     public void process() {
