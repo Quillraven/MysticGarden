@@ -31,12 +31,13 @@ public class GSLoading extends GameState<LoadingUI> {
         resourceManager.load("map/tiles/map.atlas", TextureAtlas.class);
         resourceManager.load("map/map.tmx", TiledMap.class);
         loadAudio();
+
+        final ParticleEffectLoader.ParticleEffectParameter peParams = new ParticleEffectLoader.ParticleEffectParameter();
+        peParams.atlasFile = "characters_and_effects/character_and_effect.atlas";
         for (final ParticleEffectComponent.ParticleEffectType peType : ParticleEffectComponent.ParticleEffectType.values()) {
             if (peType == ParticleEffectComponent.ParticleEffectType.NOT_DEFINED) {
                 continue;
             }
-            final ParticleEffectLoader.ParticleEffectParameter peParams = new ParticleEffectLoader.ParticleEffectParameter();
-            peParams.atlasFile = peType.getAtlasFilePath();
             resourceManager.load(peType.getEffectFilePath(), ParticleEffect.class, peParams);
         }
     }

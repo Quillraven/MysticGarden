@@ -37,9 +37,5 @@ public class ParticleEffectComponent implements Pool.Poolable, Component {
         public String getEffectFilePath() {
             return effectFilePath;
         }
-
-        public String getAtlasFilePath() {
-            return "characters_and_effects/character_and_effect.atlas";
-        }
     }
 }

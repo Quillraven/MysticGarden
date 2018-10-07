@@ -44,6 +44,7 @@ public class ParticleSystem extends IteratingSystem {
                 // this means that we need to take care of setting back the blend function by hand in the GameRenderSystem
                 effect.setEmittersCleanUpBlendFunction(false);
                 effectPool = new ParticleEffectPool(effect, 1, 128);
+                effectPools.put(peCmp.type, effectPool);
             }
             peCmp.effect = effectPool.obtain();
             peCmp.effect.setPosition(peCmp.position.x, peCmp.position.y);
