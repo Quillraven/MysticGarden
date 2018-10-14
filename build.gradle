@@ -104,18 +104,18 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker
 
 task buildHUDTextureAtlas(description: "Rebuilds the hud atlas located in assets/hud folder. Images are taken from assets/hud/input folder.", group: "game") {
     doLast {
-        TexturePacker.process('android/assets/hud/input', 'android/assets/hud', 'hud.atlas')
+        TexturePacker.process('assets_input/hud', 'android/assets/hud', 'hud.atlas')
     }
 }
 
 task buildMapTextureAtlas(description: "Rebuilds the map atlas located in assets/map/tiles folder. Images are taken from assets/map/tiles/input folder.", group: "game") {
     doLast {
-        TexturePacker.process('android/assets/map/tiles/input', 'android/assets/map/tiles', 'map.atlas')
+        TexturePacker.process('assets_input/map', 'android/assets/map/tiles', 'map.atlas')
     }
 }
 
 task buildCharacterAndEffectTextureAtlas(description: "Rebuilds the character_and_effect atlas located in assets/characters_and_effects folder. Images are taken from assets/characters_and_effects/input folder.", group: "game") {
     doLast {
-        TexturePacker.process('android/assets/characters_and_effects/input', 'android/assets/characters_and_effects', 'character_and_effect.atlas')
+        TexturePacker.process('assets_input/characters_and_effects', 'android/assets/characters_and_effects', 'character_and_effect.atlas')
     }
 }
