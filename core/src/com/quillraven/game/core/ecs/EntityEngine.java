@@ -14,19 +14,18 @@ import com.quillraven.game.core.ecs.system.RemoveSystem;
 public abstract class EntityEngine extends PooledEngine implements Disposable {
     private static final String TAG = EntityEngine.class.getSimpleName();
 
+    public static final ComponentMapper<AnimationComponent> aniCmpMapper = ComponentMapper.getFor(AnimationComponent.class);
+    public static final ComponentMapper<ParticleEffectComponent> peCmpMapper = ComponentMapper.getFor(ParticleEffectComponent.class);
+
     private final Array<RenderSystem> renderSystems;
-    protected final ComponentMapper<AnimationComponent> aniCmpMapper;
-    protected final ComponentMapper<ParticleEffectComponent> peCmpMapper;
 
     protected EntityEngine() {
         super();
         this.renderSystems = new Array<>();
 
-        aniCmpMapper = ComponentMapper.getFor(AnimationComponent.class);
-        peCmpMapper = ComponentMapper.getFor(ParticleEffectComponent.class);
         addSystem(new RemoveSystem());
-        addSystem(new AnimationSystem(aniCmpMapper));
-        addSystem(new ParticleSystem(peCmpMapper));
+        addSystem(new AnimationSystem());
+        addSystem(new ParticleSystem());
     }
 
     protected void addRenderSystem(final RenderSystem renderSystem) {

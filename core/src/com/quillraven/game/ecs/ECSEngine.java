@@ -34,6 +34,10 @@ import static com.quillraven.game.MysticGarden.*;
 public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
     private static final String TAG = ECSEngine.class.getSimpleName();
 
+    public static final ComponentMapper<PlayerComponent> playerCmpMapper = ComponentMapper.getFor(PlayerComponent.class);
+    public static final ComponentMapper<GameObjectComponent> gameObjCmpMapper = ComponentMapper.getFor(GameObjectComponent.class);
+    public static final ComponentMapper<Box2DComponent> b2dCmpMapper = ComponentMapper.getFor(Box2DComponent.class);
+
     private final World world;
     private final RayHandler rayHandler;
     private final BodyDef bodyDef;
@@ -49,17 +53,15 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         fixtureDef = new FixtureDef();
         gameObjEntities = getEntitiesFor(Family.all(GameObjectComponent.class).get());
 
-        final ComponentMapper<PlayerComponent> playerCmpMapper = ComponentMapper.getFor(PlayerComponent.class);
-        final ComponentMapper<GameObjectComponent> gameObjCmpMapper = ComponentMapper.getFor(GameObjectComponent.class);
-        final ComponentMapper<Box2DComponent> b2dCmpMapper = ComponentMapper.getFor(Box2DComponent.class);
+
         // iterating systems
-        addSystem(new PlayerAnimationSystem(b2dCmpMapper, playerCmpMapper, aniCmpMapper));
-        addSystem(new PlayerMovementSystem(playerCmpMapper, b2dCmpMapper));
-        addSystem(new PlayerCameraSystem(gameCamera, b2dCmpMapper));
+        addSystem(new PlayerAnimationSystem());
+        addSystem(new PlayerMovementSystem());
+        addSystem(new PlayerCameraSystem(gameCamera));
         // player contact system does not need processing because it is triggered by WorldContactManager
-        addSystem(new PlayerContactSystem(gameObjEntities, playerCmpMapper, gameObjCmpMapper));
+        addSystem(new PlayerContactSystem(gameObjEntities));
         getSystem(PlayerContactSystem.class).setProcessing(false);
-        addSystem(new LightSystem(b2dCmpMapper));
+        addSystem(new LightSystem());
         // ambient light system does not need processing because it is triggered by PlayerContactSystem
         addSystem(new AmbientLightSystem(rayHandler));
         getSystem(AmbientLightSystem.class).setProcessing(false);
@@ -68,7 +70,7 @@ public class ECSEngine extends com.quillraven.game.core.ecs.EntityEngine {
         addSystem(new GameTimeSystem());
 
         // render systems
-        addRenderSystem(new GameRenderSystem(this, world, rayHandler, gameCamera, b2dCmpMapper, aniCmpMapper, peCmpMapper));
+        addRenderSystem(new GameRenderSystem(this, world, rayHandler, gameCamera));
     }
 
     public ImmutableArray<Entity> getGameObjectEntities() {

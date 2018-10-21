@@ -1,6 +1,5 @@
 package com.quillraven.game.ecs.system;
 
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
@@ -13,25 +12,19 @@ import com.badlogic.gdx.utils.Array;
 import com.quillraven.game.core.Utils;
 import com.quillraven.game.core.ecs.component.AnimationComponent;
 import com.quillraven.game.core.ecs.component.Box2DComponent;
+import com.quillraven.game.ecs.ECSEngine;
 import com.quillraven.game.ecs.component.PlayerComponent;
 
 import static com.quillraven.game.MysticGarden.UNIT_SCALE;
 
 public class PlayerAnimationSystem extends IteratingSystem {
-    private final ComponentMapper<PlayerComponent> playerCmpMapper;
-    private final ComponentMapper<AnimationComponent> aniCmpMapper;
-    private final ComponentMapper<Box2DComponent> b2dCmpMapper;
-
     private final Animation<Sprite> aniLeft;
     private final Animation<Sprite> aniRight;
     private final Animation<Sprite> aniUp;
     private final Animation<Sprite> aniDown;
 
-    public PlayerAnimationSystem(final ComponentMapper<Box2DComponent> b2dCmpMapper, final ComponentMapper<PlayerComponent> playerCmpMapper, final ComponentMapper<AnimationComponent> aniCmpMapper) {
+    public PlayerAnimationSystem() {
         super(Family.all(PlayerComponent.class, AnimationComponent.class).get());
-        this.playerCmpMapper = playerCmpMapper;
-        this.aniCmpMapper = aniCmpMapper;
-        this.b2dCmpMapper = b2dCmpMapper;
 
         // create player animations
         final TextureAtlas.AtlasRegion atlasRegion = Utils.getResourceManager().get("characters_and_effects/character_and_effect.atlas", TextureAtlas.class).findRegion("hero");
@@ -54,9 +47,9 @@ public class PlayerAnimationSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(final Entity entity, final float deltaTime) {
-        final PlayerComponent playerCmp = playerCmpMapper.get(entity);
-        final AnimationComponent aniCmp = aniCmpMapper.get(entity);
-        final Box2DComponent b2dCmp = b2dCmpMapper.get(entity);
+        final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(entity);
+        final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
+        final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
 
         if (aniCmp.animation == null) {
             aniCmp.animation = aniDown;

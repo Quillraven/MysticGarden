@@ -1,7 +1,6 @@
 package com.quillraven.game.ecs.system;
 
 
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
@@ -10,21 +9,18 @@ import com.quillraven.game.core.ecs.component.Box2DComponent;
 import com.quillraven.game.core.input.EKey;
 import com.quillraven.game.core.input.InputManager;
 import com.quillraven.game.core.input.KeyInputListener;
+import com.quillraven.game.ecs.ECSEngine;
 import com.quillraven.game.ecs.component.PlayerComponent;
 
 import static com.quillraven.game.core.input.EKey.*;
 
 public class PlayerMovementSystem extends IteratingSystem implements KeyInputListener {
-    private final ComponentMapper<PlayerComponent> playerCmpMapper;
-    private final ComponentMapper<Box2DComponent> b2dCmpMapper;
     private boolean directionChange;
     private int xFactor;
     private int yFactor;
 
-    public PlayerMovementSystem(final ComponentMapper<PlayerComponent> playerCmpMapper, final ComponentMapper<Box2DComponent> b2dCmpMapper) {
+    public PlayerMovementSystem() {
         super(Family.all(Box2DComponent.class, PlayerComponent.class).get());
-        this.playerCmpMapper = playerCmpMapper;
-        this.b2dCmpMapper = b2dCmpMapper;
         directionChange = false;
         xFactor = 0;
         yFactor = 0;
@@ -32,8 +28,8 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
 
     @Override
     protected void processEntity(final Entity entity, final float deltaTime) {
-        final Box2DComponent b2dCmp = b2dCmpMapper.get(entity);
-        final PlayerComponent playerCmp = playerCmpMapper.get(entity);
+        final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
+        final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(entity);
         b2dCmp.positionBeforeUpdate.set(b2dCmp.body.getPosition());
 
         if (playerCmp.sleepTime > 0) {

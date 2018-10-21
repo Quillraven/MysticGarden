@@ -1,6 +1,5 @@
 package com.quillraven.game.ecs.system;
 
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.utils.ImmutableArray;
@@ -15,15 +14,11 @@ import com.quillraven.game.ecs.component.PlayerComponent;
 
 public class PlayerContactSystem extends EntitySystem implements WorldContactManager.WorldContactListener {
     private final ImmutableArray<Entity> gameObjEntities;
-    private final ComponentMapper<PlayerComponent> playerCmpMapper;
-    private final ComponentMapper<GameObjectComponent> gameObjCmpMapper;
     private final Array<PlayerContactListener> listeners;
     private final AudioManager audioManager;
 
-    public PlayerContactSystem(final ImmutableArray<Entity> gameObjEntities, final ComponentMapper<PlayerComponent> playerCmpMapper, final ComponentMapper<GameObjectComponent> gameObjCmpMapper) {
+    public PlayerContactSystem(final ImmutableArray<Entity> gameObjEntities) {
         this.gameObjEntities = gameObjEntities;
-        this.playerCmpMapper = playerCmpMapper;
-        this.gameObjCmpMapper = gameObjCmpMapper;
         listeners = new Array<>();
         Utils.getWorldContactManager().addWorldContactListener(this);
         this.audioManager = Utils.getAudioManager();
@@ -35,8 +30,8 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
 
     @Override
     public void beginContact(final Entity player, final Entity gameObject) {
-        final GameObjectComponent gameObjCmp = gameObjCmpMapper.get(gameObject);
-        final PlayerComponent playerCmp = playerCmpMapper.get(player);
+        final GameObjectComponent gameObjCmp = ECSEngine.gameObjCmpMapper.get(gameObject);
+        final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(player);
         switch (gameObjCmp.type) {
             case CRYSTAL:
                 crystalContact(playerCmp, gameObject);
@@ -116,7 +111,7 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
         if (playerCmp.crystals == 1) {
             // first crystal picked up --> destroy tutorial trees that block the path
             for (final Entity gameObj : gameObjEntities) {
-                if (gameObjCmpMapper.get(gameObj).type == GameObjectComponent.GameObjectType.TUTORIAL_TREE) {
+                if (ECSEngine.gameObjCmpMapper.get(gameObj).type == GameObjectComponent.GameObjectType.TUTORIAL_TREE) {
                     gameObj.add(((ECSEngine) this.getEngine()).createComponent(RemoveComponent.class));
                 }
             }

@@ -1,6 +1,5 @@
 package com.quillraven.game.ecs.system;
 
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
@@ -9,6 +8,7 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.Array;
 import com.quillraven.game.core.Utils;
 import com.quillraven.game.core.ecs.component.Box2DComponent;
+import com.quillraven.game.ecs.ECSEngine;
 import com.quillraven.game.ecs.component.PlayerComponent;
 import com.quillraven.game.map.Map;
 import com.quillraven.game.map.MapManager;
@@ -17,17 +17,15 @@ import static com.quillraven.game.ecs.system.GameRenderSystem.RENDER_OFFSET_Y;
 
 public class PlayerCameraSystem extends IteratingSystem implements MapManager.MapListener {
     private final OrthographicCamera gameCamera;
-    private final ComponentMapper<Box2DComponent> b2dCmpMapper;
     private Array<Rectangle> camBoundaries;
     private Rectangle currentBoundary;
     private float camTime;
     private final float camLerpTime;
     private final Vector3 lerpTarget;
 
-    public PlayerCameraSystem(final OrthographicCamera gameCamera, final ComponentMapper<Box2DComponent> b2dCmpMapper) {
+    public PlayerCameraSystem(final OrthographicCamera gameCamera) {
         super(Family.all(PlayerComponent.class, Box2DComponent.class).get());
         this.gameCamera = gameCamera;
-        this.b2dCmpMapper = b2dCmpMapper;
         this.camLerpTime = 1.75f;
         this.camTime = this.camLerpTime;
         this.lerpTarget = new Vector3();
@@ -45,7 +43,7 @@ public class PlayerCameraSystem extends IteratingSystem implements MapManager.Ma
 
     @Override
     protected void processEntity(final Entity entity, final float deltaTime) {
-        final Box2DComponent b2dCmp = b2dCmpMapper.get(entity);
+        final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
 
         if (currentBoundary == null) {
             // no boundary yet -> search one

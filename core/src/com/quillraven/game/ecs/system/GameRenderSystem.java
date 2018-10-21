@@ -1,7 +1,6 @@
 package com.quillraven.game.ecs.system;
 
 import box2dLight.RayHandler;
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
@@ -31,6 +30,7 @@ import com.quillraven.game.core.ecs.component.AnimationComponent;
 import com.quillraven.game.core.ecs.component.Box2DComponent;
 import com.quillraven.game.core.ecs.component.ParticleEffectComponent;
 import com.quillraven.game.core.ecs.component.RemoveComponent;
+import com.quillraven.game.ecs.ECSEngine;
 import com.quillraven.game.ecs.component.GameObjectComponent;
 import com.quillraven.game.ecs.component.PlayerComponent;
 import com.quillraven.game.map.Map;
@@ -62,14 +62,8 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     private final ImmutableArray<Entity> gameObjectsForRender;
     private final ImmutableArray<Entity> charactersForRender;
     private final ImmutableArray<Entity> particleEffectsForRender;
-    private final ComponentMapper<Box2DComponent> b2dCmpMapper;
-    private final ComponentMapper<AnimationComponent> aniCmpMapper;
-    private final ComponentMapper<ParticleEffectComponent> peCmpMapper;
 
-    public GameRenderSystem(final EntityEngine entityEngine, final World world, final RayHandler rayHandler, final OrthographicCamera gameCamera, final ComponentMapper<Box2DComponent> b2dCmpMapper, final ComponentMapper<AnimationComponent> aniCmpMapper, final ComponentMapper<ParticleEffectComponent> peCmpMapper) {
-        this.b2dCmpMapper = b2dCmpMapper;
-        this.aniCmpMapper = aniCmpMapper;
-        this.peCmpMapper = peCmpMapper;
+    public GameRenderSystem(final EntityEngine entityEngine, final World world, final RayHandler rayHandler, final OrthographicCamera gameCamera) {
         gameObjectsForRender = entityEngine.getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class, GameObjectComponent.class).exclude(RemoveComponent.class).get());
         charactersForRender = entityEngine.getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class, PlayerComponent.class).exclude(RemoveComponent.class).get());
         particleEffectsForRender = entityEngine.getEntitiesFor(Family.all(ParticleEffectComponent.class).exclude(RemoveComponent.class).get());
@@ -115,7 +109,7 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
 
         // render particle effects
         for (final Entity entity : particleEffectsForRender) {
-            final ParticleEffectComponent peCmp = peCmpMapper.get(entity);
+            final ParticleEffectComponent peCmp = ECSEngine.peCmpMapper.get(entity);
             if (peCmp.effect != null) {
                 peCmp.effect.draw(spriteBatch);
             }
@@ -140,12 +134,12 @@ public class GameRenderSystem implements RenderSystem, MapManager.MapListener {
     }
 
     private void renderEntity(final Entity entity, final float alpha) {
-        final AnimationComponent aniCmp = aniCmpMapper.get(entity);
+        final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
         if (aniCmp.animation == null) {
             return;
         }
 
-        final Box2DComponent b2dCmp = b2dCmpMapper.get(entity);
+        final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
         final Vector2 position = b2dCmp.body.getPosition();
 
         final Sprite frame = aniCmp.animation.getKeyFrame(aniCmp.aniTimer, true);
