@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.quillraven.game" >
 
-    <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="27" />
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
