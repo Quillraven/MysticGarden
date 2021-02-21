@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        gdxVersion = '1.9.10'
+        gdxVersion = '1.9.14'
     }
 
     repositories {
@@ -12,7 +12,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.1'
+        classpath 'com.android.tools.build:gradle:4.0.2'
         classpath "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
 
     }
@@ -26,7 +26,7 @@ allprojects {
         appName = "MysticGarden"
         roboVMVersion = '2.3.3'
         box2DLightsVersion = '1.4'
-        ashleyVersion = '1.7.3'
+        ashleyVersion = '1.7.4'
         aiVersion = '1.8.0'
     }
 
@@ -43,7 +43,7 @@ project(":desktop") {
 
     dependencies {
         implementation project(":core")
-        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         implementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
