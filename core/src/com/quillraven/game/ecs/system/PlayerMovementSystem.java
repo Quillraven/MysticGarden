@@ -97,4 +97,10 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
                 break;
         }
     }
+
+    public void reset() {
+        xFactor = 0;
+        yFactor = 0;
+        directionChange = false;
+    }
 }

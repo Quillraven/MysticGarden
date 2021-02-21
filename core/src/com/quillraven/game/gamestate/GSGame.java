@@ -71,6 +71,7 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         Utils.getInputManager().addKeyInputListener(ecsEngine.getSystem(PlayerMovementSystem.class));
         saveState.loadState(playerEntities.first(), ecsEngine, gameStateHUD);
         Utils.getAudioManager().playAudio(AudioManager.AudioType.ALMOST_FINISHED);
+        ecsEngine.getSystem(PlayerMovementSystem.class).reset();
     }
 
     @Override
