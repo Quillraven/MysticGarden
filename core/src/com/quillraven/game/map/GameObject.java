@@ -26,22 +26,13 @@ public class GameObject {
 
     GameObject(final TiledMapTileMapObject tileMapObject) {
         final MapProperties props = tileMapObject.getProperties();
-        final MapProperties tileProps;
-        if (tileMapObject.getTile() instanceof AnimatedTiledMapTile) {
-            tileProps = ((AnimatedTiledMapTile) tileMapObject.getTile()).getFrameTiles()[0].getProperties();
-        } else {
-            tileProps = tileMapObject.getTile().getProperties();
-        }
+        final MapProperties tileProps = tileMapObject.getTile().getProperties();
 
         this.tileMapObjectRef = tileMapObject;
         this.id = props.get("id", Integer.class);
         this.boundaries = new Rectangle();
         boundaries.setPosition(props.get("x", Float.class) * UNIT_SCALE, props.get("y", Float.class) * UNIT_SCALE);
         boundaries.setSize(props.get("width", Float.class) * UNIT_SCALE, props.get("height", Float.class) * UNIT_SCALE);
-
-        if (id == 51) {
-            System.out.println();
-        }
 
         if (props.containsKey("type")) {
             // type is specified specifically for that object
