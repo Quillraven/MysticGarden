@@ -1,6 +1,23 @@
-apply plugin: "java"
-
-sourceCompatibility = 1.7
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+eclipse.project.name = appName + '-core'
 
-sourceSets.main.java.srcDirs = [ "src/" ]
+dependencies {
+  api "com.badlogicgames.box2dlights:box2dlights:$box2dlightsVersion"
+  api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+  api "com.badlogicgames.gdx:gdx:$gdxVersion"
+  api "io.github.libktx:ktx-actors:$ktxVersion"
+  api "io.github.libktx:ktx-app:$ktxVersion"
+  api "io.github.libktx:ktx-assets:$ktxVersion"
+  api "io.github.libktx:ktx-box2d:$ktxVersion"
+  api "io.github.libktx:ktx-collections:$ktxVersion"
+  api "io.github.libktx:ktx-graphics:$ktxVersion"
+  api "io.github.libktx:ktx-i18n:$ktxVersion"
+  api "io.github.libktx:ktx-log:$ktxVersion"
+  api "io.github.libktx:ktx-math:$ktxVersion"
+  api "io.github.libktx:ktx-preferences:$ktxVersion"
+  api "io.github.libktx:ktx-scene2d:$ktxVersion"
+  api "io.github.libktx:ktx-style:$ktxVersion"
+  api "io.github.libktx:ktx-tiled:$ktxVersion"
+  api "io.github.quillraven.fleks:Fleks:$fleksVersion"
+  api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+}
