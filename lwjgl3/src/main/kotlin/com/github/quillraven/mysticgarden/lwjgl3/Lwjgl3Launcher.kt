@@ -10,7 +10,7 @@ import com.github.quillraven.mysticgarden.MysticGarden
 fun main() {
     Lwjgl3Application(MysticGarden(), Lwjgl3ApplicationConfiguration().apply {
         setTitle("MysticGarden")
-        setWindowedMode(640, 480)
+        setWindowedMode(432, 768)
         setWindowIcon(*(arrayOf(128, 64, 32, 16).map { "libgdx$it.png" }.toTypedArray()))
     })
 }

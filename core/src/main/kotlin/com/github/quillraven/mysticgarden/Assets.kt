@@ -3,13 +3,16 @@ package com.github.quillraven.mysticgarden
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.maps.tiled.TiledMap
+import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
 import ktx.app.gdxError
 import ktx.assets.disposeSafely
 import ktx.assets.getAsset
 import ktx.assets.load
-import ktx.log.logger
+import ktx.assets.setLoader
+import ktx.log.Logger
 
 /**
  * Class to handle all assets of the game. Since it is a very small game,
@@ -27,12 +30,17 @@ class Assets : Disposable {
     private val regionsCache = mutableMapOf<AtlasAsset, MutableMap<RegionName, Array<out TextureRegion>>>()
 
     fun load() {
+        manager.setLoader(TmxMapLoader())
+
         AtlasAsset.values().forEach { manager.load<TextureAtlas>(it.path) }
+        TiledMapAsset.values().forEach { manager.load<TiledMap>(it.path) }
 
         manager.finishLoading()
     }
 
     operator fun get(asset: AtlasAsset): TextureAtlas = manager.getAsset(asset.path)
+
+    operator fun get(asset: TiledMapAsset): TiledMap = manager.getAsset(asset.path)
 
     operator fun get(region: RegionName): TextureRegion {
         if (regionCache.size >= 100) {
@@ -63,11 +71,12 @@ class Assets : Disposable {
     }
 
     override fun dispose() {
+        log.debug { "Disposing assets: regionCacheSize=${regionCache.size}, regionsCacheSize=${regionsCache.values.sumOf { it.size }}" }
         manager.disposeSafely()
     }
 
     companion object {
-        private val log = logger<Assets>()
+        private val log = Logger(Assets::class.java.simpleName)
     }
 }
 
@@ -85,5 +94,10 @@ enum class AtlasAsset {
     GAME;
 
     val path: String = "graphics/${this.name.lowercase()}.atlas"
+}
 
+enum class TiledMapAsset {
+    MAP;
+
+    val path: String = "map/${this.name.lowercase()}.tmx"
 }

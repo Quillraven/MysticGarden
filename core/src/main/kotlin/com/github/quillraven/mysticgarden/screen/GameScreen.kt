@@ -10,9 +10,12 @@ import com.badlogic.gdx.utils.viewport.Viewport
 import com.github.quillraven.fleks.world
 import com.github.quillraven.mysticgarden.Assets
 import com.github.quillraven.mysticgarden.RegionName
+import com.github.quillraven.mysticgarden.TiledMapAsset
 import com.github.quillraven.mysticgarden.component.Animation
 import com.github.quillraven.mysticgarden.component.Boundary
 import com.github.quillraven.mysticgarden.component.Render
+import com.github.quillraven.mysticgarden.event.EventDispatcher
+import com.github.quillraven.mysticgarden.event.MapChangeEvent
 import com.github.quillraven.mysticgarden.system.AnimationSystem
 import com.github.quillraven.mysticgarden.system.RenderSystem
 import ktx.app.KtxScreen
@@ -21,6 +24,7 @@ class GameScreen(private val batch: Batch, private val assets: Assets, private v
 
     private val gameCamera = OrthographicCamera()
     private val gameViewport: Viewport = FitViewport(9f, 16f, gameCamera)
+    private val eventDispatcher = EventDispatcher()
 
     private val world = world {
         injectables {
@@ -28,6 +32,7 @@ class GameScreen(private val batch: Batch, private val assets: Assets, private v
             add(gameCamera)
             add(gameViewport)
             add(uiStage)
+            add(eventDispatcher)
         }
 
         systems {
@@ -56,6 +61,8 @@ class GameScreen(private val batch: Batch, private val assets: Assets, private v
             }
             it += Render(Sprite())
         }
+
+        eventDispatcher.dispatch(MapChangeEvent(assets[TiledMapAsset.MAP]))
     }
 
     override fun resize(width: Int, height: Int) {

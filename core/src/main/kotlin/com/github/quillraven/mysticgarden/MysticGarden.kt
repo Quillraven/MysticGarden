@@ -1,5 +1,7 @@
 package com.github.quillraven.mysticgarden
 
+import com.badlogic.gdx.Application
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -16,6 +18,8 @@ class MysticGarden : KtxGame<KtxScreen>() {
     private val uiStage by lazy { Stage(FitViewport(450f, 800f), batch) }
 
     override fun create() {
+        Gdx.app.logLevel = Application.LOG_DEBUG
+
         assets.load()
 
         addScreen(GameScreen(batch, assets, uiStage))
@@ -27,5 +31,9 @@ class MysticGarden : KtxGame<KtxScreen>() {
         batch.disposeSafely()
         assets.disposeSafely()
         uiStage.disposeSafely()
+    }
+
+    companion object {
+        const val unitScale = 1 / 32f
     }
 }
