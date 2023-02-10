@@ -3,6 +3,7 @@ package com.github.quillraven.mysticgarden
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.MapObject
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
 import com.github.quillraven.mysticgarden.component.*
@@ -15,6 +16,7 @@ import ktx.app.gdxError
 fun World.spawnObject(mapObject: MapObject): Entity {
     val (name, x, y, tiledId) = mapObject
     val assets = this.inject<Assets>()
+    val physicWorld = this.inject<PhysicWorld>()
 
     return when (name) {
         "START_LOCATION" -> {
@@ -22,6 +24,7 @@ fun World.spawnObject(mapObject: MapObject): Entity {
                 it += Player()
                 it += CameraLock()
                 it += Boundary(x, y, 1f, 1f)
+                it += Physic.of(physicWorld, it[Boundary], BodyType.DynamicBody)
                 it += Animation.of(assets, RegionName.HERO_UP)
                 it += Render(sprite(x, y, it[Animation].firstFrame, 1.5f, 1.5f))
             }
@@ -31,6 +34,7 @@ fun World.spawnObject(mapObject: MapObject): Entity {
             this.entity {
                 it += Tiled(tiledId)
                 it += Boundary(x, y, 1f, 1f, Layer.BACKGROUND)
+                it += Physic.of(physicWorld, it[Boundary], BodyType.StaticBody)
                 val objectRegionName = objectRegionName(name)
                 if (objectRegionName.isAnimation) {
                     it += Animation.of(assets, objectRegionName)

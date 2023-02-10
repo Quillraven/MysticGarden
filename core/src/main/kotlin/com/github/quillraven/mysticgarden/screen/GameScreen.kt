@@ -11,14 +11,19 @@ import com.github.quillraven.mysticgarden.MysticGarden
 import com.github.quillraven.mysticgarden.TiledMapAsset
 import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.event.MapChangeEvent
+import com.github.quillraven.mysticgarden.input.KeyboardInput
+import com.github.quillraven.mysticgarden.input.PlayerController
 import com.github.quillraven.mysticgarden.system.*
 import ktx.app.KtxScreen
+import ktx.assets.disposeSafely
+import ktx.box2d.createWorld
 
 class GameScreen(private val batch: Batch, private val assets: Assets, private val uiStage: Stage) : KtxScreen {
 
     private val gameCamera = OrthographicCamera()
     private val gameViewport: Viewport = FitViewport(9f, 16f, gameCamera)
     private val eventDispatcher = EventDispatcher()
+    private val physicWorld = createWorld().apply { autoClearForces = false }
 
     private val world = world {
         injectables {
@@ -28,10 +33,12 @@ class GameScreen(private val batch: Batch, private val assets: Assets, private v
             add(uiStage)
             add(eventDispatcher)
             add(assets)
+            add(physicWorld)
         }
 
         systems {
             add(MapSystem())
+            add(PhysicSystem())
             add(AnimationSystem())
             add(CameraLockSystem())
             add(RenderSystem())
@@ -43,6 +50,7 @@ class GameScreen(private val batch: Batch, private val assets: Assets, private v
 
     override fun show() {
         eventDispatcher.dispatch(MapChangeEvent(assets[TiledMapAsset.MAP]))
+        KeyboardInput(PlayerController(world))
     }
 
     override fun resize(width: Int, height: Int) {
@@ -57,5 +65,6 @@ class GameScreen(private val batch: Batch, private val assets: Assets, private v
 
     override fun dispose() {
         world.dispose()
+        physicWorld.disposeSafely()
     }
 }

@@ -29,5 +29,10 @@ data class Boundary(
         else -> 0
     }
 
+    fun pos(x: Float, y: Float) {
+        this.x = x
+        this.y = y
+    }
+
     companion object : ComponentType<Boundary>()
 }
