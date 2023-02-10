@@ -23,7 +23,7 @@ class GameScreen(private val batch: Batch, private val assets: Assets, private v
     private val gameCamera = OrthographicCamera()
     private val gameViewport: Viewport = FitViewport(9f, 16f, gameCamera)
     private val eventDispatcher = EventDispatcher()
-    private val physicWorld = createWorld().apply { autoClearForces = false }
+    private val physicWorld = createWorld()
 
     private val world = world {
         injectables {

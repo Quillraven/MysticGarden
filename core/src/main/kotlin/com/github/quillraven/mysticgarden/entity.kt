@@ -23,6 +23,7 @@ fun World.spawnObject(mapObject: MapObject): Entity {
             this.entity {
                 it += Player()
                 it += CameraLock()
+                it += Move(3f)
                 it += Boundary(x, y, 1f, 1f)
                 it += Physic.of(physicWorld, it[Boundary], BodyType.DynamicBody)
                 it += Animation.of(assets, RegionName.HERO_UP)
