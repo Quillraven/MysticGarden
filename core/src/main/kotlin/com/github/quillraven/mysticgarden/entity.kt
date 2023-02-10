@@ -30,7 +30,7 @@ fun World.spawnObject(mapObject: MapObject): Entity {
         else -> {
             this.entity {
                 it += Tiled(tiledId)
-                it += Boundary(x, y, 1f, 1f)
+                it += Boundary(x, y, 1f, 1f, Layer.BACKGROUND)
                 val objectRegionName = objectRegionName(name)
                 if (objectRegionName.isAnimation) {
                     it += Animation.of(assets, objectRegionName)
