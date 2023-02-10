@@ -403,6 +403,12 @@ items/urand_firestarter
   orig: 32, 32
   offset: 0, 0
   index: -1
+chroma_orb
+  rotate: false
+  xy: 136, 102
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
 mold/mold_large
   rotate: false
   xy: 952, 34

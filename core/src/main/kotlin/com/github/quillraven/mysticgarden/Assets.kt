@@ -49,22 +49,28 @@ class Assets : Disposable {
         }
 
         return regionCache.getOrPut(region) {
-            this[AtlasAsset.GAME].findRegion(region.key)
+            val texRegion = if (region.index >= 0) {
+                this[region.atlas].findRegion(region.key, region.index)
+            } else {
+                this[region.atlas].findRegion(region.key)
+            }
+
+            texRegion ?: gdxError("No region found for region name ${region.key}")
         }
     }
 
-    fun getRegions(atlas: AtlasAsset, region: RegionName): Array<out TextureRegion> {
+    fun getRegions(region: RegionName): Array<out TextureRegion> {
         if (regionsCache.size >= 100) {
             log.info { "regionsCache limit exceeded. Cache will be cleared!" }
             regionsCache.clear()
         }
 
         return regionsCache
-            .getOrPut(atlas) { mutableMapOf() }
+            .getOrPut(region.atlas) { mutableMapOf() }
             .getOrPut(region) {
-                val regions = this[atlas].findRegions(region.key)
+                val regions = this[region.atlas].findRegions(region.key)
                 if (regions.isEmpty) {
-                    gdxError("No regions found for region name $region in atlas $atlas")
+                    gdxError("No regions found for region name ${region.key} in atlas ${region.atlas}")
                 }
                 regions
             }
@@ -80,18 +86,36 @@ class Assets : Disposable {
     }
 }
 
-enum class RegionName {
-    FIREBALL,
-    HERO_UP,
-    HERO_DOWN,
-    HERO_LEFT,
-    HERO_RIGHT;
+enum class RegionName(
+    val atlas: AtlasAsset,
+    prefix: String = "",
+    val isAnimation: Boolean = false,
+    val index: Int = -1
+) {
+    FIREBALL(AtlasAsset.GAME),
+    MANGROVE(AtlasAsset.MAP, "tree"),
+    TREE_1_RED(AtlasAsset.MAP, "tree"),
+    CRYSTAL(AtlasAsset.MAP, "crystal", true),
+    CRYSTAL_WALL_LIGHTRED(AtlasAsset.MAP),
+    AXE(AtlasAsset.MAP, "items"),
+    URAND_FIRESTARTER(AtlasAsset.MAP, "items"),
+    GIANT_SPIKED_CLUB(AtlasAsset.MAP, "items"),
+    TORCH(AtlasAsset.MAP, "torch", true),
+    ALTAR_MAKHLEB_FLAME(AtlasAsset.MAP, "fire_altar", true),
+    CHROMA_ORB(AtlasAsset.MAP),
+    STONE_BRICK(AtlasAsset.MAP, "stone", index = 12),
+    PORTAL(AtlasAsset.MAP, "portal"),
+    HERO_UP(AtlasAsset.GAME, isAnimation = true),
+    HERO_DOWN(AtlasAsset.GAME, isAnimation = true),
+    HERO_LEFT(AtlasAsset.GAME, isAnimation = true),
+    HERO_RIGHT(AtlasAsset.GAME, isAnimation = true);
 
-    val key: String = this.name.lowercase()
+    val key: String = if (prefix.isBlank()) this.name.lowercase() else "$prefix/${this.name.lowercase()}"
 }
 
 enum class AtlasAsset {
-    GAME;
+    GAME,
+    MAP;
 
     val path: String = "graphics/${this.name.lowercase()}.atlas"
 }

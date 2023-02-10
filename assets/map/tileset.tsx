@@ -20,11 +20,6 @@
    <frame tileid="7" duration="200"/>
   </animation>
  </tile>
- <tile id="8">
-  <properties>
-   <property name="type" value="AXE"/>
-  </properties>
- </tile>
  <tile id="10">
   <properties>
    <property name="effect_scale" type="float" value="0.5"/>
@@ -32,7 +27,6 @@
    <property name="light_color" value="0022FFCC"/>
    <property name="light_distance" type="float" value="2"/>
    <property name="light_type" value="point"/>
-   <property name="type" value="CRYSTAL"/>
   </properties>
   <animation>
    <frame tileid="10" duration="150"/>
@@ -45,21 +39,10 @@
    <frame tileid="17" duration="150"/>
   </animation>
  </tile>
- <tile id="18">
-  <properties>
-   <property name="type" value="FIRESTONE"/>
-  </properties>
- </tile>
- <tile id="32">
-  <properties>
-   <property name="type" value="CLUB"/>
-  </properties>
- </tile>
  <tile id="62">
   <properties>
    <property name="effect_offset_x" type="float" value="0.3"/>
    <property name="effect_type" value="PORTAL"/>
-   <property name="type" value="PORTAL"/>
   </properties>
   <animation>
    <frame tileid="62" duration="200"/>
@@ -74,11 +57,6 @@
    <frame tileid="82" duration="200"/>
    <frame tileid="83" duration="200"/>
   </animation>
- </tile>
- <tile id="86">
-  <properties>
-   <property name="type" value="WALL"/>
-  </properties>
  </tile>
  <tile id="88">
   <properties>
@@ -101,20 +79,5 @@
    <frame tileid="90" duration="100"/>
    <frame tileid="91" duration="100"/>
   </animation>
- </tile>
- <tile id="92">
-  <properties>
-   <property name="type" value="TREE"/>
-  </properties>
- </tile>
- <tile id="93">
-  <properties>
-   <property name="type" value="WAND"/>
-  </properties>
- </tile>
- <tile id="94">
-  <properties>
-   <property name="type" value="CHROMA_ORB"/>
-  </properties>
  </tile>
 </tileset>

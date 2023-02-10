@@ -10,8 +10,8 @@ enum class Layer(val z: Int) {
 }
 
 data class Boundary(
-    val x: Float,
-    val y: Float,
+    var x: Float,
+    var y: Float,
     val width: Float = 1f,
     val height: Float = 1f,
     val layer: Layer = Layer.DEFAULT,

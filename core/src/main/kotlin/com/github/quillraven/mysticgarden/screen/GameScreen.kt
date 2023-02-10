@@ -1,23 +1,17 @@
 package com.github.quillraven.mysticgarden.screen
 
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.g2d.Animation.PlayMode
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.github.quillraven.fleks.world
 import com.github.quillraven.mysticgarden.Assets
-import com.github.quillraven.mysticgarden.RegionName
+import com.github.quillraven.mysticgarden.MysticGarden
 import com.github.quillraven.mysticgarden.TiledMapAsset
-import com.github.quillraven.mysticgarden.component.Animation
-import com.github.quillraven.mysticgarden.component.Boundary
-import com.github.quillraven.mysticgarden.component.Render
 import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.event.MapChangeEvent
-import com.github.quillraven.mysticgarden.system.AnimationSystem
-import com.github.quillraven.mysticgarden.system.RenderSystem
+import com.github.quillraven.mysticgarden.system.*
 import ktx.app.KtxScreen
 
 class GameScreen(private val batch: Batch, private val assets: Assets, private val uiStage: Stage) : KtxScreen {
@@ -33,35 +27,21 @@ class GameScreen(private val batch: Batch, private val assets: Assets, private v
             add(gameViewport)
             add(uiStage)
             add(eventDispatcher)
+            add(assets)
         }
 
         systems {
+            add(MapSystem())
             add(AnimationSystem())
+            add(CameraLockSystem())
             add(RenderSystem())
+            if (MysticGarden.debug) {
+                add(DebugRenderSystem())
+            }
         }
     }
 
     override fun show() {
-        world.entity {
-            it += Boundary(1f, 1f)
-            it += Render(Sprite(assets[RegionName.FIREBALL]))
-        }
-
-        world.entity {
-            it += Boundary(2f, 2f, 2f, 2f)
-            it += Animation.of(assets, RegionName.HERO_UP)
-            it += Render(Sprite())
-        }
-
-        world.entity {
-            it += Boundary(2f, 5f, 2f, 2f)
-            it += Animation.of(assets, RegionName.HERO_DOWN).apply {
-                speed = 0.5f
-                mode = PlayMode.LOOP_PINGPONG
-            }
-            it += Render(Sprite())
-        }
-
         eventDispatcher.dispatch(MapChangeEvent(assets[TiledMapAsset.MAP]))
     }
 

@@ -18,7 +18,11 @@ class MysticGarden : KtxGame<KtxScreen>() {
     private val uiStage by lazy { Stage(FitViewport(450f, 800f), batch) }
 
     override fun create() {
-        Gdx.app.logLevel = Application.LOG_DEBUG
+        if (debug) {
+            Gdx.app.logLevel = Application.LOG_DEBUG
+        } else {
+            Gdx.app.logLevel = Application.LOG_ERROR
+        }
 
         assets.load()
 
@@ -35,5 +39,6 @@ class MysticGarden : KtxGame<KtxScreen>() {
 
     companion object {
         const val unitScale = 1 / 32f
+        const val debug = true
     }
 }
