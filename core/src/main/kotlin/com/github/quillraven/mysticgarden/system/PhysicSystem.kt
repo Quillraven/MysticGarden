@@ -17,6 +17,8 @@ import com.github.quillraven.mysticgarden.component.Physic
 import com.github.quillraven.mysticgarden.component.Player
 import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.event.PlayerCollisionEvent
+import ktx.collections.GdxArray
+import ktx.log.Logger
 import ktx.math.component1
 import ktx.math.component2
 
@@ -29,6 +31,7 @@ class PhysicSystem(
 ), ContactListener {
 
     private val physicMoveEntities = world.family { all(Physic, Move) }
+    private val playerCollisionEvents = GdxArray<PlayerCollisionEvent>()
 
     init {
         // to get a consistent physic simulation with a fixed timestep
@@ -41,6 +44,25 @@ class PhysicSystem(
         // Apply linear impulse once before doing the world steps
         // to get a consistent behavior with our fixed timestep approach.
         // Forces are cleared manually afterwards (see end of this method)
+        applyMoveImpulse()
+
+        super.onUpdate()
+
+        fireCollisionEvents()
+        physicWorld.clearForces()
+    }
+
+    private fun fireCollisionEvents() {
+        if (playerCollisionEvents.isEmpty) {
+            return
+        }
+
+        log.debug { "Dispatching ${playerCollisionEvents.size} player collision event(s)" }
+        playerCollisionEvents.forEach(eventDispatcher::dispatch)
+        playerCollisionEvents.clear()
+    }
+
+    private fun applyMoveImpulse() {
         physicMoveEntities.forEach {
             val (_, speed) = it[Move]
             val (body) = it[Physic]
@@ -54,10 +76,6 @@ class PhysicSystem(
                 true
             )
         }
-
-        super.onUpdate()
-
-        physicWorld.clearForces()
     }
 
     override fun onTick() {
@@ -92,10 +110,18 @@ class PhysicSystem(
             return
         }
 
-        if (dataA has Player) {
-            eventDispatcher.dispatch(PlayerCollisionEvent(dataA, dataB))
-        } else if (dataB has Player) {
-            eventDispatcher.dispatch(PlayerCollisionEvent(dataB, dataA))
+        // Store collision events to handle them afterwards because there are some
+        // limitations within ContactListener functions like e.g. you are not allowed
+        // to remove bodies (=our entities).
+
+        // Also, we make sure that collisions are only handled once per entity pair.
+        // Since the player is an EdgeShape to avoid GhostVertices, he will also
+        // trigger multiple contact events in a single world.step call but we
+        // only want to handle the collision once.
+        if (dataA has Player && playerCollisionEvents.none { it.other == dataB }) {
+            playerCollisionEvents.add(PlayerCollisionEvent(dataA, dataB))
+        } else if (dataB has Player && playerCollisionEvents.none { it.other == dataA }) {
+            playerCollisionEvents.add(PlayerCollisionEvent(dataA, dataB))
         }
     }
 
@@ -107,5 +133,6 @@ class PhysicSystem(
 
     companion object {
         private const val stepRate = 1 / 60f
+        private val log = Logger(PhysicSystem::class.java.simpleName)
     }
 }

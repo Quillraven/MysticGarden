@@ -29,7 +29,6 @@ enum class TiledObjectType(val regionName: RegionName) {
 data class Tiled(
     val id: Int,
     val type: TiledObjectType,
-    var remove: Boolean = false,
 ) : Component<Tiled> {
     override fun type(): ComponentType<Tiled> = Tiled
 

@@ -1,6 +1,5 @@
 package com.github.quillraven.mysticgarden.system
 
-import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IntervalSystem
 import com.github.quillraven.fleks.World.Companion.inject
 import com.github.quillraven.mysticgarden.component.Player
@@ -18,43 +17,29 @@ import ktx.log.Logger
 // with a single entity are only handled once.
 class CollisionSystem(
     eventDispatcher: EventDispatcher = inject(),
-) : IntervalSystem() {
-
-    private val alreadyProcessed = mutableListOf<Entity>()
+) : IntervalSystem(enabled = false) {
 
     init {
         eventDispatcher.register(::onPlayerEntityCollision)
     }
 
-    override fun onTick() {
-        alreadyProcessed.forEach {
-            if (it[Tiled].remove) {
-                it.remove()
-            }
-        }
-        alreadyProcessed.clear()
-    }
+    override fun onTick() = Unit
 
     private fun onPlayerEntityCollision(event: PlayerCollisionEvent) {
         val (player, other) = event
 
-        if (other hasNo Tiled || other in alreadyProcessed) {
+        if (other hasNo Tiled) {
             return
         }
 
-        alreadyProcessed += other
-        val tiled = other[Tiled]
-
-        // We cannot remove entities directly in this method
-        // because we are in the middle of a Box2D contact event.
-        // That's why we set a 'remove' flag to delay the removal.
-        when (tiled.type) {
+        val (_, type) = other[Tiled]
+        when (type) {
             TiledObjectType.CRYSTAL -> {
                 player[Player].crystals++
-                tiled.remove = true
+                other.remove()
             }
 
-            else -> log.debug { "Collision with ${tiled.type} not handled" }
+            else -> log.debug { "Collision with $type not handled" }
         }
     }
 
