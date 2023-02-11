@@ -479,41 +479,40 @@ stone/stone_brick
   orig: 32, 32
   offset: 0, 0
   index: 12
-torch/torch
+torch/torch_extinguished
   rotate: false
   xy: 918, 68
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 0
 torch/torch
   rotate: false
   xy: 952, 68
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 1
+  index: 0
 torch/torch
   rotate: false
   xy: 986, 68
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 2
+  index: 1
 torch/torch
   rotate: false
   xy: 0, 102
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 3
+  index: 2
 torch/torch
   rotate: false
   xy: 34, 102
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 4
+  index: 3
 tree/mangrove
   rotate: false
   xy: 918, 34

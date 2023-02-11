@@ -1,24 +1,30 @@
 package com.github.quillraven.mysticgarden.system
 
 import com.badlogic.gdx.maps.MapObject
+import com.badlogic.gdx.maps.objects.RectangleMapObject
 import com.badlogic.gdx.maps.tiled.TiledMap
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile
+import com.badlogic.gdx.math.Rectangle
 import com.github.quillraven.fleks.IntervalSystem
 import com.github.quillraven.fleks.World.Companion.inject
 import com.github.quillraven.mysticgarden.MysticGarden
+import com.github.quillraven.mysticgarden.PhysicWorld
 import com.github.quillraven.mysticgarden.component.Animation
 import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.event.MapChangeEvent
 import com.github.quillraven.mysticgarden.spawnObject
 import ktx.app.gdxError
-import ktx.tiled.forEachMapObject
-import ktx.tiled.id
-import ktx.tiled.x
-import ktx.tiled.y
+import ktx.box2d.body
+import ktx.box2d.box
+import ktx.math.vec2
+import ktx.tiled.*
 
 class MapSystem(
     eventDispatcher: EventDispatcher = inject(),
+    private val physicWorld: PhysicWorld = inject(),
 ) : IntervalSystem() {
 
     init {
@@ -31,6 +37,7 @@ class MapSystem(
 
     private fun onMapChange(event: MapChangeEvent) {
         spawnObjects(event.map)
+        spawnCollision(event.map)
     }
 
     private val MapObject.animatedTile: AnimatedTiledMapTile?
@@ -52,7 +59,51 @@ class MapSystem(
             }
         }
     }
+
+    private operator fun TiledMapTileLayer.component1(): Int = this.width
+
+    private operator fun TiledMapTileLayer.component2(): Int = this.height
+
+    private fun TiledMap.forEachCell(action: (x: Int, y: Int, cell: Cell) -> Unit) {
+        this.forEachLayer<TiledMapTileLayer> { layer ->
+            val (w, h) = layer
+            repeat(w) { x ->
+                repeat(h) { y ->
+                    layer.getCell(x, y)?.let { action(x, y, it) }
+                }
+            }
+        }
+    }
+
+    private fun spawnCollision(map: TiledMap) {
+        map.forEachCell { x, y, cell ->
+            if (cell.tile.objects.isEmpty()) {
+                return@forEachCell
+            }
+
+            physicWorld.body {
+                position.set(x.toFloat(), y.toFloat())
+
+                cell.tile.objects.forEach { cellObject ->
+                    if (cellObject !is RectangleMapObject) {
+                        gdxError("Unsupported cell object $cellObject")
+                    }
+
+                    val (objX, objY, objW, objH) = cellObject.rectangle
+                    box(objW, objH, vec2(objX + objW * 0.5f, objY + objH * 0.5f))
+                }
+            }
+        }
+    }
 }
+
+operator fun Rectangle.component1(): Float = this.x * MysticGarden.unitScale
+
+operator fun Rectangle.component2(): Float = this.y * MysticGarden.unitScale
+
+operator fun Rectangle.component3(): Float = this.width * MysticGarden.unitScale
+
+operator fun Rectangle.component4(): Float = this.height * MysticGarden.unitScale
 
 operator fun MapObject.component1(): String =
     this.name ?: gdxError("MapObject ${this.id} at (${this.x}, ${this.y}) does not have a name")

@@ -12,8 +12,8 @@ enum class Layer(val z: Int) {
 data class Boundary(
     var x: Float,
     var y: Float,
-    val width: Float = 1f,
-    val height: Float = 1f,
+    var width: Float = 1f,
+    var height: Float = 1f,
     val layer: Layer = Layer.DEFAULT,
 ) : Component<Boundary>, Comparable<Boundary> {
 
