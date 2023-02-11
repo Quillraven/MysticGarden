@@ -4,9 +4,10 @@ import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
 import com.github.quillraven.mysticgarden.component.Animation
+import com.github.quillraven.mysticgarden.component.Disable
 import com.github.quillraven.mysticgarden.component.Render
 
-class AnimationSystem : IteratingSystem(family { all(Animation, Render) }) {
+class AnimationSystem : IteratingSystem(family { all(Animation, Render).none(Disable) }) {
 
     override fun onTickEntity(entity: Entity) {
         val aniCmp = entity[Animation]

@@ -9,10 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
 import com.github.quillraven.mysticgarden.component.*
-import com.github.quillraven.mysticgarden.system.component1
-import com.github.quillraven.mysticgarden.system.component2
-import com.github.quillraven.mysticgarden.system.component3
-import com.github.quillraven.mysticgarden.system.component4
+import com.github.quillraven.mysticgarden.system.*
 import ktx.app.gdxError
 
 fun World.spawnObject(mapObject: MapObject): Entity {
@@ -48,7 +45,7 @@ fun World.spawnObject(mapObject: MapObject): Entity {
                     gdxError("Unsupported tile object $tileObject for $type")
                 }
 
-                val (_, _, objW, objH) = tileObject.rectangle
+                val (_, _, objW, objH) = tileObject.rectangle.scl(MysticGarden.unitScale)
                 it += Tiled(tiledId, type)
                 it += Boundary(x, y, objW, objH, Layer.BACKGROUND)
                 it += Physic.of(physicWorld, it[Boundary], BodyType.StaticBody, it)

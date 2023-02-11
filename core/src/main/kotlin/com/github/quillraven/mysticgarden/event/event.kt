@@ -1,6 +1,7 @@
 package com.github.quillraven.mysticgarden.event
 
 import com.badlogic.gdx.maps.tiled.TiledMap
+import com.badlogic.gdx.math.Rectangle
 import com.github.quillraven.fleks.Entity
 import kotlin.reflect.KClass
 
@@ -23,3 +24,5 @@ sealed interface Event
 data class MapChangeEvent(val map: TiledMap) : Event
 
 data class PlayerCollisionEvent(val player: Entity, val other: Entity) : Event
+
+data class ZoneChangeEvent(val newZone: Rectangle, val oldZone: Rectangle) : Event

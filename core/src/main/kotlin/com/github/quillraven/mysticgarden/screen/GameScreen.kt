@@ -22,7 +22,7 @@ import ktx.box2d.createWorld
 class GameScreen(private val batch: Batch, private val assets: Assets, private val uiStage: Stage) : KtxScreen {
 
     private val gameCamera = OrthographicCamera()
-    private val gameViewport: Viewport = FitViewport(9f, 16f, gameCamera)
+    private val gameViewport: Viewport = FitViewport(6.75f, 12f, gameCamera)
     private val eventDispatcher = EventDispatcher()
     private val physicWorld = createWorld()
 
@@ -46,7 +46,9 @@ class GameScreen(private val batch: Batch, private val assets: Assets, private v
             add(PhysicSystem())
             add(CollisionSystem())
             add(AnimationSystem())
-            add(CameraLockSystem())
+            add(DisableSystem())
+            add(ZoneSystem())
+            add(CameraSystem())
             add(RenderSystem())
             if (MysticGarden.debug) {
                 add(DebugRenderSystem())

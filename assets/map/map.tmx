@@ -21,7 +21,7 @@
    eJzt1DEKACAMA8C+y83B/39JBKfiXqF3S9YGQiMAAAAAAACAl1l9AF9YN+0B6MbfA46RspuuvQEAAAAAgDobcFwBtw==
   </data>
  </layer>
- <objectgroup color="#7d55aaff" id="5" name="boundaries" visible="0">
+ <objectgroup color="#7d55aaff" id="5" name="zones" visible="0">
   <object id="31" x="894.333" y="863.791" width="288" height="384.333"/>
   <object id="32" x="767" y="1215.21" width="672" height="479"/>
   <object id="74" x="1089.83" y="1664.67" width="510.667" height="383"/>

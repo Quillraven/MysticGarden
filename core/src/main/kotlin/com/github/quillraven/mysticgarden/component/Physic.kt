@@ -10,12 +10,12 @@ import com.github.quillraven.fleks.Entity
 import com.github.quillraven.mysticgarden.PhysicWorld
 import ktx.box2d.body
 import ktx.box2d.box
-import ktx.box2d.edge
+import ktx.box2d.circle
 import ktx.math.vec2
 
 data class Physic(
     val body: Body,
-    val posBeforeStep: Vector2 = vec2(),
+    val posBeforeStep: Vector2 = vec2(body.position.x, body.position.y),
 ) : Component<Physic> {
     override fun type(): ComponentType<Physic> = Physic
 
@@ -32,12 +32,9 @@ data class Physic(
                     if (bodyType == BodyType.StaticBody) {
                         box(w, h, vec2(w * 0.5f, h * 0.5f))
                     } else {
-                        // we use EdgeShape since it has a built-in ghost vertices
-                        // prevention mechanism in LibGDX since version 1.1.0
-                        edge(0f, 0f, w, 0f)
-                        edge(w, 0f, w, h)
-                        edge(w, h, 0f, h)
-                        edge(0f, h, 0f, 0f)
+                        // we use CircleShape to avoid the ghost vertices problem
+                        // and to not get stuck so easily with the terrain
+                        circle(w * 0.5f, vec2(w * 0.5f, h * 0.5f))
                     }
                 }
             )

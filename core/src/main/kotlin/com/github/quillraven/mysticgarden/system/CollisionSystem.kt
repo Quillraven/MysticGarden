@@ -9,12 +9,6 @@ import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.event.PlayerCollisionEvent
 import ktx.log.Logger
 
-// To prevent the ghost-vertices issue, our player uses EdgeShapes in Box2D
-// which causes a contact event for each edge. This means that sometimes
-// the two or more contacts are triggered when in fact the player is just
-// colliding with a single object.
-// The CollisionSystem makes sure that multiple collisions in the same frame
-// with a single entity are only handled once.
 class CollisionSystem(
     eventDispatcher: EventDispatcher = inject(),
 ) : IntervalSystem(enabled = false) {

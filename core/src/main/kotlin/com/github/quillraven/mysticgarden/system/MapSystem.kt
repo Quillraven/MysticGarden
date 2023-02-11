@@ -1,5 +1,6 @@
 package com.github.quillraven.mysticgarden.system
 
+import com.badlogic.gdx.maps.MapLayer
 import com.badlogic.gdx.maps.MapObject
 import com.badlogic.gdx.maps.objects.RectangleMapObject
 import com.badlogic.gdx.maps.tiled.TiledMap
@@ -8,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile
 import com.badlogic.gdx.math.Rectangle
+import com.badlogic.gdx.math.Vector2
 import com.github.quillraven.fleks.IntervalSystem
 import com.github.quillraven.fleks.World.Companion.inject
 import com.github.quillraven.mysticgarden.MysticGarden
@@ -49,11 +51,11 @@ class MapSystem(
         }
 
     private fun spawnObjects(map: TiledMap) {
-        map.forEachMapObject("objects") { mapObj ->
+        map.objectsLayers.objects.forEach { mapObj ->
             val entity = world.spawnObject(mapObj)
             if (entity has Animation) {
                 // adjust the animation speed to the speed defined in Tiled mapeditor
-                val animatedTile = mapObj.animatedTile ?: return@forEachMapObject
+                val animatedTile = mapObj.animatedTile ?: return@forEach
                 val fps = 1000f / animatedTile.animationIntervals[0]
                 entity[Animation].speed = fps * Animation.defaultSpeed
             }
@@ -89,7 +91,7 @@ class MapSystem(
                         gdxError("Unsupported cell object $cellObject")
                     }
 
-                    val (objX, objY, objW, objH) = cellObject.rectangle
+                    val (objX, objY, objW, objH) = cellObject.rectangle.scl(MysticGarden.unitScale)
                     box(objW, objH, vec2(objX + objW * 0.5f, objY + objH * 0.5f))
                 }
             }
@@ -97,13 +99,17 @@ class MapSystem(
     }
 }
 
-operator fun Rectangle.component1(): Float = this.x * MysticGarden.unitScale
+operator fun Rectangle.component1(): Float = this.x
 
-operator fun Rectangle.component2(): Float = this.y * MysticGarden.unitScale
+operator fun Rectangle.component2(): Float = this.y
 
-operator fun Rectangle.component3(): Float = this.width * MysticGarden.unitScale
+operator fun Rectangle.component3(): Float = this.width
 
-operator fun Rectangle.component4(): Float = this.height * MysticGarden.unitScale
+operator fun Rectangle.component4(): Float = this.height
+
+fun Rectangle.scl(scale: Float): Rectangle = Rectangle.tmp.set(
+    x * scale, y * scale, width * scale, height * scale
+)
 
 operator fun MapObject.component1(): String =
     this.name ?: gdxError("MapObject ${this.id} at (${this.x}, ${this.y}) does not have a name")
@@ -113,3 +119,17 @@ operator fun MapObject.component2(): Float = this.x * MysticGarden.unitScale
 operator fun MapObject.component3(): Float = this.y * MysticGarden.unitScale
 
 operator fun MapObject.component4(): Int = this.id
+
+val TiledMap.zoneLayer: MapLayer
+    get() = this.layer("zones")
+
+val TiledMap.objectsLayers: MapLayer
+    get() = this.layer("objects")
+
+val TiledMap.startLocation: Vector2
+    get() {
+        val (_, x, y) = this.objectsLayers.objects
+            .firstOrNull { it.name == "START_LOCATION" }
+            ?: gdxError("There is no START_LOCATION defined in the objects layer")
+        return vec2(x, y)
+    }

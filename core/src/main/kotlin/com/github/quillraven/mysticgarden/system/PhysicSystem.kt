@@ -11,10 +11,7 @@ import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
 import com.github.quillraven.fleks.World.Companion.inject
 import com.github.quillraven.mysticgarden.PhysicWorld
-import com.github.quillraven.mysticgarden.component.Boundary
-import com.github.quillraven.mysticgarden.component.Move
-import com.github.quillraven.mysticgarden.component.Physic
-import com.github.quillraven.mysticgarden.component.Player
+import com.github.quillraven.mysticgarden.component.*
 import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.event.PlayerCollisionEvent
 import ktx.collections.GdxArray
@@ -64,11 +61,17 @@ class PhysicSystem(
 
     private fun applyMoveImpulse() {
         physicMoveEntities.forEach {
-            val (_, speed) = it[Move]
             val (body) = it[Physic]
             val (worldX, worldY) = body.worldCenter
             val (velX, velY) = body.linearVelocity
 
+            if (it has Disable) {
+                // disabled entities will be stopped
+                body.applyLinearImpulse(-velX, -velY, worldX, worldY, true)
+                return@forEach
+            }
+
+            val (_, speed) = it[Move]
             body.applyLinearImpulse(
                 body.mass * speed.x - velX,
                 body.mass * speed.y - velY,
@@ -113,15 +116,10 @@ class PhysicSystem(
         // Store collision events to handle them afterwards because there are some
         // limitations within ContactListener functions like e.g. you are not allowed
         // to remove bodies (=our entities).
-
-        // Also, we make sure that collisions are only handled once per entity pair.
-        // Since the player is an EdgeShape to avoid GhostVertices, he will also
-        // trigger multiple contact events in a single world.step call but we
-        // only want to handle the collision once.
         if (dataA has Player && playerCollisionEvents.none { it.other == dataB }) {
             playerCollisionEvents.add(PlayerCollisionEvent(dataA, dataB))
         } else if (dataB has Player && playerCollisionEvents.none { it.other == dataA }) {
-            playerCollisionEvents.add(PlayerCollisionEvent(dataA, dataB))
+            playerCollisionEvents.add(PlayerCollisionEvent(dataB, dataA))
         }
     }
 
