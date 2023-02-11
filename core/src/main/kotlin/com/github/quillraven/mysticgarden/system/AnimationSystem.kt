@@ -10,7 +10,7 @@ class AnimationSystem : IteratingSystem(family { all(Animation, Render) }) {
 
     override fun onTickEntity(entity: Entity) {
         val aniCmp = entity[Animation]
-        val (animation, stateTime, speed, mode) = aniCmp
+        val (animation, speed, stateTime, mode) = aniCmp
 
         animation.playMode = mode
         val frame = animation.getKeyFrame(stateTime)

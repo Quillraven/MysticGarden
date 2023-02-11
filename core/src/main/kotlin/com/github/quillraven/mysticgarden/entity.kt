@@ -28,7 +28,7 @@ fun World.spawnObject(mapObject: MapObject): Entity {
                 it += Move(3f)
                 it += Boundary(x, y, 0.8f, 0.8f)
                 it += Physic.of(physicWorld, it[Boundary], BodyType.DynamicBody, it)
-                it += Animation.of(assets, RegionName.HERO_UP)
+                it += Animation.of(assets, RegionName.HERO_DOWN, 0f)
                 it += Render(sprite(x, y, it[Animation].firstFrame, 1.5f, 1.5f))
             }
         }

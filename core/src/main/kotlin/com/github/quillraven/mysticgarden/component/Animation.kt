@@ -10,25 +10,27 @@ import com.github.quillraven.mysticgarden.RegionName
 typealias RegionAnimation = com.badlogic.gdx.graphics.g2d.Animation<TextureRegion>
 
 data class Animation(
-    val animation: RegionAnimation,
+    var animation: RegionAnimation,
+    var speed: Float,
     var stateTime: Float = 0f,
-    var speed: Float = 1f,
     var mode: PlayMode = PlayMode.LOOP
 ) : Component<Animation> {
 
     val firstFrame: TextureRegion
         get() = animation.getKeyFrame(0f)
 
+    fun change(assets: Assets, region: RegionName) {
+        animation = RegionAnimation(defaultSpeed, assets.getRegions(region))
+    }
+
     override fun type(): ComponentType<Animation> = Animation
 
     companion object : ComponentType<Animation>() {
         const val defaultSpeed = 1 / 20f // 20 fps
 
-        fun of(assets: Assets, region: RegionName): Animation {
+        fun of(assets: Assets, region: RegionName, speed: Float = 1f): Animation {
             val regions = assets.getRegions(region)
-            return Animation(
-                RegionAnimation(defaultSpeed, regions)
-            )
+            return Animation(RegionAnimation(defaultSpeed, regions), speed)
         }
     }
 
