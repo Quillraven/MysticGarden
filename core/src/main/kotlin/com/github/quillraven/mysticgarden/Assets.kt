@@ -92,7 +92,6 @@ enum class RegionName(
     val isAnimation: Boolean = false,
     val index: Int = -1
 ) {
-    FIREBALL(AtlasAsset.GAME),
     MANGROVE(AtlasAsset.MAP, "tree"),
     TREE_1_RED(AtlasAsset.MAP, "tree"),
     CRYSTAL(AtlasAsset.MAP, "crystal", true),
