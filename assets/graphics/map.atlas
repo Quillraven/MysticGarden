@@ -450,14 +450,14 @@ portal/portal
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: -1
-portal/portal_rotated
+  index: 0
+portal/portal
   rotate: false
   xy: 102, 68
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: -1
+  index: 1
 statue_cat
   rotate: false
   xy: 816, 68

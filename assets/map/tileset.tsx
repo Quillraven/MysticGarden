@@ -9,6 +9,9 @@
    <property name="light_fluctuation_speed" type="float" value="8"/>
    <property name="light_type" value="point"/>
   </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="2" y="0" width="28" height="32"/>
+  </objectgroup>
   <animation>
    <frame tileid="0" duration="200"/>
    <frame tileid="1" duration="200"/>
@@ -19,6 +22,11 @@
    <frame tileid="6" duration="200"/>
    <frame tileid="7" duration="200"/>
   </animation>
+ </tile>
+ <tile id="8">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="1" y="2" width="29" height="30"/>
+  </objectgroup>
  </tile>
  <tile id="9">
   <objectgroup draworder="index" id="2">
@@ -33,6 +41,9 @@
    <property name="light_distance" type="float" value="2"/>
    <property name="light_type" value="point"/>
   </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="5" y="0" width="22" height="32"/>
+  </objectgroup>
   <animation>
    <frame tileid="10" duration="150"/>
    <frame tileid="11" duration="150"/>
@@ -44,9 +55,19 @@
    <frame tileid="17" duration="150"/>
   </animation>
  </tile>
+ <tile id="18">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="0" width="32" height="32"/>
+  </objectgroup>
+ </tile>
  <tile id="31">
   <objectgroup draworder="index" id="2">
    <object id="1" x="3" y="2" width="26" height="29"/>
+  </objectgroup>
+ </tile>
+ <tile id="32">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="1" y="1" width="31" height="30"/>
   </objectgroup>
  </tile>
  <tile id="57">
@@ -59,6 +80,9 @@
    <property name="effect_offset_x" type="float" value="0.3"/>
    <property name="effect_type" value="PORTAL"/>
   </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="3" y="2" width="26" height="29"/>
+  </objectgroup>
   <animation>
    <frame tileid="62" duration="200"/>
    <frame tileid="63" duration="200"/>
@@ -86,6 +110,11 @@
    <object id="1" x="0" y="0" width="32" height="32"/>
   </objectgroup>
  </tile>
+ <tile id="86">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="0" width="32" height="32"/>
+  </objectgroup>
+ </tile>
  <tile id="88">
   <properties>
    <property name="effect_offset_y" type="float" value="-0.3"/>
@@ -101,11 +130,29 @@
    <property name="light_offset_y" type="float" value="0"/>
    <property name="light_type" value="cone"/>
   </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="12" y="1" width="9" height="31"/>
+  </objectgroup>
   <animation>
    <frame tileid="88" duration="100"/>
    <frame tileid="89" duration="100"/>
    <frame tileid="90" duration="100"/>
    <frame tileid="91" duration="100"/>
   </animation>
+ </tile>
+ <tile id="92">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="3" y="0" width="29" height="32"/>
+  </objectgroup>
+ </tile>
+ <tile id="93">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="0" width="32" height="32"/>
+  </objectgroup>
+ </tile>
+ <tile id="94">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="5" y="5" width="25" height="25"/>
+  </objectgroup>
  </tile>
 </tileset>

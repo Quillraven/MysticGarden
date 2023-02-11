@@ -104,7 +104,7 @@ enum class RegionName(
     ALTAR_MAKHLEB_FLAME(AtlasAsset.MAP, "fire_altar", true),
     CHROMA_ORB(AtlasAsset.MAP),
     STONE_BRICK(AtlasAsset.MAP, "stone", index = 12),
-    PORTAL(AtlasAsset.MAP, "portal"),
+    PORTAL(AtlasAsset.MAP, "portal", isAnimation = true),
     HERO_UP(AtlasAsset.GAME, isAnimation = true),
     HERO_DOWN(AtlasAsset.GAME, isAnimation = true),
     HERO_LEFT(AtlasAsset.GAME, isAnimation = true),
