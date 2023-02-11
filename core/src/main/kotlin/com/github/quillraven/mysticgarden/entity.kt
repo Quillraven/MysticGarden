@@ -46,7 +46,7 @@ fun World.spawnObject(mapObject: MapObject): Entity {
                 }
 
                 val (_, _, objW, objH) = tileObject.rectangle.scl(MysticGarden.unitScale)
-                it += Tiled(tiledId, type)
+                it += Tiled(tiledId, type, mapObject.trigger)
                 it += Boundary(x, y, objW, objH, Layer.BACKGROUND)
                 it += Physic.of(physicWorld, it[Boundary], BodyType.StaticBody, it)
 

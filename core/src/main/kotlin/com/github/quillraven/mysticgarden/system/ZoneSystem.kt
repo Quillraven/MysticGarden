@@ -17,8 +17,6 @@ import com.github.quillraven.mysticgarden.event.ZoneChangeEvent
 import ktx.app.gdxError
 import ktx.collections.GdxArray
 import ktx.collections.addAll
-import ktx.math.component1
-import ktx.math.component2
 import ktx.math.vec2
 
 class ZoneSystem(
@@ -41,20 +39,19 @@ class ZoneSystem(
                     }
             )
 
-            val (startX, startY) = map.startLocation
-            updateActiveZone(startX, startY)
+            updateActiveZone(map.startLocation)
         }
     }
 
-    private fun updateActiveZone(x: Float, y: Float) {
+    private fun updateActiveZone(position: Vector2) {
         val prevZone = Rectangle(activeZone)
 
         activeZone.set(
-            allZones.firstOrNull { it.contains(x, y) }
-                ?: gdxError("No zone contains ($x, $y)")
+            allZones.firstOrNull { position in it }
+                ?: gdxError("No zone contains $position")
         )
 
-        eventDispatcher.dispatch(ZoneChangeEvent(activeZone, prevZone))
+        eventDispatcher.dispatch(ZoneChangeEvent(position, activeZone, prevZone))
     }
 
     private fun Boundary.center(): Vector2 {
@@ -63,10 +60,10 @@ class ZoneSystem(
     }
 
     override fun onTickEntity(entity: Entity) {
-        val (centerX, centerY) = entity[Boundary].center()
+        val center = entity[Boundary].center()
 
-        if (!activeZone.contains(centerX, centerY)) {
-            updateActiveZone(centerX, centerY)
+        if (center !in activeZone) {
+            updateActiveZone(center)
             entity.configure { it += Disable(CameraSystem.maxPanTime) }
         }
     }

@@ -131,7 +131,7 @@
    <property name="light_type" value="cone"/>
   </properties>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="12" y="1" width="9" height="31"/>
+   <object id="1" x="12" y="17.25" width="9" height="14.75"/>
   </objectgroup>
   <animation>
    <frame tileid="88" duration="100"/>

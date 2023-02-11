@@ -17,6 +17,7 @@ import com.github.quillraven.mysticgarden.PhysicWorld
 import com.github.quillraven.mysticgarden.component.Animation
 import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.event.MapChangeEvent
+import com.github.quillraven.mysticgarden.event.Trigger
 import com.github.quillraven.mysticgarden.spawnObject
 import ktx.app.gdxError
 import ktx.box2d.body
@@ -119,6 +120,12 @@ operator fun MapObject.component2(): Float = this.x * MysticGarden.unitScale
 operator fun MapObject.component3(): Float = this.y * MysticGarden.unitScale
 
 operator fun MapObject.component4(): Int = this.id
+
+val MapObject.trigger: Trigger?
+    get() {
+        val triggerName = this.propertyOrNull<String>("Trigger") ?: return null
+        return Trigger.valueOf(triggerName)
+    }
 
 val TiledMap.zoneLayer: MapLayer
     get() = this.layer("zones")

@@ -3,6 +3,7 @@ package com.github.quillraven.mysticgarden.component
 import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
 import com.github.quillraven.mysticgarden.RegionName
+import com.github.quillraven.mysticgarden.event.Trigger
 import ktx.app.gdxError
 
 enum class TiledObjectType(val regionName: RegionName) {
@@ -29,6 +30,7 @@ enum class TiledObjectType(val regionName: RegionName) {
 data class Tiled(
     val id: Int,
     val type: TiledObjectType,
+    val trigger: Trigger? = null,
 ) : Component<Tiled> {
     override fun type(): ComponentType<Tiled> = Tiled
 

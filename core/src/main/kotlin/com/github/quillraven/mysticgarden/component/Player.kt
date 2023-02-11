@@ -2,8 +2,17 @@ package com.github.quillraven.mysticgarden.component
 
 import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
+import ktx.collections.GdxArray
 
-data class Player(var crystals: Int = 0, var chromas: Int = 0) : Component<Player> {
+enum class ItemType {
+    AXE, CLUB, WAND
+}
+
+data class Player(
+    var crystals: Int = 0,
+    var chromas: Int = 0,
+    val items: GdxArray<ItemType> = GdxArray()
+) : Component<Player> {
     override fun type(): ComponentType<Player> = Player
 
     companion object : ComponentType<Player>()

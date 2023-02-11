@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Rectangle
+import com.badlogic.gdx.math.Vector2
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
@@ -32,7 +33,7 @@ class CameraSystem(
     private val panFrom = vec2()
 
     init {
-        eventDispatcher.register<ZoneChangeEvent> { (newZone, oldZone) ->
+        eventDispatcher.register<ZoneChangeEvent> { (position, newZone, oldZone) ->
             val (x, y, w, h) = newZone
             zone.set(x, y, x + w, y + h)
 
@@ -41,18 +42,19 @@ class CameraSystem(
                 return@register
             }
 
-            startPan()
+            startPan(position)
         }
     }
 
-    private fun startPan() {
+    private fun startPan(position: Vector2) {
+        val (posX, posY) = position
         val (minW, maxW, minH, maxH) = camBoundaries()
         val (camX, camY) = gameCamera
 
         pan = true
         panTime = 0f
         panFrom.set(camX, camY)
-        panTo.set(camX.coerceIn(minW, maxW), camY.coerceIn(minH, maxH))
+        panTo.set(posX.coerceIn(minW, maxW), posY.coerceIn(minH, maxH))
     }
 
     private fun camBoundaries(): Rectangle {
