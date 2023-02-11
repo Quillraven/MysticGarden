@@ -1,6 +1,10 @@
 package com.github.quillraven.mysticgarden.system
 
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.physics.box2d.Contact
+import com.badlogic.gdx.physics.box2d.ContactImpulse
+import com.badlogic.gdx.physics.box2d.ContactListener
+import com.badlogic.gdx.physics.box2d.Manifold
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.Fixed
 import com.github.quillraven.fleks.IteratingSystem
@@ -10,15 +14,19 @@ import com.github.quillraven.mysticgarden.PhysicWorld
 import com.github.quillraven.mysticgarden.component.Boundary
 import com.github.quillraven.mysticgarden.component.Move
 import com.github.quillraven.mysticgarden.component.Physic
+import com.github.quillraven.mysticgarden.component.Player
+import com.github.quillraven.mysticgarden.event.EventDispatcher
+import com.github.quillraven.mysticgarden.event.PlayerCollisionEvent
 import ktx.math.component1
 import ktx.math.component2
 
 class PhysicSystem(
     private val physicWorld: PhysicWorld = inject(),
+    private val eventDispatcher: EventDispatcher = inject(),
 ) : IteratingSystem(
     family = family { all(Physic, Boundary) },
     interval = Fixed(stepRate),
-) {
+), ContactListener {
 
     private val physicMoveEntities = world.family { all(Physic, Move) }
 
@@ -26,6 +34,7 @@ class PhysicSystem(
         // to get a consistent physic simulation with a fixed timestep
         // approach, we need to disable autoClearForces
         physicWorld.autoClearForces = false
+        physicWorld.setContactListener(this)
     }
 
     override fun onUpdate() {
@@ -74,6 +83,27 @@ class PhysicSystem(
             MathUtils.lerp(prevY, bodyY, alpha),
         )
     }
+
+    override fun beginContact(contact: Contact) {
+        val dataA = contact.fixtureA.body.userData
+        val dataB = contact.fixtureB.body.userData
+
+        if (dataA !is Entity || dataB !is Entity) {
+            return
+        }
+
+        if (dataA has Player) {
+            eventDispatcher.dispatch(PlayerCollisionEvent(dataA, dataB))
+        } else if (dataB has Player) {
+            eventDispatcher.dispatch(PlayerCollisionEvent(dataB, dataA))
+        }
+    }
+
+    override fun endContact(contact: Contact) = Unit
+
+    override fun preSolve(contact: Contact, oldManifold: Manifold) = Unit
+
+    override fun postSolve(contact: Contact, impulse: ContactImpulse) = Unit
 
     companion object {
         private const val stepRate = 1 / 60f

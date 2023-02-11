@@ -9,6 +9,7 @@ import com.github.quillraven.fleks.world
 import com.github.quillraven.mysticgarden.Assets
 import com.github.quillraven.mysticgarden.MysticGarden
 import com.github.quillraven.mysticgarden.TiledMapAsset
+import com.github.quillraven.mysticgarden.component.Physic
 import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.event.MapChangeEvent
 import com.github.quillraven.mysticgarden.input.KeyboardInput
@@ -36,9 +37,14 @@ class GameScreen(private val batch: Batch, private val assets: Assets, private v
             add(physicWorld)
         }
 
+        components {
+            onRemove(Physic, Physic.onRemove)
+        }
+
         systems {
             add(MapSystem())
             add(PhysicSystem())
+            add(CollisionSystem())
             add(AnimationSystem())
             add(CameraLockSystem())
             add(RenderSystem())

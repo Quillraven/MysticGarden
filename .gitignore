@@ -89,6 +89,7 @@ gradle-app.setting
 /ios/build/
 /ios-moe/build/
 /lwjgl3/build/
+/teavm/build/
 
 ## OS Specific
 .DS_Store

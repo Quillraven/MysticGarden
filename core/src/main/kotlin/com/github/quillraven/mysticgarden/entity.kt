@@ -11,7 +11,6 @@ import com.github.quillraven.mysticgarden.system.component1
 import com.github.quillraven.mysticgarden.system.component2
 import com.github.quillraven.mysticgarden.system.component3
 import com.github.quillraven.mysticgarden.system.component4
-import ktx.app.gdxError
 
 fun World.spawnObject(mapObject: MapObject): Entity {
     val (name, x, y, tiledId) = mapObject
@@ -25,7 +24,7 @@ fun World.spawnObject(mapObject: MapObject): Entity {
                 it += CameraLock()
                 it += Move(3f)
                 it += Boundary(x, y, 1f, 1f)
-                it += Physic.of(physicWorld, it[Boundary], BodyType.DynamicBody)
+                it += Physic.of(physicWorld, it[Boundary], BodyType.DynamicBody, it)
                 it += Animation.of(assets, RegionName.HERO_UP)
                 it += Render(sprite(x, y, it[Animation].firstFrame, 1.5f, 1.5f))
             }
@@ -33,10 +32,13 @@ fun World.spawnObject(mapObject: MapObject): Entity {
 
         else -> {
             this.entity {
-                it += Tiled(tiledId)
+                val type = TiledObjectType.of(name)
+
+                it += Tiled(tiledId, type)
                 it += Boundary(x, y, 1f, 1f, Layer.BACKGROUND)
-                it += Physic.of(physicWorld, it[Boundary], BodyType.StaticBody)
-                val objectRegionName = objectRegionName(name)
+                it += Physic.of(physicWorld, it[Boundary], BodyType.StaticBody, it)
+
+                val objectRegionName = type.regionName
                 if (objectRegionName.isAnimation) {
                     it += Animation.of(assets, objectRegionName)
                     it += Render(sprite(x, y, it[Animation].firstFrame))
@@ -53,19 +55,3 @@ private fun sprite(x: Float, y: Float, region: TextureRegion, width: Float = 1f,
         setBounds(x, y, width, height)
         setOriginCenter()
     }
-
-private fun objectRegionName(name: String): RegionName = when (name) {
-    "Tutorial_Tree" -> RegionName.MANGROVE
-    "Crystal" -> RegionName.CRYSTAL
-    "Tree" -> RegionName.TREE_1_RED
-    "Fire_Stone" -> RegionName.CRYSTAL_WALL_LIGHTRED
-    "Axe" -> RegionName.AXE
-    "Torch" -> RegionName.TORCH
-    "Fire" -> RegionName.ALTAR_MAKHLEB_FLAME
-    "Orb" -> RegionName.CHROMA_ORB
-    "Wall" -> RegionName.STONE_BRICK
-    "Portal" -> RegionName.PORTAL
-    "Wand" -> RegionName.URAND_FIRESTARTER
-    "Club" -> RegionName.GIANT_SPIKED_CLUB
-    else -> gdxError("Unknown object type: $name")
-}
