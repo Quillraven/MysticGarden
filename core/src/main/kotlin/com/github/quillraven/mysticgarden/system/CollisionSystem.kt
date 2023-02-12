@@ -1,85 +1,53 @@
 package com.github.quillraven.mysticgarden.system
 
 import com.github.quillraven.fleks.Entity
-import com.github.quillraven.fleks.IntervalSystem
-import com.github.quillraven.fleks.World.Companion.inject
-import com.github.quillraven.mysticgarden.component.ItemType
-import com.github.quillraven.mysticgarden.component.Player
-import com.github.quillraven.mysticgarden.component.Tiled
-import com.github.quillraven.mysticgarden.component.TiledObjectType
-import com.github.quillraven.mysticgarden.event.EventDispatcher
-import com.github.quillraven.mysticgarden.event.PlayerCollisionEvent
+import com.github.quillraven.fleks.IteratingSystem
+import com.github.quillraven.fleks.World.Companion.family
+import com.github.quillraven.mysticgarden.component.*
 import ktx.log.Logger
 
-class CollisionSystem(
-    eventDispatcher: EventDispatcher = inject(),
-) : IntervalSystem(enabled = false) {
-
-    init {
-        eventDispatcher.register(::onPlayerEntityCollision)
-    }
-
-    override fun onTick() = Unit
+class CollisionSystem : IteratingSystem(family { all(Collision, Player) }) {
 
     private infix fun Entity.hasItem(type: ItemType): Boolean = type in this[Player].items
 
-    private fun onPlayerEntityCollision(event: PlayerCollisionEvent) {
-        val (player, other) = event
+    override fun onTickEntity(entity: Entity) {
+        entity[Collision].entities
+            .filter { it has Tiled }
+            .forEach { other ->
+                val (_, type, trigger) = other[Tiled]
 
-        if (other hasNo Tiled) {
-            return
-        }
+                // run trigger if Tiled entity is linked to a trigger
+                trigger?.let {
+                    log.debug { "Running trigger $trigger" }
+                    it.action(world)
+                }
 
-        val (_, type, trigger) = other[Tiled]
+                // handle remaining collision logic with Tiled entity
+                if (onTiledCollision(entity, type)) {
+                    // collision handled -> remove other entity
+                    other.remove()
+                }
+            }
 
-        // run trigger if Tiled entity is linked to a trigger
-        trigger?.let {
-            log.debug { "Running trigger $trigger" }
-            it.action(world)
-        }
+        entity.configure { it -= Collision }
+    }
 
-        // handle remaining collision logic with Tiled entity
+    private fun onTiledCollision(player: Entity, type: TiledObjectType): Boolean {
         when (type) {
-            TiledObjectType.CRYSTAL -> {
-                player[Player].crystals++
-                other.remove()
+            TiledObjectType.CRYSTAL -> player[Player].crystals++
+            TiledObjectType.AXE -> player[Player].items.add(ItemType.AXE)
+            TiledObjectType.CLUB -> player[Player].items.add(ItemType.CLUB)
+            TiledObjectType.WAND -> player[Player].items.add(ItemType.WAND)
+            TiledObjectType.TREE -> return player hasItem ItemType.AXE
+            TiledObjectType.WALL -> return player hasItem ItemType.CLUB
+            TiledObjectType.FIRE_STONE -> return player hasItem ItemType.WAND
+            else -> {
+                log.debug { "Collision with $type not handled" }
+                return false
             }
-
-            TiledObjectType.AXE -> {
-                player[Player].items.add(ItemType.AXE)
-                other.remove()
-            }
-
-            TiledObjectType.TREE -> {
-                if (player hasItem ItemType.AXE) {
-                    other.remove()
-                }
-            }
-
-            TiledObjectType.CLUB -> {
-                player[Player].items.add(ItemType.CLUB)
-                other.remove()
-            }
-
-            TiledObjectType.WALL -> {
-                if (player hasItem ItemType.CLUB) {
-                    other.remove()
-                }
-            }
-
-            TiledObjectType.WAND -> {
-                player[Player].items.add(ItemType.WAND)
-                other.remove()
-            }
-
-            TiledObjectType.FIRE_STONE -> {
-                if (player hasItem ItemType.WAND) {
-                    other.remove()
-                }
-            }
-
-            else -> log.debug { "Collision with $type not handled" }
         }
+
+        return true
     }
 
     companion object {

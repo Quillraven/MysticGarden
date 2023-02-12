@@ -3,7 +3,6 @@ package com.github.quillraven.mysticgarden.event
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
-import com.github.quillraven.fleks.Entity
 import kotlin.reflect.KClass
 
 class EventDispatcher {
@@ -23,7 +22,5 @@ class EventDispatcher {
 sealed interface Event
 
 data class MapChangeEvent(val map: TiledMap) : Event
-
-data class PlayerCollisionEvent(val player: Entity, val other: Entity) : Event
 
 data class ZoneChangeEvent(val position: Vector2, val newZone: Rectangle, val oldZone: Rectangle) : Event

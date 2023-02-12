@@ -12,23 +12,17 @@ import com.github.quillraven.fleks.World.Companion.family
 import com.github.quillraven.fleks.World.Companion.inject
 import com.github.quillraven.mysticgarden.PhysicWorld
 import com.github.quillraven.mysticgarden.component.*
-import com.github.quillraven.mysticgarden.event.EventDispatcher
-import com.github.quillraven.mysticgarden.event.PlayerCollisionEvent
-import ktx.collections.GdxArray
-import ktx.log.Logger
 import ktx.math.component1
 import ktx.math.component2
 
 class PhysicSystem(
     private val physicWorld: PhysicWorld = inject(),
-    private val eventDispatcher: EventDispatcher = inject(),
 ) : IteratingSystem(
     family = family { all(Physic, Boundary) },
     interval = Fixed(stepRate),
 ), ContactListener {
 
     private val physicMoveEntities = world.family { all(Physic, Move) }
-    private val playerCollisionEvents = GdxArray<PlayerCollisionEvent>()
 
     init {
         // to get a consistent physic simulation with a fixed timestep
@@ -45,18 +39,7 @@ class PhysicSystem(
 
         super.onUpdate()
 
-        fireCollisionEvents()
         physicWorld.clearForces()
-    }
-
-    private fun fireCollisionEvents() {
-        if (playerCollisionEvents.isEmpty) {
-            return
-        }
-
-        log.debug { "Dispatching ${playerCollisionEvents.size} player collision event(s)" }
-        playerCollisionEvents.forEach(eventDispatcher::dispatch)
-        playerCollisionEvents.clear()
     }
 
     private fun applyMoveImpulse() {
@@ -116,10 +99,16 @@ class PhysicSystem(
         // Store collision events to handle them afterwards because there are some
         // limitations within ContactListener functions like e.g. you are not allowed
         // to remove bodies (=our entities).
-        if (dataA has Player && playerCollisionEvents.none { it.other == dataB }) {
-            playerCollisionEvents.add(PlayerCollisionEvent(dataA, dataB))
-        } else if (dataB has Player && playerCollisionEvents.none { it.other == dataA }) {
-            playerCollisionEvents.add(PlayerCollisionEvent(dataB, dataA))
+        if (dataA has Player) {
+            dataA.configure {
+                val (collEntities) = it.getOrAdd(Collision) { Collision() }
+                collEntities.add(dataB)
+            }
+        } else if (dataB has Player) {
+            dataB.configure {
+                val (collEntities) = it.getOrAdd(Collision) { Collision() }
+                collEntities.add(dataA)
+            }
         }
     }
 
@@ -130,7 +119,6 @@ class PhysicSystem(
     override fun postSolve(contact: Contact, impulse: ContactImpulse) = Unit
 
     companion object {
-        private const val stepRate = 1 / 60f
-        private val log = Logger(PhysicSystem::class.java.simpleName)
+        private const val stepRate = 1 / 45f
     }
 }
