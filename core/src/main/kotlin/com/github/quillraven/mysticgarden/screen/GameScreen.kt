@@ -1,5 +1,6 @@
 package com.github.quillraven.mysticgarden.screen
 
+import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -19,7 +20,12 @@ import ktx.app.KtxScreen
 import ktx.assets.disposeSafely
 import ktx.box2d.createWorld
 
-class GameScreen(private val batch: Batch, private val assets: Assets, private val uiStage: Stage) : KtxScreen {
+class GameScreen(
+    private val batch: Batch,
+    private val assets: Assets,
+    private val uiStage: Stage,
+    private val prefs: Preferences,
+) : KtxScreen {
 
     private val gameCamera = OrthographicCamera()
     private val gameViewport: Viewport = FitViewport(6.75f, 12f, gameCamera)
@@ -35,6 +41,7 @@ class GameScreen(private val batch: Batch, private val assets: Assets, private v
             add(eventDispatcher)
             add(assets)
             add(physicWorld)
+            add(prefs)
         }
 
         components {

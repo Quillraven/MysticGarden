@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-up" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="264">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-up" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="265">
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer id="1" name="background" width="64" height="64">
   <data encoding="base64" compression="zlib">
@@ -21,13 +21,14 @@
    eJzt1DEKACAMA8C+y83B/39JBKfiXqF3S9YGQiMAAAAAAACAl1l9AF9YN+0B6MbfA46RspuuvQEAAAAAgDobcFwBtw==
   </data>
  </layer>
- <objectgroup color="#7d55aaff" id="5" name="zones" visible="0">
-  <object id="31" x="894.333" y="863.791" width="288" height="384.333"/>
-  <object id="32" x="767" y="1215.21" width="672" height="479"/>
-  <object id="74" x="1089.83" y="1664.67" width="510.667" height="383"/>
-  <object id="197" x="513" y="1664.08" width="603.333" height="383.75"/>
-  <object id="198" x="512.667" y="1216.33" width="287" height="480.333"/>
-  <object id="199" x="513.5" y="673" width="413" height="575.5"/>
+ <objectgroup color="#7d55aaff" id="5" name="zones">
+  <object id="31" x="896" y="864" width="288" height="384"/>
+  <object id="32" x="768" y="1216" width="672" height="480"/>
+  <object id="74" x="1088" y="1664" width="512" height="384"/>
+  <object id="197" x="512" y="1664" width="608" height="384"/>
+  <object id="198" x="512" y="1216" width="288" height="480"/>
+  <object id="199" x="512" y="672" width="416" height="576"/>
+  <object id="263" name="START_LOCATION" x="1024" y="1056" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="7" name="objects">
   <object id="59" name="Crystal" gid="11" x="1022.86" y="991.457" width="32" height="32">
@@ -35,19 +36,19 @@
     <property name="Trigger" value="KILL_TUTORIAL_TREES"/>
    </properties>
   </object>
-  <object id="60" name="Tree" gid="93" x="893.667" y="928.124" width="32" height="32"/>
+  <object id="60" name="Tree" gid="93" x="896" y="928" width="32" height="32"/>
   <object id="61" name="Crystal" gid="11" x="1277" y="1444.63" width="32" height="32"/>
-  <object id="62" name="Fire_Stone" gid="19" x="766.5" y="1471.88" width="32" height="32"/>
-  <object id="63" name="Fire_Stone" gid="19" x="767.25" y="1440.21" width="32" height="32"/>
-  <object id="64" name="Tree" gid="93" x="1408.18" y="1983.82" width="32" height="32"/>
-  <object id="65" name="Tree" gid="93" x="1375.33" y="1825.17" width="32" height="32"/>
-  <object id="76" name="Axe" gid="9" x="1472.5" y="2014.5" width="32" height="32"/>
+  <object id="62" name="Fire_Stone" gid="19" x="768" y="1472" width="32" height="32"/>
+  <object id="63" name="Fire_Stone" gid="19" x="768" y="1440" width="32" height="32"/>
+  <object id="64" name="Tree" gid="93" x="1408" y="1984" width="32" height="32"/>
+  <object id="65" name="Tree" gid="93" x="1376" y="1824" width="32" height="32"/>
+  <object id="76" name="Axe" gid="9" x="1472" y="2016" width="32" height="32"/>
   <object id="78" name="Torch" gid="89" x="1476.91" y="1973.14" width="21.2727" height="21.2727"/>
   <object id="80" name="Fire" gid="1" x="1312.25" y="1440" width="32" height="32"/>
   <object id="81" name="Fire" gid="1" x="1247.75" y="1440.25" width="32" height="32"/>
   <object id="82" name="Fire" gid="1" x="1280" y="1408" width="32" height="32"/>
   <object id="85" name="Orb" gid="95" x="1275.66" y="1887.08" width="32" height="32"/>
-  <object id="86" name="Tree" gid="93" x="1319.5" y="1888.67" width="32" height="32"/>
+  <object id="86" name="Tree" gid="93" x="1312" y="1888" width="32" height="32"/>
   <object id="110" name="Crystal" gid="11" x="1538" y="1728" width="32" height="32"/>
   <object id="111" name="Crystal" gid="11" x="1117.17" y="2017" width="32" height="32"/>
   <object id="112" name="Fire_Stone" gid="19" x="1505.5" y="1727.5" width="32" height="32"/>
@@ -160,6 +161,5 @@
     <property name="type" value="TUTORIAL_TREE"/>
    </properties>
   </object>
-  <object id="263" name="START_LOCATION" x="1024" y="1056" width="32" height="32"/>
  </objectgroup>
 </map>

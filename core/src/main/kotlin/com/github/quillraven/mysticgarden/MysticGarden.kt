@@ -19,17 +19,19 @@ class MysticGarden : KtxGame<KtxScreen>() {
     private val batch: Batch by lazy { SpriteBatch() }
     private val assets = Assets()
     private val uiStage by lazy { Stage(FitViewport(450f, 800f), batch) }
+    private val prefs by lazy { Gdx.app.getPreferences("mystic-garden-kotlin") }
 
     override fun create() {
         if (debug) {
             Gdx.app.logLevel = Application.LOG_DEBUG
+            prefs.clear()
         } else {
             Gdx.app.logLevel = Application.LOG_ERROR
         }
 
         assets.load()
 
-        addScreen(GameScreen(batch, assets, uiStage))
+        addScreen(GameScreen(batch, assets, uiStage, prefs))
         setScreen<GameScreen>()
     }
 

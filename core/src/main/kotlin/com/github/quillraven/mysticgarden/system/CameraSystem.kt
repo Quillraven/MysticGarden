@@ -24,8 +24,8 @@ class CameraSystem(
     eventDispatcher: EventDispatcher = inject(),
 ) : IteratingSystem(family { all(CameraLock, Boundary) }) {
 
-    private val zone = Rectangle()
-    private val boundaries = Rectangle()
+    private val activeMapZone = Rectangle()
+    private val camBoundaries = Rectangle()
 
     private var pan = false
     private var panTime = 0f
@@ -33,11 +33,11 @@ class CameraSystem(
     private val panFrom = vec2()
 
     init {
-        eventDispatcher.register<ZoneChangeEvent> { (position, newZone, oldZone) ->
-            val (x, y, w, h) = newZone
-            zone.set(x, y, x + w, y + h)
+        eventDispatcher.register<ZoneChangeEvent> { (position, _, newZone, oldZone) ->
+            val (x, y, w, h) = newZone.rect
+            activeMapZone.set(x, y, x + w, y + h)
 
-            if (oldZone.width == 0f) {
+            if (oldZone.isEmpty) {
                 // first time a zone is set -> do not start a pan
                 return@register
             }
@@ -58,10 +58,10 @@ class CameraSystem(
     }
 
     private fun camBoundaries(): Rectangle {
-        val (zoneX, zoneY, zoneW, zoneH) = zone
+        val (zoneX, zoneY, zoneW, zoneH) = activeMapZone
         val (_, _, _, camW, camH) = gameCamera
 
-        return boundaries.set(
+        return camBoundaries.set(
             min(zoneX + camW, zoneW - camW),
             max(zoneX + camW, zoneW - camW),
             min(zoneY + camH, zoneH - camH),

@@ -35,6 +35,7 @@ class CollisionSystem : IteratingSystem(family { all(Collision, Player) }) {
     private fun onTiledCollision(player: Entity, type: TiledObjectType): Boolean {
         when (type) {
             TiledObjectType.CRYSTAL -> player[Player].crystals++
+            TiledObjectType.ORB -> player[Player].chromas++
             TiledObjectType.AXE -> player[Player].items.add(ItemType.AXE)
             TiledObjectType.CLUB -> player[Player].items.add(ItemType.CLUB)
             TiledObjectType.WAND -> player[Player].items.add(ItemType.WAND)

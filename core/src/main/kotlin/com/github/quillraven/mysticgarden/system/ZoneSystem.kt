@@ -1,7 +1,9 @@
 package com.github.quillraven.mysticgarden.system
 
 import com.badlogic.gdx.maps.objects.RectangleMapObject
+import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.Rectangle
+import com.badlogic.gdx.math.Shape2D
 import com.badlogic.gdx.math.Vector2
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
@@ -18,40 +20,50 @@ import ktx.app.gdxError
 import ktx.collections.GdxArray
 import ktx.collections.addAll
 import ktx.math.vec2
+import ktx.tiled.id
+
+data class Zone(val id: Int, val rect: Rectangle) : Shape2D by rect {
+    val isEmpty: Boolean
+        get() = rect.width == 0f
+
+    val isNotEmpty: Boolean
+        get() = rect.width != 0f
+}
 
 class ZoneSystem(
     private val eventDispatcher: EventDispatcher = inject()
 ) : IteratingSystem(family { all(Player, Boundary) }) {
 
-    private val activeZone = Rectangle()
-    private val allZones = GdxArray<Rectangle>()
+    private lateinit var activeMap: TiledMap
+    private var activeZone = Zone(-1, Rectangle())
+    private val allZones = GdxArray<Zone>()
     private val tmpVec2 = vec2()
 
     init {
         eventDispatcher.register<MapChangeEvent> { (map) ->
-            // init initial zone
+            // init initial zone of new map
+            activeMap = map
             allZones.addAll(
                 map.zoneLayer.objects
                     .filterIsInstance<RectangleMapObject>()
                     .map {
                         val (x, y, w, h) = it.rectangle.scl(MysticGarden.unitScale)
-                        Rectangle(x, y, w, h)
+                        Zone(it.id, Rectangle(x, y, w, h))
                     }
             )
 
-            updateActiveZone(map.startLocation)
+            val (_, startX, startY) = map.startLocation
+            updateActiveZone(vec2(startX, startY))
         }
     }
 
     private fun updateActiveZone(position: Vector2) {
-        val prevZone = Rectangle(activeZone)
+        val prevZone = activeZone.copy()
 
-        activeZone.set(
-            allZones.firstOrNull { position in it }
-                ?: gdxError("No zone contains $position")
-        )
+        activeZone = allZones.firstOrNull { position in it }
+            ?: gdxError("No zone contains $position")
 
-        eventDispatcher.dispatch(ZoneChangeEvent(position, activeZone, prevZone))
+        eventDispatcher.dispatch(ZoneChangeEvent(position, activeMap, activeZone, prevZone))
     }
 
     private fun Boundary.center(): Vector2 {

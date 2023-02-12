@@ -13,7 +13,7 @@ import com.github.quillraven.mysticgarden.system.*
 import ktx.app.gdxError
 
 fun World.spawnObject(mapObject: MapObject): Entity {
-    val (name, x, y, tiledId) = mapObject
+    val (name, x, y, _, _, tiledId) = mapObject
     val assets = this.inject<Assets>()
     val physicWorld = this.inject<PhysicWorld>()
 
