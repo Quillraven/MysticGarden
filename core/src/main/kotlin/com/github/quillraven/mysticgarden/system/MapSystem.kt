@@ -19,6 +19,7 @@ import com.github.quillraven.mysticgarden.MysticGarden
 import com.github.quillraven.mysticgarden.PhysicWorld
 import com.github.quillraven.mysticgarden.component.Animation
 import com.github.quillraven.mysticgarden.component.Player
+import com.github.quillraven.mysticgarden.component.Remove
 import com.github.quillraven.mysticgarden.component.Tiled
 import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.event.Trigger
@@ -65,8 +66,8 @@ class MapSystem(
             world.spawnObject(map.startLocation)
         }
 
-        spawnObjects(map, newZone)
-        spawnCollision(map, newZone.rect)
+        spawnObjects(map, newZone, oldZone)
+        spawnCollision(map, newZone)
     }
 
     private fun destroyCollision() {
@@ -78,10 +79,10 @@ class MapSystem(
     private fun destroyAndSaveObjects(zone: Zone) {
         log.debug { "Destroying ${tiledEntities.numEntities} tiled objects" }
         saveObjects(zone)
-        tiledEntities.forEach { it.remove() }
+        tiledEntities.forEach { it.configure { e -> e += Remove(CameraSystem.maxPanTime) } }
     }
 
-    private fun prefZoneObjectsKey(zone: Zone) = "zone-${zone.id}-removed-objects"
+    private fun prefZoneObjectsKey(zone: Zone) = "zone-${zone.id}-objects"
 
     private fun saveObjects(zone: Zone) {
         prefs.flush {
@@ -98,12 +99,23 @@ class MapSystem(
             return null
         }
 
-    private fun spawnObjects(map: TiledMap, zone: Zone) {
-        val objsFromPrefs = Json().fromJson(Array::class.java, Int::class.java, prefs[prefZoneObjectsKey(zone), ""])
+    private fun spawnObjects(map: TiledMap, newZone: Zone, oldZone: Zone) {
+        val newZonePrefObjs = Json().fromJson(IntArray::class.java, prefs[prefZoneObjectsKey(newZone), ""])
+        val oldZonePrefObjs = Json().fromJson(IntArray::class.java, prefs[prefZoneObjectsKey(oldZone), ""])
 
         map.objectsLayers.objects
             .filter { (_, x, y, w, h, id) ->
-                zone.rect.contains(x + w * 0.5f, y + h * 0.5f) && (objsFromPrefs == null || id in objsFromPrefs)
+                // only create objects that are part of the new zone
+                val centerX = x + w * 0.5f
+                val centerY = y + h * 0.5f
+
+                newZone.contains(centerX, centerY)
+                        // and which did not get removed before (e.g. cut tree via axe)
+                        && (newZonePrefObjs == null || id in newZonePrefObjs)
+                        // and which are not part of the previous zone or still exist in the previous zone
+                        // -> this is to prevent objects from spawning that are part of two zones
+                        //    and got already removed in one of the zones
+                        && (!oldZone.contains(centerX, centerY) || oldZonePrefObjs?.contains(id) == true)
             }
             .forEach { mapObj ->
                 val entity = world.spawnObject(mapObj)
@@ -121,8 +133,8 @@ class MapSystem(
 
     private operator fun TiledMapTileLayer.component2(): Int = this.height
 
-    private fun TiledMap.forEachCell(zone: Rectangle, action: (x: Int, y: Int, cell: Cell) -> Unit) {
-        val (zoneX, zoneY, zoneW, zoneH) = zone
+    private fun TiledMap.forEachCell(zone: Zone, action: (x: Int, y: Int, cell: Cell) -> Unit) {
+        val (zoneX, zoneY, zoneW, zoneH) = zone.rect
 
         this.forEachLayer<TiledMapTileLayer> { layer ->
             repeat(MathUtils.ceil(zoneW)) { x ->
@@ -135,7 +147,7 @@ class MapSystem(
         }
     }
 
-    private fun spawnCollision(map: TiledMap, zone: Rectangle) {
+    private fun spawnCollision(map: TiledMap, zone: Zone) {
         map.forEachCell(zone) { x, y, cell ->
             if (cell.tile.objects.isEmpty()) {
                 return@forEachCell

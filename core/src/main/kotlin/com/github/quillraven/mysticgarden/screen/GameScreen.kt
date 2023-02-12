@@ -57,6 +57,7 @@ class GameScreen(
             add(ZoneSystem())
             add(CameraSystem())
             add(RenderSystem())
+            add(RemoveSystem())
             if (MysticGarden.debug) {
                 add(DebugRenderSystem())
             }
