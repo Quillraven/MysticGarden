@@ -44,6 +44,10 @@ class MysticGarden : KtxGame<KtxScreen>() {
 
     companion object {
         const val unitScale = 1 / 32f
+        const val b2dPlayer: Short = 2
+        const val b2dMapObject: Short = 4
+        const val b2dEnvironment: Short = 8
+        const val b2dWater: Short = 16
         const val debug = true
     }
 }

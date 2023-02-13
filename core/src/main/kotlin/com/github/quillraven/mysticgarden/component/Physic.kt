@@ -20,7 +20,7 @@ data class Physic(
     override fun type(): ComponentType<Physic> = Physic
 
     companion object : ComponentType<Physic>() {
-        fun of(world: PhysicWorld, boundary: Boundary, bodyType: BodyType, entity: Entity): Physic {
+        fun of(world: PhysicWorld, boundary: Boundary, bodyType: BodyType, entity: Entity, category: Short): Physic {
             val (x, y, w, h) = boundary
 
             return Physic(
@@ -30,11 +30,11 @@ data class Physic(
                     fixedRotation = true
 
                     if (bodyType == BodyType.StaticBody) {
-                        box(w, h, vec2(w * 0.5f, h * 0.5f))
+                        box(w, h, vec2(w * 0.5f, h * 0.5f)) { filter.categoryBits = category }
                     } else {
                         // we use CircleShape to avoid the ghost vertices problem
                         // and to not get stuck so easily with the terrain
-                        circle(w * 0.5f, vec2(w * 0.5f, h * 0.5f))
+                        circle(w * 0.5f, vec2(w * 0.5f, h * 0.5f)) { filter.categoryBits = category }
                     }
                 }
             )

@@ -2,13 +2,6 @@
 <tileset version="1.9" tiledversion="1.9.2" name="tileset" tilewidth="32" tileheight="32" spacing="2" tilecount="210" columns="30">
  <image source="../graphics/map.png" width="1024" height="256"/>
  <tile id="0">
-  <properties>
-   <property name="light_color" value="CC1100FF"/>
-   <property name="light_distance" type="float" value="1.5"/>
-   <property name="light_fluctuation" type="float" value="0.1"/>
-   <property name="light_fluctuation_speed" type="float" value="8"/>
-   <property name="light_type" value="point"/>
-  </properties>
   <objectgroup draworder="index" id="2">
    <object id="1" x="2" y="0" width="28" height="32"/>
   </objectgroup>
@@ -37,9 +30,6 @@
   <properties>
    <property name="effect_scale" type="float" value="0.5"/>
    <property name="effect_type" value="CRYSTAL"/>
-   <property name="light_color" value="0022FFCC"/>
-   <property name="light_distance" type="float" value="2"/>
-   <property name="light_type" value="point"/>
   </properties>
   <objectgroup draworder="index" id="2">
    <object id="1" x="5" y="0" width="22" height="32"/>
@@ -89,6 +79,9 @@
   </animation>
  </tile>
  <tile id="72">
+  <properties>
+   <property name="water" type="bool" value="true"/>
+  </properties>
   <objectgroup draworder="index" id="2">
    <object id="1" x="0" y="0" width="32" height="32"/>
   </objectgroup>

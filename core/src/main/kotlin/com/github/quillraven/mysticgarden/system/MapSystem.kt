@@ -25,6 +25,7 @@ import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.event.Trigger
 import com.github.quillraven.mysticgarden.event.ZoneChangeEvent
 import com.github.quillraven.mysticgarden.spawnObject
+import com.github.quillraven.mysticgarden.spawnPlayer
 import ktx.app.gdxError
 import ktx.box2d.body
 import ktx.box2d.box
@@ -63,7 +64,8 @@ class MapSystem(
         }
 
         if (playerEntities.isEmpty) {
-            world.spawnObject(map.startLocation)
+            val (_, playerX, playerY) = map.startLocation
+            world.spawnPlayer(playerX, playerY)
         }
 
         spawnObjects(map, newZone, oldZone)
@@ -157,13 +159,16 @@ class MapSystem(
                 physicWorld.body {
                     position.set(x.toFloat(), y.toFloat())
 
+                    val isWater = cell.tile.property("water", false)
                     cell.tile.objects.forEach { cellObject ->
                         if (cellObject !is RectangleMapObject) {
                             gdxError("Unsupported cell object $cellObject")
                         }
 
                         val (objX, objY, objW, objH) = cellObject.rectangle.scl(MysticGarden.unitScale)
-                        box(objW, objH, vec2(objX + objW * 0.5f, objY + objH * 0.5f))
+                        box(objW, objH, vec2(objX + objW * 0.5f, objY + objH * 0.5f)) {
+                            filter.categoryBits = if (isWater) MysticGarden.b2dWater else MysticGarden.b2dEnvironment
+                        }
                     }
                 }
             )

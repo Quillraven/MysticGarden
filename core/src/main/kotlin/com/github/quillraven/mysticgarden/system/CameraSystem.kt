@@ -101,7 +101,7 @@ class CameraSystem(
 
     companion object {
         const val maxPanTime = 1.2f
-        private val panInterpolation = Interpolation.pow2In
+        private val panInterpolation: Interpolation = Interpolation.pow2In
     }
 }
 

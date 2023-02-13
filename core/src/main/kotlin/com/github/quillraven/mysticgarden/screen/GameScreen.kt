@@ -1,5 +1,6 @@
 package com.github.quillraven.mysticgarden.screen
 
+import box2dLight.RayHandler
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -10,6 +11,8 @@ import com.github.quillraven.fleks.world
 import com.github.quillraven.mysticgarden.Assets
 import com.github.quillraven.mysticgarden.MysticGarden
 import com.github.quillraven.mysticgarden.TiledMapAsset
+import com.github.quillraven.mysticgarden.component.B2DLight
+import com.github.quillraven.mysticgarden.component.Light
 import com.github.quillraven.mysticgarden.component.Physic
 import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.event.MapChangeEvent
@@ -19,6 +22,7 @@ import com.github.quillraven.mysticgarden.system.*
 import ktx.app.KtxScreen
 import ktx.assets.disposeSafely
 import ktx.box2d.createWorld
+import kotlin.experimental.or
 
 class GameScreen(
     private val batch: Batch,
@@ -31,6 +35,18 @@ class GameScreen(
     private val gameViewport: Viewport = FitViewport(6.75f, 12f, gameCamera)
     private val eventDispatcher = EventDispatcher()
     private val physicWorld = createWorld()
+    private val rayHandler = RayHandler(physicWorld).apply {
+        setAmbientLight(0f, 0f, 0f, 0.05f)
+        // use diffuse light to make the light not super bright
+        RayHandler.useDiffuseLight(true)
+        // don't throw shadows for water bodies
+        // -> only do that between player, objects and environment
+        B2DLight.setGlobalContactFilter(
+            MysticGarden.b2dPlayer,
+            1,
+            MysticGarden.b2dMapObject or MysticGarden.b2dEnvironment
+        )
+    }
 
     private val world = world {
         injectables {
@@ -42,10 +58,12 @@ class GameScreen(
             add(assets)
             add(physicWorld)
             add(prefs)
+            add(rayHandler)
         }
 
         components {
             onRemove(Physic, Physic.onRemove)
+            onRemove(Light, Light.onRemove)
         }
 
         systems {
@@ -57,6 +75,7 @@ class GameScreen(
             add(ZoneSystem())
             add(CameraSystem())
             add(RenderSystem())
+            add(LightSystem())
             add(RemoveSystem())
             if (MysticGarden.debug) {
                 add(DebugRenderSystem())
@@ -72,6 +91,9 @@ class GameScreen(
     override fun resize(width: Int, height: Int) {
         gameViewport.update(width, height, true)
         uiStage.viewport.update(width, height, true)
+
+        val (screenX, screenY, screenW, screenH) = gameViewport
+        rayHandler.useCustomViewport(screenX, screenY, screenW, screenH)
     }
 
     override fun render(delta: Float) {
@@ -82,5 +104,14 @@ class GameScreen(
     override fun dispose() {
         world.dispose()
         physicWorld.disposeSafely()
+        rayHandler.disposeSafely()
     }
 }
+
+private operator fun Viewport.component1(): Int = this.screenX
+
+private operator fun Viewport.component2(): Int = this.screenY
+
+private operator fun Viewport.component3(): Int = this.screenWidth
+
+private operator fun Viewport.component4(): Int = this.screenHeight
