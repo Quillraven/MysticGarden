@@ -41,12 +41,10 @@ fun World.spawnObject(mapObject: MapObject): Entity {
 
     return when (val type = TiledObjectType.of(name)) {
         TiledObjectType.CRYSTAL -> mapObjEntity(type, mapObject, tiledId, x, y, physicWorld, assets) {
-            // TODO orig color was 0022FFCC
             it += Light.pointLightOf(rayHandler, Color.SKY, 2f..2.5f, it[Boundary], it[Physic].body)
         }
 
         TiledObjectType.FIRE -> mapObjEntity(type, mapObject, tiledId, x, y, physicWorld, assets) {
-            // TODO orig color was CC1100FF
             it += Light.pointLightOf(rayHandler, Color.CORAL, 1.5f..2f, it[Boundary], it[Physic].body)
         }
 
