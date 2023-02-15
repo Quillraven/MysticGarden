@@ -43,10 +43,9 @@ class CollisionSystem(
         when (type) {
             TiledObjectType.CRYSTAL -> player[Player].crystals++
             TiledObjectType.ORB -> {
-                val pCmp = player[Player]
-                pCmp.chromas++
+                player[Player].chromas++
                 val (r, g, b) = Light.ambientColor
-                Light.ambientColor.set(r + 0.02f * pCmp.chromas, g + 0.02f * pCmp.chromas, b + 0.02f * pCmp.chromas, 1f)
+                Light.ambientColor.set(r + 0.02f, g + 0.02f, b + 0.02f, 1f)
                 rayHandler.setAmbientLight(Light.ambientColor)
             }
 
