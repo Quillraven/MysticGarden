@@ -48,6 +48,10 @@ fun World.spawnObject(mapObject: MapObject): Entity {
             it += Light.pointLightOf(rayHandler, Color.CORAL, 1.5f..2f, it[Boundary], it[Physic].body)
         }
 
+        TiledObjectType.TORCH -> mapObjEntity(type, mapObject, tiledId, x, y, physicWorld, assets) {
+            it += Light.coneLightOf(rayHandler, Color.CORAL, 4f..4.5f, 43f..45f, 270f, it[Boundary], it[Physic].body)
+        }
+
         else -> mapObjEntity(type, mapObject, tiledId, x, y, physicWorld, assets)
     }
 }

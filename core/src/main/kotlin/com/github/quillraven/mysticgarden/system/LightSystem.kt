@@ -1,5 +1,6 @@
 package com.github.quillraven.mysticgarden.system
 
+import box2dLight.ConeLight
 import box2dLight.RayHandler
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.github.quillraven.fleks.Entity
@@ -22,12 +23,16 @@ class LightSystem(
 
     override fun onTickEntity(entity: Entity) {
         val light = entity[Light]
-        val (b2dLight, distance, time, direction) = light
+        val (b2dLight, distance, angle, time, direction) = light
 
         light.distanceTime = (time + direction * deltaTime).coerceIn(0f, 1f)
         if (light.distanceTime == 0f || light.distanceTime == 1f) {
             light.distanceDirection *= -1
         }
+
         b2dLight.distance = Light.distanceInterpolation.apply(distance.start, distance.endInclusive, light.distanceTime)
+        if (b2dLight is ConeLight) {
+            b2dLight.coneDegree = Light.angleInterpolation.apply(angle.start, angle.endInclusive, light.distanceTime)
+        }
     }
 }
