@@ -26,15 +26,15 @@ data class Physic(
             return Physic(
                 world.body(bodyType) {
                     userData = entity
-                    position.set(x, y)
+                    position.set(x + w * 0.5f, y + h * 0.5f)
                     fixedRotation = true
 
                     if (bodyType == BodyType.StaticBody) {
-                        box(w, h, vec2(w * 0.5f, h * 0.5f)) { filter.categoryBits = category }
+                        box(w, h) { filter.categoryBits = category }
                     } else {
                         // we use CircleShape to avoid the ghost vertices problem
                         // and to not get stuck so easily with the terrain
-                        circle(w * 0.5f, vec2(w * 0.5f, h * 0.5f)) { filter.categoryBits = category }
+                        circle(w * 0.5f) { filter.categoryBits = category }
                     }
                 }
             )

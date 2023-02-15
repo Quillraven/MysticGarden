@@ -81,10 +81,12 @@ class PhysicSystem(
         val (body, posBeforeStep) = entity[Physic]
         val (bodyX, bodyY) = body.position
         val (prevX, prevY) = posBeforeStep
+        val boundary = entity[Boundary]
+        val (_, _, w, h) = boundary
 
-        entity[Boundary].pos(
-            MathUtils.lerp(prevX, bodyX, alpha),
-            MathUtils.lerp(prevY, bodyY, alpha),
+        boundary.pos(
+            MathUtils.lerp(prevX, bodyX, alpha) - w * 0.5f,
+            MathUtils.lerp(prevY, bodyY, alpha) - h * 0.5f,
         )
     }
 
