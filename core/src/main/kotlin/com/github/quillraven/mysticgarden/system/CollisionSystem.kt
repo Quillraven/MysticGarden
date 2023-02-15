@@ -1,12 +1,19 @@
 package com.github.quillraven.mysticgarden.system
 
+import box2dLight.RayHandler
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
+import com.github.quillraven.fleks.World.Companion.inject
 import com.github.quillraven.mysticgarden.component.*
+import ktx.graphics.component1
+import ktx.graphics.component2
+import ktx.graphics.component3
 import ktx.log.Logger
 
-class CollisionSystem : IteratingSystem(family { all(Collision, Player) }) {
+class CollisionSystem(
+    private val rayHandler: RayHandler = inject(),
+) : IteratingSystem(family { all(Collision, Player) }) {
 
     private infix fun Entity.hasItem(type: ItemType): Boolean = type in this[Player].items
 
@@ -35,7 +42,14 @@ class CollisionSystem : IteratingSystem(family { all(Collision, Player) }) {
     private fun onTiledCollision(player: Entity, type: TiledObjectType): Boolean {
         when (type) {
             TiledObjectType.CRYSTAL -> player[Player].crystals++
-            TiledObjectType.ORB -> player[Player].chromas++
+            TiledObjectType.ORB -> {
+                val pCmp = player[Player]
+                pCmp.chromas++
+                val (r, g, b) = Light.ambientColor
+                Light.ambientColor.set(r + 0.02f * pCmp.chromas, g + 0.02f * pCmp.chromas, b + 0.02f * pCmp.chromas, 1f)
+                rayHandler.setAmbientLight(Light.ambientColor)
+            }
+
             TiledObjectType.AXE -> player[Player].items.add(ItemType.AXE)
             TiledObjectType.CLUB -> player[Player].items.add(ItemType.CLUB)
             TiledObjectType.WAND -> player[Player].items.add(ItemType.WAND)

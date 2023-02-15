@@ -24,6 +24,7 @@ data class Light(
 
     companion object : ComponentType<Light>() {
         private const val numRays = 64
+        val ambientColor = Color(0.05f, 0.05f, 0.05f, 1f)
         val distanceInterpolation: Interpolation = Interpolation.smoother
         val angleInterpolation: Interpolation = Interpolation.swing
 

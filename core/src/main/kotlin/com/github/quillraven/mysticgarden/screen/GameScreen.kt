@@ -36,7 +36,6 @@ class GameScreen(
     private val eventDispatcher = EventDispatcher()
     private val physicWorld = createWorld()
     private val rayHandler = RayHandler(physicWorld).apply {
-        setAmbientLight(0f, 0f, 0f, 0.05f)
         // use diffuse light to make the light not super bright
         RayHandler.useDiffuseLight(true)
         // don't throw shadows for water bodies
@@ -46,6 +45,8 @@ class GameScreen(
             1,
             MysticGarden.b2dMapObject or MysticGarden.b2dEnvironment
         )
+
+        setAmbientLight(Light.ambientColor)
     }
 
     private val world = world {
