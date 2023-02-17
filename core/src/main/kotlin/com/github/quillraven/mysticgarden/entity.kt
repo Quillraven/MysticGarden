@@ -14,6 +14,7 @@ import com.github.quillraven.fleks.World
 import com.github.quillraven.mysticgarden.component.*
 import com.github.quillraven.mysticgarden.system.*
 import ktx.app.gdxError
+import ktx.math.vec2
 
 fun World.spawnPlayer(x: Float, y: Float): Entity {
     val assets = this.inject<Assets>()
@@ -42,6 +43,7 @@ fun World.spawnObject(mapObject: MapObject): Entity {
     return when (val type = TiledObjectType.of(name)) {
         TiledObjectType.CRYSTAL -> mapObjEntity(type, mapObject, tiledId, x, y, physicWorld, assets) {
             it += Light.pointLightOf(rayHandler, Color.SKY, 2f..2.5f, it[Boundary], it[Physic].body)
+            it += Particle(assets[ParticleAsset.CRYSTAL].apply { scaleEffect(0.5f) })
         }
 
         TiledObjectType.FIRE -> mapObjEntity(type, mapObject, tiledId, x, y, physicWorld, assets) {
@@ -49,7 +51,24 @@ fun World.spawnObject(mapObject: MapObject): Entity {
         }
 
         TiledObjectType.TORCH -> mapObjEntity(type, mapObject, tiledId, x, y, physicWorld, assets) {
-            it += Light.coneLightOf(rayHandler, Color.CORAL, 4f..4.5f, 43f..45f, 270f, it[Boundary], it[Physic].body)
+            val coneDist = 5f..5.5f
+            val coneAng = 43f..45f
+            val boundary = it[Boundary]
+            val body = it[Physic].body
+            it += Light.coneLightOf(rayHandler, Color.SCARLET, coneDist, coneAng, 270f, boundary, body).apply {
+                light.isXray = true
+            }
+
+            val pointDist = 2.5f..3f
+            it += Light.pointLightOf(rayHandler, Color.SCARLET, pointDist, boundary, body).apply {
+                light.isXray = true
+            }
+
+            it += Particle(assets[ParticleAsset.TORCH].apply { scaleEffect(0.3f) }, vec2(0f, 0.4f))
+        }
+
+        TiledObjectType.PORTAL -> mapObjEntity(type, mapObject, tiledId, x, y, physicWorld, assets) {
+            it += Particle(assets[ParticleAsset.PORTAL], vec2(0f, 0.5f), 0.5f)
         }
 
         else -> mapObjEntity(type, mapObject, tiledId, x, y, physicWorld, assets)

@@ -27,10 +27,6 @@
   </objectgroup>
  </tile>
  <tile id="10">
-  <properties>
-   <property name="effect_scale" type="float" value="0.5"/>
-   <property name="effect_type" value="CRYSTAL"/>
-  </properties>
   <objectgroup draworder="index" id="2">
    <object id="1" x="5" y="0" width="22" height="32"/>
   </objectgroup>
@@ -66,10 +62,6 @@
   </objectgroup>
  </tile>
  <tile id="62">
-  <properties>
-   <property name="effect_offset_x" type="float" value="0.3"/>
-   <property name="effect_type" value="PORTAL"/>
-  </properties>
   <objectgroup draworder="index" id="2">
    <object id="1" x="3" y="2" width="26" height="29"/>
   </objectgroup>
@@ -109,11 +101,6 @@
   </objectgroup>
  </tile>
  <tile id="88">
-  <properties>
-   <property name="effect_offset_y" type="float" value="-0.3"/>
-   <property name="effect_scale" type="float" value="0.3"/>
-   <property name="effect_type" value="TORCH"/>
-  </properties>
   <objectgroup draworder="index" id="2">
    <object id="1" x="12" y="17.25" width="9" height="14.75"/>
   </objectgroup>

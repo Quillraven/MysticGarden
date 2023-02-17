@@ -20,9 +20,14 @@ data class Light(
     var distanceDirection: Int = -1,
 ) : Component<Light> {
 
-    override fun type() = Light
+    private val cmpType = if (light is PointLight) LightPoint else LightCone
 
-    companion object : ComponentType<Light>() {
+    override fun type(): ComponentType<Light> = cmpType
+
+    companion object {
+        val LightPoint = object : ComponentType<Light>() {}
+        val LightCone = object : ComponentType<Light>() {}
+
         private const val numRays = 64
         val ambientColor = Color(0.05f, 0.05f, 0.05f, 1f)
         val distanceInterpolation: Interpolation = Interpolation.smoother
@@ -61,11 +66,11 @@ data class Light(
             boundary: Boundary,
             body: Body
         ): Light {
-            val (x, y, _, h) = boundary
+            val (x, y, w, h) = boundary
 
             return Light(
                 ConeLight(rayHandler, numRays, color, distance.endInclusive, x, y, 0f, angle.endInclusive).apply {
-                    attachToBody(body, 0f, h, direction)
+                    attachToBody(body, w * 0.5f, h, direction)
                     setSoftnessLength(3.5f)
                 },
                 distance,

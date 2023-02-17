@@ -1,6 +1,10 @@
 package com.github.quillraven.mysticgarden
 
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.assets.loaders.ParticleEffectLoader
+import com.badlogic.gdx.graphics.g2d.ParticleEffect
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.tiled.TiledMap
@@ -29,18 +33,36 @@ class Assets : Disposable {
     // cache for an array of regions (=animations)
     private val regionsCache = mutableMapOf<AtlasAsset, MutableMap<RegionName, Array<out TextureRegion>>>()
 
+    private val particlePools = mutableMapOf<ParticleAsset, ParticleEffectPool>()
+
     fun load() {
         manager.setLoader(TmxMapLoader())
 
         AtlasAsset.values().forEach { manager.load<TextureAtlas>(it.path) }
         TiledMapAsset.values().forEach { manager.load<TiledMap>(it.path) }
+        ParticleAsset.values().forEach {
+            manager.load<ParticleEffect>(it.path, ParticleEffectLoader.ParticleEffectParameter().apply {
+                this.atlasFile = AtlasAsset.GAME.path
+            })
+        }
 
         manager.finishLoading()
+
+        // create particle pools
+        ParticleAsset.values().forEach {
+            val effect = manager.getAsset<ParticleEffect>(it.path)
+            particlePools[it] = ParticleEffectPool(effect, 1, 5)
+            // We will manually take care to reset the blend function inside the RenderSystem.
+            // This will optimize the amount of draw calls.
+            effect.setEmittersCleanUpBlendFunction(false)
+        }
     }
 
     operator fun get(asset: AtlasAsset): TextureAtlas = manager.getAsset(asset.path)
 
     operator fun get(asset: TiledMapAsset): TiledMap = manager.getAsset(asset.path)
+
+    operator fun get(asset: ParticleAsset): PooledEffect = particlePools.getValue(asset).obtain()
 
     operator fun get(region: RegionName): TextureRegion {
         if (regionCache.size >= 100) {
@@ -123,4 +145,12 @@ enum class TiledMapAsset {
     MAP;
 
     val path: String = "map/${this.name.lowercase()}.tmx"
+}
+
+enum class ParticleAsset {
+    CRYSTAL,
+    PORTAL,
+    TORCH;
+
+    val path: String = "graphics/${this.name.lowercase()}.p"
 }

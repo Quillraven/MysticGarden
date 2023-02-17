@@ -13,6 +13,9 @@ import com.github.quillraven.mysticgarden.MysticGarden
 import com.github.quillraven.mysticgarden.TiledMapAsset
 import com.github.quillraven.mysticgarden.component.B2DLight
 import com.github.quillraven.mysticgarden.component.Light
+import com.github.quillraven.mysticgarden.component.Light.Companion.LightCone
+import com.github.quillraven.mysticgarden.component.Light.Companion.LightPoint
+import com.github.quillraven.mysticgarden.component.Particle
 import com.github.quillraven.mysticgarden.component.Physic
 import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.event.MapChangeEvent
@@ -64,7 +67,9 @@ class GameScreen(
 
         components {
             onRemove(Physic, Physic.onRemove)
-            onRemove(Light, Light.onRemove)
+            onRemove(LightPoint, Light.onRemove)
+            onRemove(LightCone, Light.onRemove)
+            onRemove(Particle, Particle.onRemove)
         }
 
         systems {
@@ -76,6 +81,7 @@ class GameScreen(
             add(ZoneSystem())
             add(CameraSystem())
             add(RenderSystem())
+            add(ParticleSystem())
             add(LightSystem())
             add(RemoveSystem())
             if (MysticGarden.debug) {

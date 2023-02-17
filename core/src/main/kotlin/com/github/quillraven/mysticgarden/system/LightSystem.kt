@@ -8,11 +8,13 @@ import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
 import com.github.quillraven.fleks.World.Companion.inject
 import com.github.quillraven.mysticgarden.component.Light
+import com.github.quillraven.mysticgarden.component.Light.Companion.LightCone
+import com.github.quillraven.mysticgarden.component.Light.Companion.LightPoint
 
 class LightSystem(
     private val gameCamera: OrthographicCamera = inject(),
     private val rayHandler: RayHandler = inject(),
-) : IteratingSystem(family { all(Light) }) {
+) : IteratingSystem(family { any(LightPoint, LightCone) }) {
 
     override fun onTick() {
         super.onTick()
@@ -22,7 +24,11 @@ class LightSystem(
     }
 
     override fun onTickEntity(entity: Entity) {
-        val light = entity[Light]
+        entity.getOrNull(LightPoint)?.let { updateLight(it) }
+        entity.getOrNull(LightCone)?.let { updateLight(it) }
+    }
+
+    private fun updateLight(light: Light) {
         val (b2dLight, distance, angle, time, direction) = light
 
         light.distanceTime = (time + direction * deltaTime).coerceIn(0f, 1f)
