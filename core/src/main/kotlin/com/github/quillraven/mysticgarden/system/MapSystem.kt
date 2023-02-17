@@ -65,7 +65,8 @@ class MapSystem(
 
         if (playerEntities.isEmpty) {
             val (_, playerX, playerY) = map.startLocation
-            world.spawnPlayer(playerX, playerY)
+            val player = world.spawnPlayer(playerX, playerY)
+            player[Player].maxCrystals = map.objectsLayers.objects.count { it.name == "Crystal" }
         }
 
         spawnObjects(map, newZone, oldZone)

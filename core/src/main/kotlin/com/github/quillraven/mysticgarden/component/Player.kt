@@ -13,6 +13,9 @@ data class Player(
     var chromas: Int = 0,
     val items: GdxArray<ItemType> = GdxArray()
 ) : Component<Player> {
+
+    var maxCrystals = 0
+
     override fun type(): ComponentType<Player> = Player
 
     companion object : ComponentType<Player>()

@@ -55,6 +55,16 @@ class CollisionSystem(
             TiledObjectType.TREE -> return player hasItem ItemType.AXE
             TiledObjectType.WALL -> return player hasItem ItemType.CLUB
             TiledObjectType.FIRE_STONE -> return player hasItem ItemType.WAND
+            TiledObjectType.PORTAL -> {
+                val p = player[Player]
+                if (p.crystals >= p.maxCrystals) {
+                    // TODO change to victory screen
+                    println("VICTORY")
+                }
+                // don't destroy the Portal ;)
+                return false
+            }
+
             else -> {
                 log.debug { "Collision with $type not handled" }
                 return false
