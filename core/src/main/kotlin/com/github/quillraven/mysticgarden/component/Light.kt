@@ -30,6 +30,7 @@ data class Light(
 
         private const val numRays = 64
         val ambientColor = Color(0.05f, 0.05f, 0.05f, 1f)
+        const val ambientOrbGain = 0.03f
         val distanceInterpolation: Interpolation = Interpolation.smoother
         val angleInterpolation: Interpolation = Interpolation.swing
 
