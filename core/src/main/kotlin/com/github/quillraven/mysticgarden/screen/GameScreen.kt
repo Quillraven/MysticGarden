@@ -9,8 +9,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.github.quillraven.fleks.world
 import com.github.quillraven.mysticgarden.Assets
+import com.github.quillraven.mysticgarden.MusicAsset
 import com.github.quillraven.mysticgarden.MysticGarden
 import com.github.quillraven.mysticgarden.TiledMapAsset
+import com.github.quillraven.mysticgarden.audio.AudioService
 import com.github.quillraven.mysticgarden.component.B2DLight
 import com.github.quillraven.mysticgarden.component.Light
 import com.github.quillraven.mysticgarden.component.Light.Companion.LightCone
@@ -32,6 +34,7 @@ class GameScreen(
     private val assets: Assets,
     private val uiStage: Stage,
     private val prefs: Preferences,
+    private val audioService: AudioService,
 ) : KtxScreen {
 
     private val gameCamera = OrthographicCamera()
@@ -63,6 +66,7 @@ class GameScreen(
             add(physicWorld)
             add(prefs)
             add(rayHandler)
+            add(audioService)
         }
 
         components {
@@ -93,6 +97,7 @@ class GameScreen(
     override fun show() {
         eventDispatcher.dispatch(MapChangeEvent(assets[TiledMapAsset.MAP]))
         KeyboardInput(PlayerController(world))
+        audioService.play(MusicAsset.GAME)
     }
 
     override fun resize(width: Int, height: Int) {

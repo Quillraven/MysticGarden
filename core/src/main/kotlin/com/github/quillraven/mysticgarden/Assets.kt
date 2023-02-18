@@ -2,6 +2,8 @@ package com.github.quillraven.mysticgarden
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.ParticleEffectLoader
+import com.badlogic.gdx.audio.Music
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.g2d.ParticleEffect
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect
@@ -45,6 +47,8 @@ class Assets : Disposable {
                 this.atlasFile = AtlasAsset.GAME.path
             })
         }
+        SoundAsset.values().forEach { manager.load<Sound>(it.path) }
+        MusicAsset.values().forEach { manager.load<Music>(it.path) }
 
         manager.finishLoading()
 
@@ -63,6 +67,10 @@ class Assets : Disposable {
     operator fun get(asset: TiledMapAsset): TiledMap = manager.getAsset(asset.path)
 
     operator fun get(asset: ParticleAsset): PooledEffect = particlePools.getValue(asset).obtain()
+
+    operator fun get(asset: SoundAsset): Sound = manager.getAsset(asset.path)
+
+    operator fun get(asset: MusicAsset): Music = manager.getAsset(asset.path)
 
     operator fun get(region: RegionName): TextureRegion {
         if (regionCache.size >= 100) {
@@ -153,4 +161,23 @@ enum class ParticleAsset {
     TORCH;
 
     val path: String = "graphics/${this.name.lowercase()}.p"
+}
+
+enum class MusicAsset(fileName: String) {
+    GAME("almost_finished.ogg"),
+    MENU("intro.mp3"),
+    FANFARE("victory.mp3");
+
+    val path: String = "audio/$fileName"
+}
+
+enum class SoundAsset(fileName: String) {
+    CHOP("chop.ogg"),
+    COLLECT("crystal_pickup.ogg"),
+    JINGLE("jingle.wav"),
+    SELECT("select.wav"),
+    SMASH("smash.ogg"),
+    SWING("swing.ogg");
+
+    val path: String = "audio/$fileName"
 }

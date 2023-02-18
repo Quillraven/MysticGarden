@@ -5,6 +5,8 @@ import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
 import com.github.quillraven.fleks.World.Companion.inject
+import com.github.quillraven.mysticgarden.SoundAsset
+import com.github.quillraven.mysticgarden.audio.AudioService
 import com.github.quillraven.mysticgarden.component.*
 import ktx.graphics.component1
 import ktx.graphics.component2
@@ -13,6 +15,7 @@ import ktx.log.Logger
 
 class CollisionSystem(
     private val rayHandler: RayHandler = inject(),
+    private val audioService: AudioService = inject(),
 ) : IteratingSystem(family { all(Collision, Player) }) {
 
     private infix fun Entity.hasItem(type: ItemType): Boolean = type in this[Player].items
@@ -41,7 +44,11 @@ class CollisionSystem(
 
     private fun onTiledCollision(player: Entity, type: TiledObjectType): Boolean {
         when (type) {
-            TiledObjectType.CRYSTAL -> player[Player].crystals++
+            TiledObjectType.CRYSTAL -> {
+                player[Player].crystals++
+                audioService.play(SoundAsset.COLLECT)
+            }
+
             TiledObjectType.ORB -> {
                 val p = player[Player]
                 p.chromas++
@@ -49,14 +56,48 @@ class CollisionSystem(
                 val (r, g, b) = Light.ambientColor
                 val gain = p.chromas * Light.ambientOrbGain
                 rayHandler.setAmbientLight(r + gain, g + gain, b + gain, 1f)
+                audioService.play(SoundAsset.JINGLE)
             }
 
-            TiledObjectType.AXE -> player[Player].items.add(ItemType.AXE)
-            TiledObjectType.CLUB -> player[Player].items.add(ItemType.CLUB)
-            TiledObjectType.WAND -> player[Player].items.add(ItemType.WAND)
-            TiledObjectType.TREE -> return player hasItem ItemType.AXE
-            TiledObjectType.WALL -> return player hasItem ItemType.CLUB
-            TiledObjectType.FIRE_STONE -> return player hasItem ItemType.WAND
+            TiledObjectType.AXE -> {
+                player[Player].items.add(ItemType.AXE)
+                audioService.play(SoundAsset.JINGLE)
+            }
+
+            TiledObjectType.CLUB -> {
+                player[Player].items.add(ItemType.CLUB)
+                audioService.play(SoundAsset.JINGLE)
+            }
+
+            TiledObjectType.WAND -> {
+                player[Player].items.add(ItemType.WAND)
+                audioService.play(SoundAsset.JINGLE)
+            }
+
+            TiledObjectType.TREE -> {
+                if (player hasItem ItemType.AXE) {
+                    audioService.play(SoundAsset.CHOP)
+                    return true
+                }
+                return false
+            }
+
+            TiledObjectType.WALL -> {
+                if (player hasItem ItemType.CLUB) {
+                    audioService.play(SoundAsset.SMASH)
+                    return true
+                }
+                return false
+            }
+
+            TiledObjectType.FIRE_STONE -> {
+                if (player hasItem ItemType.WAND) {
+                    audioService.play(SoundAsset.SWING)
+                    return true
+                }
+                return false
+            }
+
             TiledObjectType.PORTAL -> {
                 val p = player[Player]
                 if (p.crystals >= p.maxCrystals) {
