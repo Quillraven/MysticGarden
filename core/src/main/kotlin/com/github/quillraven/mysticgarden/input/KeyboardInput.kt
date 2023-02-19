@@ -1,6 +1,5 @@
 package com.github.quillraven.mysticgarden.input
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.github.quillraven.mysticgarden.RegionName
 import ktx.app.KtxInputAdapter
@@ -10,19 +9,19 @@ class KeyboardInput(private val playerController: PlayerController) : KtxInputAd
 
     private val moveVec = vec2()
 
-    init {
-        Gdx.input.inputProcessor = this
-    }
-
     private fun directionChange(x: Float, y: Float) {
         moveVec.add(x, y)
-        playerController.move(moveVec.x, moveVec.y)
+        updateMove(moveVec.x, moveVec.y)
+    }
+
+    fun updateMove(x: Float, y: Float) {
+        playerController.move(x, y)
 
         when {
-            moveVec.x > 0 -> playerController.changeAnimation(RegionName.HERO_RIGHT)
-            moveVec.x < 0 -> playerController.changeAnimation(RegionName.HERO_LEFT)
-            moveVec.y > 0 -> playerController.changeAnimation(RegionName.HERO_UP)
-            moveVec.y < 0 -> playerController.changeAnimation(RegionName.HERO_DOWN)
+            x > 0 -> playerController.changeAnimation(RegionName.HERO_RIGHT)
+            x < 0 -> playerController.changeAnimation(RegionName.HERO_LEFT)
+            y > 0 -> playerController.changeAnimation(RegionName.HERO_UP)
+            y < 0 -> playerController.changeAnimation(RegionName.HERO_DOWN)
         }
     }
 

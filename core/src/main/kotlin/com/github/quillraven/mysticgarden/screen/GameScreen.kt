@@ -1,6 +1,9 @@
 package com.github.quillraven.mysticgarden.screen
 
 import box2dLight.RayHandler
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
+import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -24,9 +27,12 @@ import com.github.quillraven.mysticgarden.event.MapChangeEvent
 import com.github.quillraven.mysticgarden.input.KeyboardInput
 import com.github.quillraven.mysticgarden.input.PlayerController
 import com.github.quillraven.mysticgarden.system.*
+import com.github.quillraven.mysticgarden.ui.model.GameModel
+import com.github.quillraven.mysticgarden.ui.view.gameView
 import ktx.app.KtxScreen
 import ktx.assets.disposeSafely
 import ktx.box2d.createWorld
+import ktx.scene2d.actors
 import kotlin.experimental.or
 
 class GameScreen(
@@ -41,21 +47,11 @@ class GameScreen(
     private val gameViewport: Viewport = FitViewport(6.75f, 12f, gameCamera)
     private val eventDispatcher = EventDispatcher()
     private val physicWorld = createWorld()
-    private val rayHandler = RayHandler(physicWorld).apply {
-        // use diffuse light to make the light not super bright
-        RayHandler.useDiffuseLight(true)
-        // don't throw shadows for water bodies
-        // -> only do that between player, objects and environment
-        B2DLight.setGlobalContactFilter(
-            MysticGarden.b2dPlayer,
-            1,
-            MysticGarden.b2dMapObject or MysticGarden.b2dEnvironment
-        )
+    private val rayHandler = createRayHandler()
+    private val world = createEntityWorld()
+    private val keyboardInput = KeyboardInput(PlayerController(world))
 
-        setAmbientLight(Light.ambientColor)
-    }
-
-    private val world = world {
+    private fun createEntityWorld() = world {
         injectables {
             add(batch)
             add(gameCamera)
@@ -94,10 +90,29 @@ class GameScreen(
         }
     }
 
+    private fun createRayHandler() = RayHandler(physicWorld).apply {
+        // use diffuse light to make the light not super bright
+        RayHandler.useDiffuseLight(true)
+        // don't throw shadows for water bodies
+        // -> only do that between player, objects and environment
+        B2DLight.setGlobalContactFilter(
+            MysticGarden.b2dPlayer,
+            1,
+            MysticGarden.b2dMapObject or MysticGarden.b2dEnvironment
+        )
+
+        setAmbientLight(Light.ambientColor)
+    }
+
     override fun show() {
         eventDispatcher.dispatch(MapChangeEvent(assets[TiledMapAsset.MAP]))
-        KeyboardInput(PlayerController(world))
         audioService.play(MusicAsset.GAME)
+
+        uiStage.actors {
+            gameView(GameModel(world, keyboardInput))
+        }
+
+        Gdx.input.inputProcessor = InputMultiplexer(keyboardInput, uiStage)
     }
 
     override fun resize(width: Int, height: Int) {
@@ -111,6 +126,18 @@ class GameScreen(
     override fun render(delta: Float) {
         val dt = delta.coerceAtMost(0.25f)
         world.update(dt)
+
+        // render UI
+        uiStage.viewport.apply()
+        uiStage.act(dt)
+        uiStage.draw()
+        // reset alpha value for game rendering
+        batch.color.a = 1f
+
+        if (Gdx.input.isKeyPressed(Input.Keys.R)) {
+            uiStage.clear()
+            uiStage.actors { gameView(GameModel(world, keyboardInput)) }
+        }
     }
 
     override fun dispose() {

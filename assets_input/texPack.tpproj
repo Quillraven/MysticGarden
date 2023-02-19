@@ -38,6 +38,48 @@ inputFiles=[{path:characters_and_effects/hero,type:Input,dirFilePrefix:null,recu
 keepInputFileExtensions=false
 
 
+---
+
+name=ui
+filename=
+output=../assets/graphics
+
+alias=true
+alphaThreshold=0
+debug=false
+duplicatePadding=false
+edgePadding=true
+fast=false
+filterMag=Nearest
+filterMin=Nearest
+ignoreBlankImages=true
+maxHeight=2048
+maxWidth=2048
+minHeight=16
+minWidth=16
+paddingX=2
+paddingY=2
+pot=true
+mof=false
+rotation=false
+stripWhitespaceX=false
+stripWhitespaceY=false
+wrapX=ClampToEdge
+wrapY=ClampToEdge
+premultiplyAlpha=false
+grid=false
+square=false
+bleed=true
+limitMemory=true
+useIndexes=true
+prettyPrint=false
+legacyOutput=true
+
+scaleFactors=[{suffix:"",factor:1,resampling:bicubic}]
+inputFiles=[{path:ui,type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false},{path:ui/Kit Pixel Art.png,type:Ignore}]
+keepInputFileExtensions=false
+
+
 -PROJ-
 
 version=4.11.0

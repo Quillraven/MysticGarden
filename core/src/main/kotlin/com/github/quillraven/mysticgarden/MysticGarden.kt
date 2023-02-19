@@ -9,12 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.github.quillraven.mysticgarden.audio.AudioService
 import com.github.quillraven.mysticgarden.screen.GameScreen
+import com.github.quillraven.mysticgarden.ui.loadSkin
 import ktx.app.KtxGame
 import ktx.app.KtxScreen
 import ktx.assets.disposeSafely
 import ktx.preferences.flush
 import ktx.preferences.get
 import ktx.preferences.set
+import ktx.scene2d.Scene2DSkin
 
 typealias PhysicWorld = World
 
@@ -23,7 +25,7 @@ class MysticGarden : KtxGame<KtxScreen>() {
     private val batch: Batch by lazy { SpriteBatch() }
     private val assets = Assets()
     private val audioService = AudioService(assets)
-    private val uiStage by lazy { Stage(FitViewport(450f, 800f), batch) }
+    private val uiStage by lazy { Stage(FitViewport(180f, 320f), batch) }
     private val prefs by lazy { Gdx.app.getPreferences("mystic-garden-kotlin") }
 
     override fun create() {
@@ -36,6 +38,7 @@ class MysticGarden : KtxGame<KtxScreen>() {
 
         // load assets
         assets.load()
+        Scene2DSkin.defaultSkin = loadSkin()
 
         // set audio service volume
         audioService.mscVolume = prefs[prefKeyMusic, 1f]
@@ -63,6 +66,7 @@ class MysticGarden : KtxGame<KtxScreen>() {
         batch.disposeSafely()
         assets.disposeSafely()
         uiStage.disposeSafely()
+        Scene2DSkin.defaultSkin.disposeSafely()
     }
 
     companion object {
@@ -76,6 +80,6 @@ class MysticGarden : KtxGame<KtxScreen>() {
         const val b2dEnvironment: Short = 8
         const val b2dWater: Short = 16
 
-        const val debug = true
+        const val debug = false
     }
 }
