@@ -5,3 +5,4 @@ The project will use ashley, box2d, tiled, truetypefont and scene2d
 ### Credits
 
 - [UI](https://lucapixel.itch.io/ultimate-kit-pixel-art)
+- [Orb graphic](https://opengameart.org/content/rotating-orbs)

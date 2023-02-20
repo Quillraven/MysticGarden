@@ -11,6 +11,7 @@ import ktx.style.skin
 import ktx.style.touchpad
 
 typealias GdxDrawable = com.badlogic.gdx.scenes.scene2d.utils.Drawable
+typealias GdxLabel = com.badlogic.gdx.scenes.scene2d.ui.Label
 
 enum class Font(val scale: Float) {
     SMALL(0.33f),
