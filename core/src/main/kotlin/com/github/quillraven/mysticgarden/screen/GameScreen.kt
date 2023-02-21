@@ -109,7 +109,7 @@ class GameScreen(
         audioService.play(MusicAsset.GAME)
 
         uiStage.actors {
-            gameView(GameModel(world, keyboardInput))
+            gameView(GameModel(world, keyboardInput), true)
         }
 
         Gdx.input.inputProcessor = InputMultiplexer(keyboardInput, uiStage)
@@ -136,7 +136,7 @@ class GameScreen(
 
         if (Gdx.input.isKeyPressed(Input.Keys.R)) {
             uiStage.clear()
-            uiStage.actors { gameView(GameModel(world, keyboardInput)) }
+            uiStage.actors { gameView(GameModel(world, keyboardInput), false) }
         }
     }
 

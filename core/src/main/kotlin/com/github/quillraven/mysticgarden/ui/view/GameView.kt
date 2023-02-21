@@ -1,73 +1,78 @@
 package com.github.quillraven.mysticgarden.ui.view
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.Scaling
 import com.github.quillraven.mysticgarden.ui.Drawable
 import com.github.quillraven.mysticgarden.ui.GdxLabel
+import com.github.quillraven.mysticgarden.ui.Label
 import com.github.quillraven.mysticgarden.ui.actor.CollectInfo
-import com.github.quillraven.mysticgarden.ui.actor.ItemSlot
 import com.github.quillraven.mysticgarden.ui.actor.collectInfo
-import com.github.quillraven.mysticgarden.ui.actor.itemSlot
 import com.github.quillraven.mysticgarden.ui.get
 import com.github.quillraven.mysticgarden.ui.model.GameModel
 import ktx.actors.alpha
 import ktx.actors.onChangeEvent
 import ktx.scene2d.*
 
-class GameView(model: GameModel) : KTable, Table(Scene2DSkin.defaultSkin) {
+class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.defaultSkin) {
 
     private val timeLabel: GdxLabel
 
     private val crystalInfo: CollectInfo
     private val orbInfo: CollectInfo
 
-    private val axeSlot: ItemSlot
-    private val clubSlot: ItemSlot
-    private val wandSlot: ItemSlot
-
     init {
-        touchpad(0f) {
-            this.onChangeEvent { model.onTouchChange(knobPercentX, knobPercentY) }
 
-            it.left().padLeft(5f).padBottom(5f).padRight(5f)
+        table { topTableCell ->
+            this@GameView.crystalInfo = collectInfo(Drawable.CRYSTAL, 10) { cell ->
+                cell.padLeft(5f)
+            }
+
+            this@GameView.timeLabel = label("Zeit: 00:00", Label.SMALL.skinKey) { cell ->
+                cell.padLeft(40f).fill()
+            }
+
+            this@GameView.orbInfo = collectInfo(Drawable.ORB, 5) { cell ->
+                cell.padLeft(10f)
+            }
+
+            this.alpha = 0.75f
+            topTableCell.top().left().padTop(5f).row()
         }
 
-        table {
-            background = skin[Drawable.FRAME2]
-            this.defaults().expandX().left().padLeft(2f)
+        table { centerTableCell ->
+            val itemSize = 12f
+            this.defaults().top().height(itemSize).width(itemSize).padRight(4f)
 
-            this@GameView.timeLabel = label("Zeit: 00:00") { lblCell ->
-                lblCell.padTop(3f).row()
+            image(Scene2DSkin.defaultSkin[Drawable.AXE]) { this.setScaling(Scaling.fit) }
+            image(Scene2DSkin.defaultSkin[Drawable.CLUB]) { this.setScaling(Scaling.fit) }
+            image(Scene2DSkin.defaultSkin[Drawable.WAND]) { this.setScaling(Scaling.fit) }
+
+            this.alpha = 0.5f
+            centerTableCell.top().center().padLeft(10f).row()
+        }
+
+        table { bottomTableCell ->
+            touchpad(0f) { cell ->
+                this.onChangeEvent { model.onTouchChange(knobPercentX, knobPercentY) }
+
+                cell.expand()
+                    .align(if (leftHand) Align.left else Align.right)
+                    .bottom()
+                    .padLeft(5f).padBottom(5f)
             }
 
-            table { collTblCell ->
-                this@GameView.crystalInfo = collectInfo(Drawable.CRYSTAL, 10) { collectCell ->
-                    collectCell.width(50f)
-                }
-                this@GameView.orbInfo = collectInfo(Drawable.ORB, 5)
-                collTblCell.pad(2f, 1f, 5f, 0f).row()
-            }
-
-            table { slotTableCell ->
-                this.defaults().padRight(3f).padBottom(2f)
-
-                this@GameView.axeSlot = itemSlot { slotCell -> slotCell.height(25f) }
-                this@GameView.clubSlot = itemSlot { slotCell -> slotCell.height(25f) }
-                this@GameView.wandSlot = itemSlot { slotCell -> slotCell.height(25f) }
-
-                slotTableCell.padTop(3f)
-            }
-
-            alpha = 0.75f
-            it.expandX().fill().padRight(5f).padBottom(5f).top()
+            this.alpha = 0.75f
+            bottomTableCell.expand().fill().bottom()
         }
 
         setFillParent(true)
-        bottom()
     }
 }
 
 @Scene2dDsl
 fun <S> KWidget<S>.gameView(
     model: GameModel,
+    leftHand: Boolean,
     init: GameView.(S) -> Unit = {}
-): GameView = actor(GameView(model), init)
+): GameView = actor(GameView(model, leftHand), init)
