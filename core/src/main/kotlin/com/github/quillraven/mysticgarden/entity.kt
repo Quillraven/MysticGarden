@@ -97,9 +97,9 @@ private fun World.mapObjEntity(
         gdxError("Unsupported tile object $tileObject for $type")
     }
 
-    val (_, _, objW, objH) = tileObject.rectangle.scl(MysticGarden.unitScale)
+    val (objX, objY, objW, objH) = tileObject.rectangle.scl(MysticGarden.unitScale)
     it += Tiled(tiledId, type, mapObject.trigger)
-    it += Boundary(x, y, objW, objH, Layer.BACKGROUND)
+    it += Boundary(x + objX, y + objY, objW, objH, Layer.BACKGROUND)
     it += Physic.of(physicWorld, it[Boundary], BodyType.StaticBody, it, MysticGarden.b2dMapObject)
 
     val objectRegionName = type.regionName

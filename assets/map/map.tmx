@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-up" width="34" height="43" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="270">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-up" width="34" height="43" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="386">
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer id="1" name="background" width="34" height="43">
   <data encoding="base64" compression="zlib">
-   eJzNWFGSwiAM7WVqrdpqd92qR/ACe/+jrMyQmTfPhIAtuh9vLGDJ45GE0LZpmvafYU/tI43xeG2MH9JhSozdDX1q4+6032Vfsxt0+Hng/ECXiVc47J11h327PfAFXHoDS3iIDgzp74DHNrZPYHdckYe1TyPxuMR22KfviKDR5k16XIFDD7wE55V4hHVj/DKPLo4Ljyvx2FbeF9RHbAR7B9LkUplH2zzHZOBwjJrMkcO0kAf7G8czaoJ6CMZmnbhFbbcKv7PCo0YeE21FX/FZzBfvzu2aTsiDz2HUrBYP9EFLD+S6hk1rXV4dksvj8MLaN7FvgGeeU/ox12vz9vB8cjikfNCqA2V9kuut94Wvx8Hj8UmgBla92Ct9qdqyBFh7DvCMOcnTV2q23L3wgP6dyo0TjAcOKZ8twUztwfk/8vV8Ngeyt+IbI2mswdN96dkvOa0kT67lo2xfO38DtDgJfanY93Tl9XC9aenB82Itq+XvW4Gu4mczgf1OYqJ03pT/lujFXEvjIuU/qFfO/V7ig88c7V2O99T93NNLu8t4EHsHQ2/mt/R8yMnZ7J8l3yxY84l+Lcje7Ar0tvwT+/kuUfo9SruLCEfZCyuesd+6S4xkx4o3633PPzkvePNwXcr7pt1FcsB5wZqnM/6P2GXY83x2zfNK0MMvnsG/GXzQH7Q89SrfklxUC15O/AMWI+jV
+   eJzNWO1ugzAM5GWmFrHSsLF+PELf/4XWSJx0utn5gND1x6mQUPtysR3Doeu6w5vhJPeTzOn83gj/pMOUmHsUPtcaj8z9q/xbfqMOP0/MT/SFWMPhlFl35HF/4ou4DA628IAOCoz3xOO43Afyi+sWPLx9CsLjutzHffomzC/S40YcBuIFHBvxiOvmvFQe/TIPHredeKTyB4CP6G8UTa478zh0f3NyXLSJmlwWDtNGHhxvs8zhPLH0AELXJm9Z26PBbzZ47FHHoC30RcxyvXh1bbd0Yh56DrNme/HgGPT0YK4tfHrryvUhpTzGFWv/XMbOdK02Mc613rI7VKzJq+cRXh+I9aHWe7bBt6S/S/H4T7AGXh84GGOteka2c6Zrrkk5fdGzle5FDhzfqdo40XzkkIrZGqje58zzzDcXszV7gtgIorGFnO5bz37UtJo62fK9hv1b56+1bxhL5XpOV12P9pueHmqXa45Vv+8VuiLOLgKNO+RErd1U/NbopVxr8yIVP6xXSc3BM3rmWP/VfE/xyOm15syBv9HRW/ltPR9K9NP4rLHvfQ/K2QAv7lfWxieP67tE7fco610EHLEXXj7zuPcuEcSPl2/e/3PxqXUhZ0f7Ut03612kBFoXPDu98zzD6mlrc2KP73AD/fIZ/FHhL3R2jq7l+w79b64m/gJCOfMW
   </data>
  </layer>
  <layer id="2" name="background2" width="34" height="43">
   <data encoding="base64" compression="zlib">
-   eJzNmEFuxCAMRbOeU3TXO2TXNm2mB8jc/ygTpLH0+/WNIcFRLVkIJpiHwWBmnqZp7tQMmankdu/7LI7tVT6gvei660LtmRxW2rhFvl/lXXyfxbHSuLOoZ3PwvG3cj11/dv28mGMlXaBEjox4Qg4W9NPmfKPsHeUo/mdf2PjKH1kckT/QfiaH7UdU5MD9kskxU92E/XSfcjm8uvnpKn+o0s4N9MkV/vDK/8bB52oWh9fOZ352vHjKd506w0fkUWyPBe+6EeJx8HmO+Uetn8ltEEeRX1Jbgzfq17v2ah2OcGTkxZ49vld4L6h+Z9iO5t/vF3M8QItY3qM4zkgLB5ZRvyyO3vdU7zijOTiGvqa/OUEUY637tKdeGNRbqyajOFA4J/AEz9xejpvzOwrmta33T3TPtd6dLd8c7cNctvf47mObRTZo65n3JtqYV71n+K3tjRuVNTZuU++ZaP174762fjXu1n6t4yjbiv9sfqPWPPo94lXtHNdefER2apw1jlqceba9uXt1tleLb8UZ7RHFy329sXvOJbaDgmfSIr5tnW8k3nw3YDDhu6hl7iPU+/8C9Qlwz3jt
+   eJzNmE1uAyEMhVnnFN32Cuzapp1cgNz/KB2kWHp9euZnBo9qyUKQwXwYDCY5pZQnNUIyldzufR/FUV7lE9qrbrveqT2Sw0obt8r3q3yI76M4Nho3i3o0B8/bxv3Y9WfXz4s5NtI7lMgREU/IwYJ+Ks43yt5Rjup/9oWNr/wRxdHzB9qP5LD9iIocuF8iOTLVTdhPjxTL4dXNT1f5Q5V2bqBPrvCHV/43Dj5Xozi8dj7zo+PFU77r1Bm+Io9ieyx4160Qj4PPc8w/Wv1Mbos4lNgavFG/2bVX63CEIyIv9uzxvcJ7QfU7w3Y0/36/mOMJWsXyHsVxRkY4sOz1i+KYfU/NjrOag2PoK/3NCXoxNrpPZ+qVQb21WrKKA4VzAk/wzJ3luDm/o2BeO3r/9O650btz5JujfZjL9h7ffWyzSoG2mXkX0ca86j3Db21v3F7ZYuM29Z7prf9s3LfWr8U92m90HGVb8Z/Nb9Sa937v8ap2jmsvPnp2Wpwtjlaceba9uXt1tteKb8XZ2yOKl/t6Y8+cS2wHBc8k/P9R2Toj3nwLMJjwXTQy9xXq/X+B+gvLGnb/
   </data>
  </layer>
  <layer id="3" name="background3" width="34" height="43">
@@ -31,135 +31,102 @@
   <object id="263" name="START_LOCATION" x="512" y="416" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="7" name="objects">
-  <object id="59" name="Crystal" gid="11" x="512" y="320" width="32" height="32">
+  <object id="291" name="Torch" gid="89" x="127" y="79.5" width="32" height="32"/>
+  <object id="292" name="Torch" gid="89" x="319.5" y="80" width="32" height="32"/>
+  <object id="293" name="Crystal" gid="11" x="32" y="64" width="32" height="32"/>
+  <object id="294" name="Orb" gid="95" x="160" y="288" width="32" height="32"/>
+  <object id="295" name="Tree" gid="93" x="384" y="256" width="32" height="32"/>
+  <object id="296" name="Club" gid="33" x="32" y="544" width="32" height="32"/>
+  <object id="298" name="Tree" gid="93" x="32" y="448" width="32" height="32"/>
+  <object id="299" name="Tree" gid="93" x="32" y="480" width="32" height="32"/>
+  <object id="300" name="Tree" gid="93" x="32" y="512" width="32" height="32"/>
+  <object id="301" name="Wall" gid="87" x="64" y="544" width="32" height="32"/>
+  <object id="302" name="Fire" gid="1" x="64" y="384" width="32" height="32"/>
+  <object id="303" name="Fire" gid="1" x="96" y="384" width="32" height="32"/>
+  <object id="304" name="Wall" gid="87" x="192" y="448" width="32" height="32"/>
+  <object id="305" name="Wall" gid="87" x="352" y="384" width="32" height="32"/>
+  <object id="306" name="Wall" gid="87" x="352" y="480" width="32" height="32"/>
+  <object id="307" name="Crystal" gid="11" x="341.5" y="542" width="32" height="32"/>
+  <object id="308" name="Crystal" gid="11" x="512" y="320" width="32" height="32">
    <properties>
-    <property name="Trigger" value="KILL_TUTORIAL_TREES"/>
+    <property name="trigger" value="KILL_TUTORIAL_TREES"/>
    </properties>
   </object>
-  <object id="60" name="Tree" gid="93" x="384" y="256" width="32" height="32"/>
-  <object id="61" name="Crystal" gid="11" x="768" y="768" width="32" height="32"/>
-  <object id="62" name="Fire_Stone" gid="19" x="256" y="800" width="32" height="32"/>
-  <object id="63" name="Fire_Stone" gid="19" x="256" y="768" width="32" height="32"/>
-  <object id="64" name="Tree" gid="93" x="896" y="1312" width="32" height="32"/>
-  <object id="65" name="Tree" gid="93" x="864" y="1152" width="32" height="32"/>
-  <object id="76" name="Axe" gid="9" x="960" y="1344" width="32" height="32"/>
-  <object id="78" name="Torch" gid="89" x="964.91" y="1301.14" width="21.2727" height="21.2727"/>
-  <object id="80" name="Fire" gid="1" x="800.5" y="768" width="32" height="32"/>
-  <object id="81" name="Fire" gid="1" x="736" y="768.25" width="32" height="32"/>
-  <object id="82" name="Fire" gid="1" x="768.25" y="736" width="32" height="32"/>
-  <object id="85" name="Orb" gid="95" x="768" y="1216" width="32" height="32"/>
-  <object id="86" name="Tree" gid="93" x="800" y="1216" width="32" height="32"/>
-  <object id="110" name="Crystal" gid="11" x="1024" y="1056" width="32" height="32"/>
-  <object id="111" name="Crystal" gid="11" x="608" y="1344" width="32" height="32"/>
-  <object id="112" name="Fire_Stone" gid="19" x="992" y="1056" width="32" height="32"/>
-  <object id="113" name="Fire_Stone" gid="19" x="1005" y="1088" width="32" height="32"/>
-  <object id="114" name="Wall" gid="87" x="608" y="1312" width="32" height="32"/>
-  <object id="115" name="Orb" gid="95" x="159.5" y="1280.5" width="32" height="32"/>
-  <object id="116" name="Wall" gid="87" x="159.864" y="1248" width="32" height="32"/>
-  <object id="117" name="Wall" gid="87" x="192.318" y="1248.05" width="32" height="32"/>
-  <object id="118" name="Wall" gid="87" x="192.364" y="1280.27" width="32" height="32"/>
-  <object id="119" name="Tree" gid="93" x="160" y="1216.5" width="32" height="32"/>
-  <object id="120" name="Tree" gid="93" x="193.5" y="1217" width="32" height="32"/>
-  <object id="121" name="Tree" gid="93" x="226.5" y="1218" width="32" height="32"/>
-  <object id="122" name="Tree" gid="93" x="257.5" y="1217.5" width="32" height="32"/>
-  <object id="123" name="Tree" gid="93" x="289.5" y="1216.5" width="32" height="32"/>
-  <object id="124" name="Tree" gid="93" x="226" y="1249.5" width="32" height="32"/>
-  <object id="125" name="Tree" gid="93" x="257" y="1249.5" width="32" height="32"/>
-  <object id="126" name="Tree" gid="93" x="288.5" y="1250" width="32" height="32"/>
-  <object id="127" name="Wall" gid="87" x="384" y="1088" width="32" height="32"/>
-  <object id="128" name="Crystal" gid="11" x="384" y="1120" width="32" height="32"/>
-  <object id="129" name="Crystal" gid="11" x="512" y="1088" width="32" height="32"/>
-  <object id="130" name="Fire_Stone" gid="19" x="480" y="1088" width="32" height="32"/>
-  <object id="131" name="Fire_Stone" gid="19" x="509" y="1119.5" width="32" height="32"/>
-  <object id="132" name="Fire_Stone" gid="19" x="540.5" y="1088.5" width="32" height="32"/>
-  <object id="134" name="Wall" gid="87" x="96.5" y="1025" width="32" height="32"/>
-  <object id="135" name="Fire" gid="1" x="480" y="1056" width="32" height="32"/>
-  <object id="136" name="Fire" gid="1" x="541" y="1057.5" width="32" height="32"/>
-  <object id="137" name="Torch" gid="89" x="504.36" y="1052.86" width="21.2727" height="21.2727"/>
-  <object id="138" name="Torch" gid="89" x="532.36" y="1054.86" width="21.2727" height="21.2727"/>
-  <object id="139" name="Portal" gid="63" x="610.5" y="797.5" width="27.5" height="27.5"/>
-  <object id="140" name="Fire_Stone" gid="19" x="641" y="800.5" width="32" height="32"/>
-  <object id="141" name="Fire_Stone" gid="19" x="608.5" y="768" width="32" height="32"/>
-  <object id="142" name="Fire_Stone" gid="19" x="576" y="801" width="32" height="32"/>
-  <object id="143" name="Fire_Stone" gid="19" x="608" y="831.5" width="32" height="32"/>
-  <object id="144" name="Orb" gid="95" x="96" y="832" width="32" height="32"/>
-  <object id="145" name="Crystal" gid="11" x="65" y="608.5" width="32" height="32"/>
-  <object id="146" name="Fire_Stone" gid="19" x="160" y="928.5" width="32" height="32"/>
-  <object id="147" name="Fire_Stone" gid="19" x="192" y="928" width="32" height="32"/>
-  <object id="148" name="Fire_Stone" gid="19" x="224.5" y="928.5" width="32" height="32"/>
-  <object id="149" name="Fire_Stone" gid="19" x="161.5" y="960.5" width="32" height="32"/>
-  <object id="150" name="Fire_Stone" gid="19" x="160.5" y="993.5" width="32" height="32"/>
-  <object id="151" name="Crystal" gid="11" x="223.5" y="993" width="32" height="32"/>
-  <object id="153" name="Tree" gid="93" x="160.25" y="641.75" width="32" height="32"/>
-  <object id="154" name="Tree" gid="93" x="160.25" y="673.75" width="32" height="32"/>
-  <object id="155" name="Tree" gid="93" x="224.25" y="642.25" width="32" height="32"/>
-  <object id="156" name="Tree" gid="93" x="126.75" y="608.25" width="32" height="32"/>
-  <object id="157" name="Tree" gid="93" x="160.25" y="608.75" width="32" height="32"/>
-  <object id="158" name="Tree" gid="93" x="193.25" y="609.75" width="32" height="32"/>
-  <object id="160" name="Tree" gid="93" x="194" y="642" width="32" height="32"/>
-  <object id="161" name="Wand" gid="94" x="225" y="609.5" width="32" height="32"/>
-  <object id="162" name="Tree" gid="93" x="320" y="608" width="32" height="32"/>
-  <object id="163" name="Tree" gid="93" x="288" y="640" width="32" height="32"/>
-  <object id="164" name="Orb" gid="95" x="288" y="608.5" width="32" height="32"/>
-  <object id="165" name="Torch" gid="89" x="100.864" y="795.86" width="21.2727" height="21.2727"/>
-  <object id="166" name="Wall" gid="87" x="64.5" y="544" width="32" height="32"/>
-  <object id="167" name="Wall" gid="87" x="192" y="448" width="32" height="32"/>
-  <object id="168" name="Wall" gid="87" x="352" y="480" width="32" height="32"/>
-  <object id="169" name="Wall" gid="87" x="352" y="384" width="32" height="32"/>
-  <object id="170" name="Orb" gid="95" x="154" y="285.5" width="32" height="32"/>
-  <object id="171" name="Crystal" gid="11" x="337.5" y="535.5" width="32" height="32"/>
-  <object id="172" name="Crystal" gid="11" x="32" y="64" width="32" height="32"/>
-  <object id="173" name="Tree" gid="93" x="224.75" y="480.5" width="32" height="32"/>
-  <object id="174" name="Tree" gid="93" x="258.25" y="480" width="32" height="32"/>
-  <object id="175" name="Tree" gid="93" x="224" y="513.75" width="32" height="32"/>
-  <object id="176" name="Tree" gid="93" x="257.5" y="513.25" width="32" height="32"/>
-  <object id="177" name="Tree" gid="93" x="224.5" y="544.75" width="32" height="32"/>
-  <object id="178" name="Tree" gid="93" x="258" y="544.25" width="32" height="32"/>
-  <object id="179" name="Tree" gid="93" x="32" y="448" width="32" height="32"/>
-  <object id="180" name="Tree" gid="93" x="32" y="480" width="32" height="32"/>
-  <object id="181" name="Tree" gid="93" x="32" y="512" width="32" height="32"/>
-  <object id="182" name="Club" gid="33" x="32" y="544" width="32" height="32"/>
-  <object id="183" name="Torch" gid="89" x="324.864" y="85.364" width="21.2727" height="21.2727"/>
-  <object id="184" name="Torch" gid="89" x="131.864" y="85.864" width="21.2727" height="21.2727"/>
-  <object id="185" name="Fire" gid="1" x="193" y="768" width="32" height="32"/>
-  <object id="186" name="Fire" gid="1" x="192" y="833.5" width="32" height="32"/>
-  <object id="187" name="Fire" gid="1" x="64" y="928" width="32" height="32"/>
-  <object id="188" name="Fire" gid="1" x="64" y="384.5" width="32" height="32"/>
-  <object id="189" name="Fire" gid="1" x="97.5" y="384" width="32" height="32"/>
-  <object id="190" name="Tutorial_Tree" gid="58" x="544" y="512" width="32" height="32">
-   <properties>
-    <property name="type" value="TUTORIAL_TREE"/>
-   </properties>
-  </object>
-  <object id="191" name="Tutorial_Tree" gid="58" x="544" y="480" width="32" height="32">
-   <properties>
-    <property name="type" value="TUTORIAL_TREE"/>
-   </properties>
-  </object>
-  <object id="192" name="Tutorial_Tree" gid="58" x="480" y="512" width="32" height="32">
-   <properties>
-    <property name="type" value="TUTORIAL_TREE"/>
-   </properties>
-  </object>
-  <object id="193" name="Tutorial_Tree" gid="58" x="480" y="544" width="32" height="32">
-   <properties>
-    <property name="type" value="TUTORIAL_TREE"/>
-   </properties>
-  </object>
-  <object id="194" name="Tutorial_Tree" gid="58" x="544" y="544" width="32" height="32">
-   <properties>
-    <property name="type" value="TUTORIAL_TREE"/>
-   </properties>
-  </object>
-  <object id="195" name="Tutorial_Tree" gid="58" x="480" y="480" width="32" height="32">
-   <properties>
-    <property name="type" value="TUTORIAL_TREE"/>
-   </properties>
-  </object>
-  <object id="196" name="Tutorial_Tree" gid="58" x="512" y="480" width="32" height="32">
-   <properties>
-    <property name="type" value="TUTORIAL_TREE"/>
-   </properties>
-  </object>
+  <object id="309" name="Tutorial_Tree" gid="58" x="480" y="544" width="32" height="32"/>
+  <object id="311" name="Tutorial_Tree" gid="58" x="480" y="512" width="32" height="32"/>
+  <object id="312" name="Tutorial_Tree" gid="58" x="480" y="480" width="32" height="32"/>
+  <object id="313" name="Tutorial_Tree" gid="58" x="512" y="480" width="32" height="32"/>
+  <object id="314" name="Tutorial_Tree" gid="58" x="544" y="480" width="32" height="32"/>
+  <object id="315" name="Tutorial_Tree" gid="58" x="544" y="512" width="32" height="32"/>
+  <object id="316" name="Tutorial_Tree" gid="58" x="544" y="544" width="32" height="32"/>
+  <object id="317" name="Crystal" gid="11" x="64" y="608" width="32" height="32"/>
+  <object id="318" name="Wand" gid="94" x="224" y="608" width="32" height="32"/>
+  <object id="319" name="Tree" gid="93" x="224" y="544" width="32" height="32"/>
+  <object id="320" name="Tree" gid="93" x="224" y="480" width="32" height="32"/>
+  <object id="321" name="Tree" gid="93" x="224" y="512" width="32" height="32"/>
+  <object id="322" name="Tree" gid="93" x="256" y="512" width="32" height="32"/>
+  <object id="323" name="Tree" gid="93" x="252.5" y="478.5" width="32" height="32"/>
+  <object id="324" name="Tree" gid="93" x="256" y="544" width="32" height="32"/>
+  <object id="325" name="Tree" gid="93" x="128" y="608" width="32" height="32"/>
+  <object id="326" name="Tree" gid="93" x="192" y="640" width="32" height="32"/>
+  <object id="327" name="Tree" gid="93" x="192" y="608" width="32" height="32"/>
+  <object id="328" name="Tree" gid="93" x="160" y="640" width="32" height="32"/>
+  <object id="329" name="Tree" gid="93" x="160" y="608" width="32" height="32"/>
+  <object id="330" name="Tree" gid="93" x="224" y="640" width="32" height="32"/>
+  <object id="331" name="Tree" gid="93" x="160" y="672" width="32" height="32"/>
+  <object id="332" name="Tree" gid="93" x="288" y="640" width="32" height="32"/>
+  <object id="333" name="Tree" gid="93" x="320" y="608" width="32" height="32"/>
+  <object id="334" name="Orb" gid="95" x="288" y="608" width="32" height="32"/>
+  <object id="335" name="Fire_Stone" gid="19" x="256" y="768" width="32" height="32"/>
+  <object id="336" name="Fire_Stone" gid="19" x="256" y="800" width="32" height="32"/>
+  <object id="337" name="Fire_Stone" gid="19" x="608" y="768" width="32" height="32"/>
+  <object id="338" name="Fire_Stone" gid="19" x="640" y="800" width="32" height="32"/>
+  <object id="339" name="Fire_Stone" gid="19" x="576" y="800" width="32" height="32"/>
+  <object id="340" name="Fire_Stone" gid="19" x="608" y="832" width="32" height="32"/>
+  <object id="341" name="Portal" gid="63" x="608" y="800" width="32" height="32"/>
+  <object id="342" name="Orb" gid="95" x="96" y="832" width="32" height="32"/>
+  <object id="343" name="Torch" gid="89" x="96" y="785.5" width="32" height="32"/>
+  <object id="344" name="Fire_Stone" gid="19" x="160" y="928" width="32" height="32"/>
+  <object id="345" name="Fire_Stone" gid="19" x="192" y="928" width="32" height="32"/>
+  <object id="346" name="Fire_Stone" gid="19" x="224" y="928" width="32" height="32"/>
+  <object id="347" name="Fire_Stone" gid="19" x="160" y="992" width="32" height="32"/>
+  <object id="348" name="Fire_Stone" gid="19" x="160" y="960" width="32" height="32"/>
+  <object id="349" name="Crystal" gid="11" x="224" y="992" width="32" height="32"/>
+  <object id="350" name="Fire" gid="1" x="192" y="832" width="32" height="32"/>
+  <object id="351" name="Fire" gid="1" x="64" y="928" width="32" height="32"/>
+  <object id="352" name="Wall" gid="87" x="384" y="1088" width="32" height="32"/>
+  <object id="353" name="Wall" gid="87" x="96" y="1024" width="32" height="32"/>
+  <object id="354" name="Wall" gid="87" x="160" y="1248" width="32" height="32"/>
+  <object id="355" name="Wall" gid="87" x="192" y="1248" width="32" height="32"/>
+  <object id="356" name="Wall" gid="87" x="192" y="1280" width="32" height="32"/>
+  <object id="357" name="Orb" gid="95" x="160" y="1280" width="32" height="32"/>
+  <object id="358" name="Tree" gid="93" x="160" y="1216" width="32" height="32"/>
+  <object id="359" name="Tree" gid="93" x="192" y="1216" width="32" height="32"/>
+  <object id="360" name="Tree" gid="93" x="224" y="1216" width="32" height="32"/>
+  <object id="361" name="Tree" gid="93" x="224" y="1248" width="32" height="32"/>
+  <object id="362" name="Tree" gid="93" x="256" y="1216" width="32" height="32"/>
+  <object id="363" name="Tree" gid="93" x="288" y="1216" width="32" height="32"/>
+  <object id="364" name="Tree" gid="93" x="256" y="1248" width="32" height="32"/>
+  <object id="365" name="Tree" gid="93" x="288" y="1248" width="32" height="32"/>
+  <object id="366" name="Crystal" gid="11" x="384" y="1120" width="32" height="32"/>
+  <object id="367" name="Crystal" gid="11" x="512" y="1088" width="32" height="32"/>
+  <object id="368" name="Fire_Stone" gid="19" x="512" y="1120" width="32" height="32"/>
+  <object id="369" name="Fire_Stone" gid="19" x="544" y="1088" width="32" height="32"/>
+  <object id="370" name="Fire_Stone" gid="19" x="480" y="1088" width="32" height="32"/>
+  <object id="371" name="Fire" gid="1" x="480" y="1056" width="32" height="32"/>
+  <object id="372" name="Fire" gid="1" x="544" y="1056" width="32" height="32"/>
+  <object id="373" name="Torch" gid="89" x="498.5" y="1056.5" width="32" height="32"/>
+  <object id="374" name="Torch" gid="89" x="525.5" y="1055.5" width="32" height="32"/>
+  <object id="375" name="Wall" gid="87" x="608" y="1312" width="32" height="32"/>
+  <object id="376" name="Crystal" gid="11" x="608" y="1344" width="32" height="32"/>
+  <object id="377" name="Tree" gid="93" x="832" y="1216" width="32" height="32"/>
+  <object id="378" name="Tree" gid="93" x="896" y="1312" width="32" height="32"/>
+  <object id="379" name="Tree" gid="93" x="864" y="1152" width="32" height="32"/>
+  <object id="380" name="Axe" gid="9" x="960" y="1344" width="32" height="32"/>
+  <object id="381" name="Torch" gid="89" x="959.5" y="1296" width="32" height="32"/>
+  <object id="382" name="Crystal" gid="11" x="1024" y="1056" width="32" height="32"/>
+  <object id="383" name="Fire_Stone" gid="19" x="1024" y="1088" width="32" height="32"/>
+  <object id="384" name="Fire_Stone" gid="19" x="992" y="1066" width="32" height="32"/>
+  <object id="385" name="Orb" gid="95" x="768" y="1216" width="32" height="32"/>
  </objectgroup>
 </map>

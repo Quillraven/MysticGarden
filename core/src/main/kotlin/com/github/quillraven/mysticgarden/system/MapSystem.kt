@@ -208,7 +208,7 @@ operator fun MapObject.component6(): Int = this.id
 
 val MapObject.trigger: Trigger?
     get() {
-        val triggerName = this.propertyOrNull<String>("Trigger") ?: return null
+        val triggerName = this.propertyOrNull<String>("trigger") ?: return null
         return Trigger.valueOf(triggerName)
     }
 

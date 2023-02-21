@@ -34,7 +34,7 @@ prettyPrint=false
 legacyOutput=true
 
 scaleFactors=[{suffix:"",factor:1,resampling:bicubic}]
-inputFiles=[{path:characters_and_effects/hero,type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false},{path:characters_and_effects/fireball.png,type:Input,regionName:null},{path:characters_and_effects/plasmaburst.png,type:Input,regionName:null}]
+inputFiles=[{path:game,type:Input,dirFilePrefix:null,recursive:true,flattenPaths:true},{path:game/hero.png,type:Ignore}]
 keepInputFileExtensions=false
 
 
@@ -95,7 +95,7 @@ fast=false
 filterMag=Nearest
 filterMin=Nearest
 ignoreBlankImages=true
-maxHeight=2048
+maxHeight=1024
 maxWidth=1024
 minHeight=16
 minWidth=16

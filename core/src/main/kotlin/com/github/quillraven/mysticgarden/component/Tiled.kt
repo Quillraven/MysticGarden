@@ -7,18 +7,18 @@ import com.github.quillraven.mysticgarden.event.Trigger
 import ktx.app.gdxError
 
 enum class TiledObjectType(val regionName: RegionName) {
-    TUTORIAL_TREE(RegionName.MANGROVE),
+    TUTORIAL_TREE(RegionName.TREE_GREEN),
     CRYSTAL(RegionName.CRYSTAL),
-    TREE(RegionName.TREE_1_RED),
-    FIRE_STONE(RegionName.CRYSTAL_WALL_LIGHTRED),
+    TREE(RegionName.TREE_RED),
+    FIRE_STONE(RegionName.FIRE_WALL),
     AXE(RegionName.AXE),
     TORCH(RegionName.TORCH),
-    FIRE(RegionName.ALTAR_MAKHLEB_FLAME),
-    ORB(RegionName.CHROMA_ORB),
-    WALL(RegionName.STONE_BRICK),
+    FIRE(RegionName.ALTAR),
+    ORB(RegionName.ORB),
+    WALL(RegionName.WALL),
     PORTAL(RegionName.PORTAL),
-    WAND(RegionName.URAND_FIRESTARTER),
-    CLUB(RegionName.GIANT_SPIKED_CLUB);
+    WAND(RegionName.WAND),
+    CLUB(RegionName.CLUB);
 
     companion object {
         fun of(name: String): TiledObjectType {

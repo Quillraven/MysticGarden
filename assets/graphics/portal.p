@@ -31,8 +31,10 @@ timelineCount: 3
 timeline0: 0.0
 timeline1: 0.66
 timeline2: 1.0
+independent: false
 - Life Offset - 
 active: false
+independent: false
 - X Offset - 
 active: false
 - Y Offset - 
@@ -117,7 +119,7 @@ active: false
 - Tint - 
 colorsCount: 3
 colors0: 0.007843138
-colors1: 0.03137255
+colors1: 0.03529412
 colors2: 1.0
 timelineCount: 1
 timeline0: 0.0
