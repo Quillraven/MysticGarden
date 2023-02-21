@@ -7,6 +7,10 @@ buildscript {
     gradlePluginPortal()
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+    maven { url "https://teavm.org/maven/repository/" }
   }
 
   dependencies {
@@ -23,7 +27,7 @@ allprojects {
 configure(subprojects - project(':android')) {
   apply plugin: 'java-library'
   apply plugin: 'kotlin'
-  sourceCompatibility = 1.8
+  sourceCompatibility = 11
   compileJava {
     options.incremental = true
   }
@@ -41,6 +45,10 @@ subprojects {
     maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'https://jitpack.io' }
     maven { url 'https://teavm.org/maven/repository/' }
+
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+    maven { url "https://teavm.org/maven/repository/" }
   }
 }
 

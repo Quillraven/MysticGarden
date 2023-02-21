@@ -3,8 +3,8 @@
 package com.github.quillraven.mysticgarden.teavm
 
 import com.github.quillraven.mysticgarden.MysticGarden
+import com.github.xpenatan.gdx.backends.teavm.TeaApplication
 import com.github.xpenatan.gdx.backends.teavm.TeaApplicationConfiguration
-import com.github.xpenatan.gdx.backends.web.WebApplication
 
 /** Launches the TeaVM/HTML application. */
 fun main() {
@@ -12,5 +12,5 @@ fun main() {
         width = 432
         height = 768
     }
-    WebApplication(MysticGarden(), config)
+    TeaApplication(MysticGarden(), config)
 }
