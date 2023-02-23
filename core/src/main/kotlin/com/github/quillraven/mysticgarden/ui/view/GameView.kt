@@ -22,9 +22,8 @@ class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.
     private val orbInfo: CollectInfo
 
     init {
-
         table { topTableCell ->
-            this@GameView.crystalInfo = collectInfo(Drawable.CRYSTAL, 10) { cell ->
+            this@GameView.crystalInfo = collectInfo(Drawable.CRYSTAL, 0) { cell ->
                 cell.padLeft(5f)
             }
 
@@ -32,7 +31,7 @@ class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.
                 cell.padLeft(40f).fill()
             }
 
-            this@GameView.orbInfo = collectInfo(Drawable.ORB, 5) { cell ->
+            this@GameView.orbInfo = collectInfo(Drawable.ORB, 0) { cell ->
                 cell.padLeft(10f)
             }
 
@@ -67,6 +66,19 @@ class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.
         }
 
         setFillParent(true)
+
+        initPropertyBinding(model)
+    }
+
+    private fun initPropertyBinding(model: GameModel) {
+        with(model) {
+            onPropertyChange(GameModel::maxCrystals) { crystalInfo.toCollect = it }
+            onPropertyChange(GameModel::collectedCrystals) { crystalInfo.collected = it }
+
+            onPropertyChange(GameModel::maxOrbs) { orbInfo.toCollect = it }
+            onPropertyChange(GameModel::collectedOrbs) { orbInfo.collected = it }
+        }
+
     }
 }
 

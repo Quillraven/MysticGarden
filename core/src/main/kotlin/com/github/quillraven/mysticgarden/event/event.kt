@@ -24,3 +24,7 @@ sealed interface Event
 data class MapChangeEvent(val map: TiledMap) : Event
 
 data class ZoneChangeEvent(val position: Vector2, val map: TiledMap, val newZone: Zone, val oldZone: Zone) : Event
+
+data class CrystalPickupEvent(val crystals: Int) : Event
+
+data class OrbPickupEvent(val orbs: Int) : Event

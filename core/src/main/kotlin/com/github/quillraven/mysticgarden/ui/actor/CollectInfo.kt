@@ -8,26 +8,37 @@ import com.github.quillraven.mysticgarden.ui.GdxLabel
 import com.github.quillraven.mysticgarden.ui.Label
 import com.github.quillraven.mysticgarden.ui.get
 import ktx.actors.plusAssign
+import ktx.actors.txt
 import ktx.scene2d.*
 
-// HorizontalGroup would make sense but again, scene2d randomness
+// HorizontalGroup would make sense but again, Scene2D randomness
 // doesn't allow me to set the image size and instead draws it in original size
 // -> use WidgetGroup
 class CollectInfo(
     icon: Drawable,
-    private val toCollect: Int
+    toCollect: Int,
 ) : KGroup, WidgetGroup() {
 
-    private var collected = 0
     private val img = Image(Scene2DSkin.defaultSkin[icon])
-    private val txt = GdxLabel(infoTxt(), Scene2DSkin.defaultSkin, Label.SMALL.skinKey)
+    private val label = GdxLabel(infoTxt(), Scene2DSkin.defaultSkin, Label.SMALL.skinKey)
+
+    var collected = 0
+        set(value) {
+            field = value
+            label.txt = infoTxt()
+        }
+    var toCollect = toCollect
+        set(value) {
+            field = value
+            label.txt = infoTxt()
+        }
 
     init {
         this += img.apply {
             this.setScaling(Scaling.fit)
             this.setSize(this@CollectInfo.prefWidth, this@CollectInfo.prefHeight)
         }
-        this += txt.apply {
+        this += label.apply {
             this.setPosition(this@CollectInfo.prefWidth + 3f, 4f)
         }
     }

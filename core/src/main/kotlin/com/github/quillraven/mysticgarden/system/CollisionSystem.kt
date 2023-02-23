@@ -8,6 +8,9 @@ import com.github.quillraven.fleks.World.Companion.inject
 import com.github.quillraven.mysticgarden.SoundAsset
 import com.github.quillraven.mysticgarden.audio.AudioService
 import com.github.quillraven.mysticgarden.component.*
+import com.github.quillraven.mysticgarden.event.CrystalPickupEvent
+import com.github.quillraven.mysticgarden.event.EventDispatcher
+import com.github.quillraven.mysticgarden.event.OrbPickupEvent
 import ktx.graphics.component1
 import ktx.graphics.component2
 import ktx.graphics.component3
@@ -16,6 +19,7 @@ import ktx.log.Logger
 class CollisionSystem(
     private val rayHandler: RayHandler = inject(),
     private val audioService: AudioService = inject(),
+    private val eventDispatcher: EventDispatcher = inject(),
 ) : IteratingSystem(family { all(Collision, Player) }) {
 
     private infix fun Entity.hasItem(type: ItemType): Boolean = type in this[Player].items
@@ -45,8 +49,10 @@ class CollisionSystem(
     private fun onTiledCollision(player: Entity, type: TiledObjectType): Boolean {
         when (type) {
             TiledObjectType.CRYSTAL -> {
-                player[Player].crystals++
+                val p = player[Player]
+                p.crystals++
                 audioService.play(SoundAsset.COLLECT)
+                eventDispatcher.dispatch(CrystalPickupEvent(p.crystals))
             }
 
             TiledObjectType.ORB -> {
@@ -57,6 +63,8 @@ class CollisionSystem(
                 val gain = p.chromas * Light.ambientOrbGain
                 rayHandler.setAmbientLight(r + gain, g + gain, b + gain, 1f)
                 audioService.play(SoundAsset.JINGLE)
+
+                eventDispatcher.dispatch(OrbPickupEvent(p.chromas))
             }
 
             TiledObjectType.AXE -> {

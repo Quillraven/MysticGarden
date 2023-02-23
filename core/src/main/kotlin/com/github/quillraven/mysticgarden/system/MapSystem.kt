@@ -66,7 +66,7 @@ class MapSystem(
         if (playerEntities.isEmpty) {
             val (_, playerX, playerY) = map.startLocation
             val player = world.spawnPlayer(playerX, playerY)
-            player[Player].maxCrystals = map.objectsLayers.objects.count { it.name == "Crystal" }
+            player[Player].maxCrystals = map.numCrystals
         }
 
         spawnObjects(map, newZone, oldZone)
@@ -223,4 +223,14 @@ val TiledMap.startLocation: MapObject
         return this.zoneLayer.objects
             .firstOrNull { it.name == "START_LOCATION" }
             ?: gdxError("There is no START_LOCATION defined in the zones layer")
+    }
+
+val TiledMap.numCrystals: Int
+    get() {
+        return this.objectsLayers.objects.count { it.name == "Crystal" }
+    }
+
+val TiledMap.numOrbs: Int
+    get() {
+        return this.objectsLayers.objects.count { it.name == "Orb" }
     }

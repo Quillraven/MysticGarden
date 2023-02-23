@@ -105,14 +105,14 @@ class GameScreen(
     }
 
     override fun show() {
-        eventDispatcher.dispatch(MapChangeEvent(assets[TiledMapAsset.MAP]))
-        audioService.play(MusicAsset.GAME)
-
         uiStage.actors {
-            gameView(GameModel(world, keyboardInput), true)
+            gameView(GameModel(world, eventDispatcher, keyboardInput), true)
         }
 
         Gdx.input.inputProcessor = InputMultiplexer(keyboardInput, uiStage)
+
+        eventDispatcher.dispatch(MapChangeEvent(assets[TiledMapAsset.MAP]))
+        audioService.play(MusicAsset.GAME)
     }
 
     override fun resize(width: Int, height: Int) {
@@ -136,7 +136,7 @@ class GameScreen(
 
         if (Gdx.input.isKeyPressed(Input.Keys.R)) {
             uiStage.clear()
-            uiStage.actors { gameView(GameModel(world, keyboardInput), false) }
+            uiStage.actors { gameView(GameModel(world, eventDispatcher, keyboardInput), false) }
         }
     }
 
