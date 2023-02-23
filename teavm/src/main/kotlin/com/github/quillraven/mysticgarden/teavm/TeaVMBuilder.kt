@@ -13,8 +13,6 @@ object TeaVMBuilder {
         val teaBuildConfiguration = TeaBuildConfiguration().apply {
             assetsPath.add(File("../assets"))
             webappPath = File("build/dist").canonicalPath
-            // You can switch this setting during development:
-            obfuscate = true
             // Register any extra classpath assets here:
             // additionalAssetsClasspathFiles += "com/github/quillraven/mysticgarden/asset.extension"
         }
