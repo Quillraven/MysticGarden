@@ -1,5 +1,6 @@
 package com.github.quillraven.mysticgarden.ui.model
 
+import com.github.quillraven.mysticgarden.component.ItemType
 import com.github.quillraven.mysticgarden.event.*
 import com.github.quillraven.mysticgarden.input.KeyboardInput
 import com.github.quillraven.mysticgarden.system.numCrystals
@@ -18,6 +19,10 @@ class GameModel(
 
     var totalTime by propertyNotify(0)
 
+    var hasAxe by propertyNotify(false)
+    var hasClub by propertyNotify(false)
+    var hasWand by propertyNotify(false)
+
     init {
         with(eventDispatcher) {
             register<MapChangeEvent> {
@@ -29,6 +34,14 @@ class GameModel(
             register<OrbPickupEvent> { collectedOrbs = it.orbs }
 
             register<GameTimeEvent> { totalTime = it.totalTimeSeconds }
+
+            register<ItemPickupEvent> {
+                when (it.type) {
+                    ItemType.AXE -> hasAxe = true
+                    ItemType.CLUB -> hasClub = true
+                    ItemType.WAND -> hasWand = true
+                }
+            }
         }
     }
 

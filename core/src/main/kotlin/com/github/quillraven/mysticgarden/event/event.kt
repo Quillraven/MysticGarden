@@ -2,6 +2,7 @@ package com.github.quillraven.mysticgarden.event
 
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.Vector2
+import com.github.quillraven.mysticgarden.component.ItemType
 import com.github.quillraven.mysticgarden.system.Zone
 import kotlin.reflect.KClass
 
@@ -30,3 +31,5 @@ data class CrystalPickupEvent(val crystals: Int) : Event
 data class OrbPickupEvent(val orbs: Int) : Event
 
 data class GameTimeEvent(val totalTimeSeconds: Int) : Event
+
+data class ItemPickupEvent(val type: ItemType) : Event

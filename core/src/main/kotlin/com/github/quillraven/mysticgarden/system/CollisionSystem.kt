@@ -10,6 +10,7 @@ import com.github.quillraven.mysticgarden.audio.AudioService
 import com.github.quillraven.mysticgarden.component.*
 import com.github.quillraven.mysticgarden.event.CrystalPickupEvent
 import com.github.quillraven.mysticgarden.event.EventDispatcher
+import com.github.quillraven.mysticgarden.event.ItemPickupEvent
 import com.github.quillraven.mysticgarden.event.OrbPickupEvent
 import ktx.graphics.component1
 import ktx.graphics.component2
@@ -63,23 +64,25 @@ class CollisionSystem(
                 val gain = p.chromas * Light.ambientOrbGain
                 rayHandler.setAmbientLight(r + gain, g + gain, b + gain, 1f)
                 audioService.play(SoundAsset.JINGLE)
-
                 eventDispatcher.dispatch(OrbPickupEvent(p.chromas))
             }
 
             TiledObjectType.AXE -> {
                 player[Player].items.add(ItemType.AXE)
                 audioService.play(SoundAsset.JINGLE)
+                eventDispatcher.dispatch(ItemPickupEvent(ItemType.AXE))
             }
 
             TiledObjectType.CLUB -> {
                 player[Player].items.add(ItemType.CLUB)
                 audioService.play(SoundAsset.JINGLE)
+                eventDispatcher.dispatch(ItemPickupEvent(ItemType.CLUB))
             }
 
             TiledObjectType.WAND -> {
                 player[Player].items.add(ItemType.WAND)
                 audioService.play(SoundAsset.JINGLE)
+                eventDispatcher.dispatch(ItemPickupEvent(ItemType.WAND))
             }
 
             TiledObjectType.TREE -> {

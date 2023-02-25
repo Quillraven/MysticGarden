@@ -1,5 +1,9 @@
 package com.github.quillraven.mysticgarden.ui.view
 
+import com.badlogic.gdx.math.Interpolation
+import com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha
+import com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
@@ -10,9 +14,7 @@ import com.github.quillraven.mysticgarden.ui.actor.CollectInfo
 import com.github.quillraven.mysticgarden.ui.actor.collectInfo
 import com.github.quillraven.mysticgarden.ui.get
 import com.github.quillraven.mysticgarden.ui.model.GameModel
-import ktx.actors.alpha
-import ktx.actors.onChangeEvent
-import ktx.actors.txt
+import ktx.actors.*
 import ktx.scene2d.*
 
 class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.defaultSkin) {
@@ -21,6 +23,10 @@ class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.
 
     private val crystalInfo: CollectInfo
     private val orbInfo: CollectInfo
+
+    private val axeImg: Image
+    private val clubImg: Image
+    private val wandImg: Image
 
     init {
         table { topTableCell ->
@@ -44,9 +50,18 @@ class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.
             val itemSize = 12f
             this.defaults().top().height(itemSize).width(itemSize).padRight(4f)
 
-            image(Scene2DSkin.defaultSkin[Drawable.AXE]) { this.setScaling(Scaling.fit) }
-            image(Scene2DSkin.defaultSkin[Drawable.CLUB]) { this.setScaling(Scaling.fit) }
-            image(Scene2DSkin.defaultSkin[Drawable.WAND]) { this.setScaling(Scaling.fit) }
+            this@GameView.axeImg = image(Scene2DSkin.defaultSkin[Drawable.AXE]) {
+                this.setScaling(Scaling.fit)
+                this.alpha = 0f
+            }
+            this@GameView.clubImg = image(Scene2DSkin.defaultSkin[Drawable.CLUB]) {
+                this.setScaling(Scaling.fit)
+                this.alpha = 0f
+            }
+            this@GameView.wandImg = image(Scene2DSkin.defaultSkin[Drawable.WAND]) {
+                this.setScaling(Scaling.fit)
+                this.alpha = 0f
+            }
 
             this.alpha = 0.5f
             centerTableCell.top().center().padLeft(10f).row()
@@ -90,8 +105,15 @@ class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.
                     timeLabel.txt = "Zeit: %02d:%02d".format(minutes, seconds)
                 }
             }
-        }
 
+            onPropertyChange(GameModel::hasAxe) { showItem(axeImg) }
+            onPropertyChange(GameModel::hasClub) { showItem(clubImg) }
+            onPropertyChange(GameModel::hasWand) { showItem(wandImg) }
+        }
+    }
+
+    private fun showItem(image: Image) {
+        image += alpha(1f) + alpha(0.2f, 0.5f) + fadeIn(1.5f, Interpolation.bounceIn)
     }
 }
 
