@@ -1,16 +1,11 @@
 package com.github.quillraven.mysticgarden.ui.model
 
-import com.github.quillraven.fleks.World
-import com.github.quillraven.mysticgarden.event.CrystalPickupEvent
-import com.github.quillraven.mysticgarden.event.EventDispatcher
-import com.github.quillraven.mysticgarden.event.MapChangeEvent
-import com.github.quillraven.mysticgarden.event.OrbPickupEvent
+import com.github.quillraven.mysticgarden.event.*
 import com.github.quillraven.mysticgarden.input.KeyboardInput
 import com.github.quillraven.mysticgarden.system.numCrystals
 import com.github.quillraven.mysticgarden.system.numOrbs
 
 class GameModel(
-    private val world: World,
     eventDispatcher: EventDispatcher,
     private val keyboardInput: KeyboardInput,
 ) : PropertyChangeSource() {
@@ -21,6 +16,8 @@ class GameModel(
     var maxOrbs by propertyNotify(0)
     var collectedOrbs by propertyNotify(0)
 
+    var totalTime by propertyNotify(0)
+
     init {
         with(eventDispatcher) {
             register<MapChangeEvent> {
@@ -30,6 +27,8 @@ class GameModel(
 
             register<CrystalPickupEvent> { collectedCrystals = it.crystals }
             register<OrbPickupEvent> { collectedOrbs = it.orbs }
+
+            register<GameTimeEvent> { totalTime = it.totalTimeSeconds }
         }
     }
 

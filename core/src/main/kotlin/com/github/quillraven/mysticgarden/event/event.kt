@@ -28,3 +28,5 @@ data class ZoneChangeEvent(val position: Vector2, val map: TiledMap, val newZone
 data class CrystalPickupEvent(val crystals: Int) : Event
 
 data class OrbPickupEvent(val orbs: Int) : Event
+
+data class GameTimeEvent(val totalTimeSeconds: Int) : Event

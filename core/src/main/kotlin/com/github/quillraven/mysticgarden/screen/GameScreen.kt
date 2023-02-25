@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
+import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.world
 import com.github.quillraven.mysticgarden.Assets
 import com.github.quillraven.mysticgarden.MusicAsset
@@ -51,7 +52,7 @@ class GameScreen(
     private val world = createEntityWorld()
     private val keyboardInput = KeyboardInput(PlayerController(world))
 
-    private fun createEntityWorld() = world {
+    private fun createEntityWorld(): World = world {
         injectables {
             add(batch)
             add(gameCamera)
@@ -73,6 +74,7 @@ class GameScreen(
         }
 
         systems {
+            add(GameTimeSystem())
             add(MapSystem())
             add(PhysicSystem())
             add(CollisionSystem())
@@ -106,7 +108,7 @@ class GameScreen(
 
     override fun show() {
         uiStage.actors {
-            gameView(GameModel(world, eventDispatcher, keyboardInput), true)
+            gameView(GameModel(eventDispatcher, keyboardInput), true)
         }
 
         Gdx.input.inputProcessor = InputMultiplexer(keyboardInput, uiStage)
@@ -136,7 +138,7 @@ class GameScreen(
 
         if (Gdx.input.isKeyPressed(Input.Keys.R)) {
             uiStage.clear()
-            uiStage.actors { gameView(GameModel(world, eventDispatcher, keyboardInput), false) }
+            uiStage.actors { gameView(GameModel(eventDispatcher, keyboardInput), false) }
         }
     }
 

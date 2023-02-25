@@ -12,6 +12,7 @@ import com.github.quillraven.mysticgarden.ui.get
 import com.github.quillraven.mysticgarden.ui.model.GameModel
 import ktx.actors.alpha
 import ktx.actors.onChangeEvent
+import ktx.actors.txt
 import ktx.scene2d.*
 
 class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.defaultSkin) {
@@ -77,6 +78,18 @@ class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.
 
             onPropertyChange(GameModel::maxOrbs) { orbInfo.toCollect = it }
             onPropertyChange(GameModel::collectedOrbs) { orbInfo.collected = it }
+
+            onPropertyChange(GameModel::totalTime) { totalTimeSeconds ->
+                if (totalTimeSeconds >= 6000) {
+                    // time is more than 99 minutes and 59 seconds
+                    // a player should never take that long, but you never know ;)
+                    timeLabel.txt = "Zeit: 99:59"
+                } else {
+                    val minutes = totalTimeSeconds / 60
+                    val seconds = totalTimeSeconds % 60
+                    timeLabel.txt = "Zeit: %02d:%02d".format(minutes, seconds)
+                }
+            }
         }
 
     }
