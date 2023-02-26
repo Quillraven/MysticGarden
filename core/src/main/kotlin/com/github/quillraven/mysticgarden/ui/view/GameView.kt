@@ -1,12 +1,12 @@
 package com.github.quillraven.mysticgarden.ui.view
 
 import com.badlogic.gdx.math.Interpolation
-import com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha
-import com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn
+import com.badlogic.gdx.scenes.scene2d.actions.Actions.*
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
+import com.github.quillraven.mysticgarden.component.ItemType
 import com.github.quillraven.mysticgarden.ui.Drawable
 import com.github.quillraven.mysticgarden.ui.GdxLabel
 import com.github.quillraven.mysticgarden.ui.Label
@@ -15,6 +15,7 @@ import com.github.quillraven.mysticgarden.ui.actor.collectInfo
 import com.github.quillraven.mysticgarden.ui.get
 import com.github.quillraven.mysticgarden.ui.model.GameModel
 import ktx.actors.*
+import ktx.app.gdxError
 import ktx.scene2d.*
 
 class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.defaultSkin) {
@@ -23,10 +24,6 @@ class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.
 
     private val crystalInfo: CollectInfo
     private val orbInfo: CollectInfo
-
-    private val axeImg: Image
-    private val clubImg: Image
-    private val wandImg: Image
 
     init {
         table { topTableCell ->
@@ -46,27 +43,6 @@ class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.
             topTableCell.top().left().padTop(5f).row()
         }
 
-        table { centerTableCell ->
-            val itemSize = 12f
-            this.defaults().top().height(itemSize).width(itemSize).padRight(4f)
-
-            this@GameView.axeImg = image(Scene2DSkin.defaultSkin[Drawable.AXE]) {
-                this.setScaling(Scaling.fit)
-                this.alpha = 0f
-            }
-            this@GameView.clubImg = image(Scene2DSkin.defaultSkin[Drawable.CLUB]) {
-                this.setScaling(Scaling.fit)
-                this.alpha = 0f
-            }
-            this@GameView.wandImg = image(Scene2DSkin.defaultSkin[Drawable.WAND]) {
-                this.setScaling(Scaling.fit)
-                this.alpha = 0f
-            }
-
-            this.alpha = 0.5f
-            centerTableCell.top().center().padLeft(10f).row()
-        }
-
         table { bottomTableCell ->
             touchpad(0f) { cell ->
                 this.onChangeEvent { model.onTouchChange(knobPercentX, knobPercentY) }
@@ -82,7 +58,6 @@ class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.
         }
 
         setFillParent(true)
-
         initPropertyBinding(model)
     }
 
@@ -106,14 +81,35 @@ class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.
                 }
             }
 
-            onPropertyChange(GameModel::hasAxe) { showItem(axeImg) }
-            onPropertyChange(GameModel::hasClub) { showItem(clubImg) }
-            onPropertyChange(GameModel::hasWand) { showItem(wandImg) }
+            onPropertyChange(GameModel::item) { showItem(itemDrawable(item)) }
         }
     }
 
-    private fun showItem(image: Image) {
-        image += alpha(1f) + alpha(0.2f, 0.5f) + fadeIn(1.5f, Interpolation.bounceIn)
+    private fun itemDrawable(itemType: ItemType): Drawable = when (itemType) {
+        ItemType.AXE -> Drawable.AXE
+        ItemType.CLUB -> Drawable.CLUB
+        ItemType.WAND -> Drawable.WAND
+        ItemType.BOOTS -> Drawable.BOOTS
+        else -> gdxError("Unsupported type $itemType")
+    }
+
+    private fun showItem(drawable: Drawable) {
+        val numItems = stage.actors.size - 1
+        val offsetTop = 30f
+        val offsetLeft = 62f
+        val imgSize = 11f
+        val padLeft = 5f
+
+        stage += Image(Scene2DSkin.defaultSkin[drawable]).also { img ->
+            img.setScaling(Scaling.fit)
+            img.centerPosition(stage.width, stage.height)
+            img += alpha(0.3f) +
+                    fadeIn(2f, Interpolation.bounceIn) +
+                    parallel(
+                        moveTo(offsetLeft + (imgSize + padLeft) * numItems, stage.height - offsetTop, 1f),
+                        sizeTo(imgSize, imgSize, 1f)
+                    )
+        }
     }
 }
 

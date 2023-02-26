@@ -2,7 +2,6 @@ package com.github.quillraven.mysticgarden.screen
 
 import box2dLight.RayHandler
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -135,11 +134,6 @@ class GameScreen(
         uiStage.draw()
         // reset alpha value for game rendering
         batch.color.a = 1f
-
-        if (Gdx.input.isKeyPressed(Input.Keys.R)) {
-            uiStage.clear()
-            uiStage.actors { gameView(GameModel(eventDispatcher, keyboardInput), false) }
-        }
     }
 
     override fun dispose() {

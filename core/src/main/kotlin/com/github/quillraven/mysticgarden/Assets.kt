@@ -128,7 +128,8 @@ enum class RegionName(val isAnimation: Boolean = false) {
     HERO_UP(isAnimation = true),
     HERO_DOWN(isAnimation = true),
     HERO_LEFT(isAnimation = true),
-    HERO_RIGHT(isAnimation = true);
+    HERO_RIGHT(isAnimation = true),
+    BOOTS;
 
     val key: String = this.name.lowercase()
 }

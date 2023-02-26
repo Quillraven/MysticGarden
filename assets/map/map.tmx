@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-up" width="34" height="43" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="393">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-up" width="34" height="43" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="398">
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer id="1" name="background" width="34" height="43">
   <data encoding="base64" compression="zlib">
@@ -132,5 +132,8 @@
   <object id="387" name="Fire" gid="1" x="800" y="768" width="32" height="32"/>
   <object id="388" name="Fire" gid="1" x="736" y="768" width="32" height="32"/>
   <object id="389" name="Crystal" gid="11" x="768" y="768" width="32" height="32"/>
+  <object id="393" name="Wall" gid="87" x="832" y="608" width="32" height="32"/>
+  <object id="394" name="Wall" gid="87" x="864" y="640" width="32" height="32"/>
+  <object id="395" name="Boots" gid="99" x="863.5" y="607.5" width="32" height="32"/>
  </objectgroup>
 </map>

@@ -35,7 +35,8 @@ enum class Drawable {
     SLOT,
     TOUCH_KNOB,
     TOUCH_PAD,
-    WAND;
+    WAND,
+    BOOTS;
 
     val atlasKey: String = this.name.lowercase()
 }

@@ -85,6 +85,13 @@ class CollisionSystem(
                 eventDispatcher.dispatch(ItemPickupEvent(ItemType.WAND))
             }
 
+            TiledObjectType.BOOTS -> {
+                player[Player].items.add(ItemType.BOOTS)
+                player[Move].maxSpeed = Move.defaultSpeed * 1.5f
+                audioService.play(SoundAsset.JINGLE)
+                eventDispatcher.dispatch(ItemPickupEvent(ItemType.BOOTS))
+            }
+
             TiledObjectType.TREE -> {
                 if (player hasItem ItemType.AXE) {
                     audioService.play(SoundAsset.CHOP)

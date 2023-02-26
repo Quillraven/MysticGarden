@@ -5,8 +5,10 @@ import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
 import ktx.math.vec2
 
-data class Move(val maxSpeed: Float, val speed: Vector2 = vec2()) : Component<Move> {
+data class Move(var maxSpeed: Float, val speed: Vector2 = vec2()) : Component<Move> {
     override fun type(): ComponentType<Move> = Move
 
-    companion object : ComponentType<Move>()
+    companion object : ComponentType<Move>() {
+        const val defaultSpeed = 3f
+    }
 }

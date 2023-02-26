@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body
 import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentHook
 import com.github.quillraven.fleks.ComponentType
+import com.github.quillraven.fleks.componentTypeOf
 
 typealias B2DLight = box2dLight.Light
 
@@ -25,8 +26,8 @@ data class Light(
     override fun type(): ComponentType<Light> = cmpType
 
     companion object {
-        val LightPoint = object : ComponentType<Light>() {}
-        val LightCone = object : ComponentType<Light>() {}
+        val LightPoint = componentTypeOf<Light>()
+        val LightCone = componentTypeOf<Light>()
 
         private const val numRays = 64
         val ambientColor = Color(0.05f, 0.05f, 0.05f, 1f)

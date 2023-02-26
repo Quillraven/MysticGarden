@@ -18,7 +18,8 @@ enum class TiledObjectType(val regionName: RegionName) {
     WALL(RegionName.WALL),
     PORTAL(RegionName.PORTAL),
     WAND(RegionName.WAND),
-    CLUB(RegionName.CLUB);
+    CLUB(RegionName.CLUB),
+    BOOTS(RegionName.BOOTS);
 
     companion object {
         fun of(name: String): TiledObjectType {

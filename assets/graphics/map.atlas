@@ -690,3 +690,10 @@ zorb
   orig: 32, 32
   offset: 0, 0
   index: 3
+zz_boots
+  rotate: false
+  xy: 64, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1

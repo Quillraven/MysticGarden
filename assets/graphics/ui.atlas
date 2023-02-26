@@ -13,28 +13,35 @@ arrow
   index: -1
 axe
   rotate: false
-  xy: 516, 632
+  xy: 2, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 bar_empty
   rotate: false
-  xy: 550, 655
+  xy: 134, 157
   size: 3, 9
   orig: 3, 9
   offset: 0, 0
   index: -1
 bar_full
   rotate: false
-  xy: 66, 124
+  xy: 551, 655
   size: 3, 9
   orig: 3, 9
   offset: 0, 0
   index: -1
+boots
+  rotate: false
+  xy: 66, 134
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 club
   rotate: false
-  xy: 516, 598
+  xy: 516, 599
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -55,7 +62,7 @@ font
   index: -1
 frame2
   rotate: false
-  xy: 101, 149
+  xy: 66, 115
   size: 41, 17
   split: 13, 14, 5, 6
   pad: 0, 0, 0, 0
@@ -80,7 +87,7 @@ orb
   index: -1
 slot
   rotate: false
-  xy: 66, 135
+  xy: 516, 633
   size: 33, 31
   orig: 33, 31
   offset: 0, 0
@@ -101,7 +108,7 @@ touch_pad
   index: -1
 wand
   rotate: false
-  xy: 2, 36
+  xy: 100, 134
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

@@ -5,7 +5,7 @@ import com.github.quillraven.fleks.ComponentType
 import ktx.collections.GdxArray
 
 enum class ItemType {
-    AXE, CLUB, WAND
+    NONE, AXE, CLUB, WAND, BOOTS
 }
 
 data class Player(

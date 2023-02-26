@@ -19,9 +19,7 @@ class GameModel(
 
     var totalTime by propertyNotify(0)
 
-    var hasAxe by propertyNotify(false)
-    var hasClub by propertyNotify(false)
-    var hasWand by propertyNotify(false)
+    var item by propertyNotify(ItemType.NONE)
 
     init {
         with(eventDispatcher) {
@@ -32,16 +30,8 @@ class GameModel(
 
             register<CrystalPickupEvent> { collectedCrystals = it.crystals }
             register<OrbPickupEvent> { collectedOrbs = it.orbs }
-
+            register<ItemPickupEvent> { item = it.type }
             register<GameTimeEvent> { totalTime = it.totalTimeSeconds }
-
-            register<ItemPickupEvent> {
-                when (it.type) {
-                    ItemType.AXE -> hasAxe = true
-                    ItemType.CLUB -> hasClub = true
-                    ItemType.WAND -> hasWand = true
-                }
-            }
         }
     }
 

@@ -20,56 +20,63 @@ altar
   index: 0
 altar
   rotate: false
-  xy: 894, 166
+  xy: 928, 200
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 5
 altar
   rotate: false
-  xy: 928, 166
+  xy: 962, 200
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 altar
   rotate: false
-  xy: 928, 132
+  xy: 962, 166
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 7
 altar
   rotate: false
-  xy: 240, 2
+  xy: 274, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 4
 altar
   rotate: false
-  xy: 410, 2
+  xy: 444, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 altar
   rotate: false
-  xy: 580, 2
+  xy: 614, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 6
 axe
   rotate: false
-  xy: 342, 2
+  xy: 376, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+boots
+  rotate: false
+  xy: 70, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 club
   rotate: false
-  xy: 512, 2
+  xy: 546, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -90,49 +97,49 @@ crystal
   index: 5
 crystal
   rotate: false
-  xy: 860, 132
+  xy: 894, 166
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 crystal
   rotate: false
-  xy: 928, 200
+  xy: 104, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 7
 crystal
   rotate: false
-  xy: 138, 2
+  xy: 928, 132
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 4
 crystal
   rotate: false
-  xy: 206, 2
+  xy: 240, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 crystal
   rotate: false
-  xy: 274, 2
+  xy: 308, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 6
 crystal
   rotate: false
-  xy: 546, 2
+  xy: 580, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 fire_wall
   rotate: false
-  xy: 648, 2
+  xy: 682, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -398,28 +405,28 @@ hero_up
   index: 7
 orb
   rotate: false
-  xy: 104, 2
+  xy: 894, 132
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 orb
   rotate: false
-  xy: 172, 2
+  xy: 962, 132
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 orb
   rotate: false
-  xy: 308, 2
+  xy: 342, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
 orb
   rotate: false
-  xy: 614, 2
+  xy: 648, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -440,7 +447,7 @@ portal
   index: 0
 portal
   rotate: false
-  xy: 444, 2
+  xy: 478, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -454,49 +461,49 @@ torch
   index: 0
 torch
   rotate: false
-  xy: 70, 2
+  xy: 860, 132
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 torch
   rotate: false
-  xy: 962, 132
+  xy: 206, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 torch
   rotate: false
-  xy: 478, 2
+  xy: 512, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 tree_green
   rotate: false
-  xy: 962, 200
+  xy: 138, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 tree_red
   rotate: false
-  xy: 962, 166
+  xy: 172, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 wall
   rotate: false
-  xy: 894, 132
+  xy: 928, 166
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 wand
   rotate: false
-  xy: 376, 2
+  xy: 410, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

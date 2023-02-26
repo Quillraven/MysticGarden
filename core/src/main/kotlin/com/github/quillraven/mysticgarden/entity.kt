@@ -24,7 +24,7 @@ fun World.spawnPlayer(x: Float, y: Float): Entity {
     return this.entity {
         it += Player()
         it += CameraLock()
-        it += Move(3f)
+        it += Move(Move.defaultSpeed)
         val boundary = Boundary(x, y, 0.8f, 0.8f)
         it += boundary
         it += Physic.of(physicWorld, boundary, BodyType.DynamicBody, it, MysticGarden.b2dPlayer)
