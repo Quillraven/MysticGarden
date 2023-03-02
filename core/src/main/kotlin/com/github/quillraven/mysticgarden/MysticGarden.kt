@@ -70,6 +70,8 @@ class MysticGarden : KtxGame<KtxScreen>() {
     }
 
     companion object {
+        var isMobile = false
+
         const val unitScale = 1 / 32f
 
         const val prefKeyMusic = "musicVolume"
@@ -81,5 +83,6 @@ class MysticGarden : KtxGame<KtxScreen>() {
         const val b2dWater: Short = 16
 
         const val debug = true
+        const val debugRender = false
     }
 }

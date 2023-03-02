@@ -42,7 +42,8 @@ enum class Drawable {
 }
 
 enum class Label {
-    SMALL;
+    SMALL,
+    FRAMED;
 
     val skinKey: String = "Label_${this.name.lowercase()}"
 }
@@ -61,6 +62,15 @@ fun loadSkin(): Skin {
 
         label { font = skin[Font.NORMAL] }
         label(Label.SMALL.skinKey) { font = skin[Font.SMALL] }
+        label(Label.FRAMED.skinKey) {
+            background = skin[Drawable.FRAME2].apply {
+                leftWidth = 1f
+                rightWidth = 1f
+                topHeight = 1f
+                bottomHeight = 1f
+            }
+            font = skin[Font.SMALL]
+        }
 
         touchpad {
             background = skin[Drawable.TOUCH_PAD]

@@ -85,7 +85,7 @@ class GameScreen(
             add(ParticleSystem())
             add(LightSystem())
             add(RemoveSystem())
-            if (MysticGarden.debug) {
+            if (MysticGarden.debugRender) {
                 add(DebugRenderSystem())
             }
         }

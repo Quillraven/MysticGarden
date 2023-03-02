@@ -10,6 +10,7 @@ import com.github.quillraven.mysticgarden.MysticGarden
 class AndroidLauncher : AndroidApplication() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MysticGarden.isMobile = true
         initialize(MysticGarden(), AndroidApplicationConfiguration().apply {
             // Configure your application here.
             useImmersiveMode = true // Recommended, but not required.
