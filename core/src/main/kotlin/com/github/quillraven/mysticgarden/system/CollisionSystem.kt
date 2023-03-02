@@ -23,7 +23,16 @@ class CollisionSystem(
     private val eventDispatcher: EventDispatcher = inject(),
 ) : IteratingSystem(family { all(Collision, Player) }) {
 
-    private infix fun Entity.hasItem(type: ItemType): Boolean = type in this[Player].items
+    private infix fun Entity.canDestroy(type: TiledObjectType): Boolean {
+        val player = this[Player]
+        return when (type) {
+            TiledObjectType.TREE -> ItemType.AXE in player.items
+            TiledObjectType.WALL -> ItemType.CLUB in player.items
+            TiledObjectType.FIRE_STONE -> ItemType.WAND in player.items
+
+            else -> false
+        }
+    }
 
     override fun onTickEntity(entity: Entity) {
         entity[Collision].entities
@@ -48,15 +57,15 @@ class CollisionSystem(
     }
 
     private fun onTiledCollision(player: Entity, type: TiledObjectType): Boolean {
-        when (type) {
-            TiledObjectType.CRYSTAL -> {
+        when {
+            type == TiledObjectType.CRYSTAL -> {
                 val p = player[Player]
                 p.crystals++
                 audioService.play(SoundAsset.COLLECT)
                 eventDispatcher.dispatch(CrystalPickupEvent(p.crystals))
             }
 
-            TiledObjectType.ORB -> {
+            type == TiledObjectType.ORB -> {
                 val p = player[Player]
                 p.chromas++
 
@@ -67,56 +76,7 @@ class CollisionSystem(
                 eventDispatcher.dispatch(OrbPickupEvent(p.chromas))
             }
 
-            TiledObjectType.AXE -> {
-                player[Player].items.add(ItemType.AXE)
-                audioService.play(SoundAsset.JINGLE)
-                eventDispatcher.dispatch(ItemPickupEvent(ItemType.AXE))
-            }
-
-            TiledObjectType.CLUB -> {
-                player[Player].items.add(ItemType.CLUB)
-                audioService.play(SoundAsset.JINGLE)
-                eventDispatcher.dispatch(ItemPickupEvent(ItemType.CLUB))
-            }
-
-            TiledObjectType.WAND -> {
-                player[Player].items.add(ItemType.WAND)
-                audioService.play(SoundAsset.JINGLE)
-                eventDispatcher.dispatch(ItemPickupEvent(ItemType.WAND))
-            }
-
-            TiledObjectType.BOOTS -> {
-                player[Player].items.add(ItemType.BOOTS)
-                player[Move].maxSpeed = Move.defaultSpeed * 1.5f
-                audioService.play(SoundAsset.JINGLE)
-                eventDispatcher.dispatch(ItemPickupEvent(ItemType.BOOTS))
-            }
-
-            TiledObjectType.TREE -> {
-                if (player hasItem ItemType.AXE) {
-                    audioService.play(SoundAsset.CHOP)
-                    return true
-                }
-                return false
-            }
-
-            TiledObjectType.WALL -> {
-                if (player hasItem ItemType.CLUB) {
-                    audioService.play(SoundAsset.SMASH)
-                    return true
-                }
-                return false
-            }
-
-            TiledObjectType.FIRE_STONE -> {
-                if (player hasItem ItemType.WAND) {
-                    audioService.play(SoundAsset.SWING)
-                    return true
-                }
-                return false
-            }
-
-            TiledObjectType.PORTAL -> {
+            type == TiledObjectType.PORTAL -> {
                 val p = player[Player]
                 if (p.crystals >= p.maxCrystals) {
                     // TODO change to victory screen
@@ -126,6 +86,17 @@ class CollisionSystem(
                 return false
             }
 
+            type.item != null -> onItemPickup(player, type.item)
+
+            type.isDestructible -> {
+                if (player canDestroy type) {
+                    audioService.play(SoundAsset.CHOP)
+                    return true
+                }
+                return false
+            }
+
+
             else -> {
                 log.debug { "Collision with $type not handled" }
                 return false
@@ -133,6 +104,16 @@ class CollisionSystem(
         }
 
         return true
+    }
+
+    private fun onItemPickup(player: Entity, itemType: ItemType) {
+        player[Player].items.add(itemType)
+        audioService.play(SoundAsset.JINGLE)
+        eventDispatcher.dispatch(ItemPickupEvent(itemType))
+
+        if (itemType == ItemType.BOOTS) {
+            player[Move].maxSpeed = Move.defaultSpeed * 1.5f
+        }
     }
 
     companion object {
