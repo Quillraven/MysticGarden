@@ -21,7 +21,10 @@ import ktx.actors.*
 import ktx.app.gdxError
 import ktx.scene2d.*
 
-class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.defaultSkin) {
+class GameView(
+    model: GameModel,
+    leftHand: Boolean
+) : KTable, Table(Scene2DSkin.defaultSkin) {
 
     private val timeLabel: GdxLabel
     private val infoLabel: GdxLabel
@@ -102,7 +105,11 @@ class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.
                 }
             }
 
-            onPropertyChange(GameModel::item) { showItem(itemDrawable(item)) }
+            onPropertyChange(GameModel::infoMsg) {
+                infoLabel.txt = it
+                infoLabel += alpha(1f) + fadeOut(6f, Interpolation.swingIn)
+            }
+            onPropertyChange(GameModel::item) { showItem(itemDrawable(it)) }
         }
     }
 
@@ -115,30 +122,24 @@ class GameView(model: GameModel, leftHand: Boolean) : KTable, Table(Scene2DSkin.
     }
 
     private fun showItem(drawable: Drawable) {
-        infoLabel.txt = "You found a $drawable. AMAZING STUFF!!!"
-        infoLabel += alpha(1f) + parallel(
-            fadeOut(4f, Interpolation.pow3OutInverse),
-            delay(3f, Actions.run { addItemImage(drawable) })
-        )
-    }
+        stage += delay(5f, Actions.run {
+            val numItems = stage.actors.size - 1
+            val offsetTop = 30f
+            val offsetLeft = 62f
+            val imgSize = 11f
+            val padLeft = 5f
 
-    private fun addItemImage(drawable: Drawable) {
-        val numItems = stage.actors.size - 1
-        val offsetTop = 30f
-        val offsetLeft = 62f
-        val imgSize = 11f
-        val padLeft = 5f
-
-        stage += Image(Scene2DSkin.defaultSkin[drawable]).also { img ->
-            img.setScaling(Scaling.fit)
-            img.centerPosition(stage.width, stage.height)
-            img += alpha(0.1f) +
-                    fadeIn(2f, Interpolation.bounceOut) +
-                    parallel(
-                        moveTo(offsetLeft + (imgSize + padLeft) * numItems, stage.height - offsetTop, 1f),
-                        sizeTo(imgSize, imgSize, 1f)
-                    )
-        }
+            stage += Image(Scene2DSkin.defaultSkin[drawable]).also { img ->
+                img.setScaling(Scaling.fit)
+                img.centerPosition(stage.width, stage.height)
+                img += alpha(0.1f) +
+                        fadeIn(2f, Interpolation.bounceOut) +
+                        parallel(
+                            moveTo(offsetLeft + (imgSize + padLeft) * numItems, stage.height - offsetTop, 1f),
+                            sizeTo(imgSize, imgSize, 1f)
+                        )
+            }
+        })
     }
 }
 

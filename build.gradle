@@ -1,58 +1,107 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 buildscript {
-  repositories {
-    mavenCentral()
-    maven { url 'https://s01.oss.sonatype.org' }
-    mavenLocal()
-    google()
-    gradlePluginPortal()
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
-    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-    maven { url "https://teavm.org/maven/repository/" }
-  }
+    repositories {
+        mavenCentral()
+        maven { url 'https://s01.oss.sonatype.org' }
+        mavenLocal()
+        google()
+        gradlePluginPortal()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "https://teavm.org/maven/repository/" }
+    }
 
-  dependencies {
-    classpath "com.android.tools.build:gradle:$androidPluginVersion"
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-  }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$androidPluginVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
 }
 
 allprojects {
-  apply plugin: 'eclipse'
-  apply plugin: 'idea'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
 }
 
 configure(subprojects - project(':android')) {
-  apply plugin: 'java-library'
-  apply plugin: 'kotlin'
-  sourceCompatibility = 11
-  compileJava {
-    options.incremental = true
-  }
-  compileKotlin {
-    compilerOptions.jvmTarget = JvmTarget.JVM_11
-  }
+    apply plugin: 'java-library'
+    apply plugin: 'kotlin'
+    sourceCompatibility = 11
+    compileJava {
+        options.incremental = true
+    }
+    compileKotlin {
+        compilerOptions.jvmTarget = JvmTarget.JVM_11
+    }
 }
 
 subprojects {
-  version = '1.0.0'
-  ext.appName = 'MysticGarden'
-  repositories {
-    mavenCentral()
-    maven { url 'https://s01.oss.sonatype.org' }
-    mavenLocal()
-    gradlePluginPortal()
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
-    maven { url 'https://jitpack.io' }
-    maven { url 'https://teavm.org/maven/repository/' }
-    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-    maven { url "https://teavm.org/maven/repository/" }
-  }
+    version = '1.0.0'
+    ext.appName = 'MysticGarden'
+    repositories {
+        mavenCentral()
+        maven { url 'https://s01.oss.sonatype.org' }
+        mavenLocal()
+        gradlePluginPortal()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://teavm.org/maven/repository/' }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "https://teavm.org/maven/repository/" }
+    }
 }
 
-
-
 eclipse.project.name = 'MysticGarden' + '-parent'
+
+tasks.register("i18n-gen") {
+    def project = 'core'             // Will contain generated enum class.
+    def source = 'src/main/kotlin'   // Kotlin source path of the project.
+    def pack = 'com.github.quillraven.mysticgarden.ui'    // Enum target package.
+    def name = 'I18N'                 // Enum class name.
+    def fileName = 'I18N.kt'          // Name of Kotlin file containing the enum.
+    def bundle = 'assets/i18n/strings.properties' // Path to i18n bundle file.
+
+    println("Processing i18n bundle file at ${bundle}...")
+    def builder = new StringBuilder()
+    builder.append("""package ${pack}
+
+import ktx.i18n.BundleLine
+
+/** Generated from ${bundle} file. */
+enum class ${name} : BundleLine {
+""")
+    def newLine = System.getProperty("line.separator")
+    file(bundle).eachLine {
+        def data = it.trim()
+        def separator = data.indexOf('=')
+        if (!data.isEmpty() && separator > 0 && !data.startsWith('#')) {
+            def id = data.substring(0, separator)
+            builder.append('    ')
+                    .append(id.toUpperCase().replace('.', '_'))
+                    .append(',').append(newLine)
+        }
+    }
+    // If you want a custom enum body, replace the following append:
+    builder.append('    ;')
+            .append(newLine).append(newLine)
+            .append("    private val key = this.name.lowercase().replace(\"_\", \".\")")
+            .append(newLine).append(newLine)
+            .append("    override fun toString(): String = key")
+            .append(newLine)
+            .append('}')
+            .append(newLine)
+
+    source = source.replace('/', File.separator)
+    pack = pack.replace('.', File.separator)
+    def path = project + File.separator + source + File.separator + pack +
+            File.separator + fileName
+    println("Saving i18n bundle enum at ${path}...")
+    def enumFile = file(path)
+    delete enumFile
+    enumFile.getParentFile().mkdirs()
+    enumFile.createNewFile()
+    enumFile << builder << newLine
+    println("Done. I18n bundle enum generated.")
+}
