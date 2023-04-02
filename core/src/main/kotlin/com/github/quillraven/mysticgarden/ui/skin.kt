@@ -66,7 +66,7 @@ fun loadSkin(): Skin {
     return skin(TextureAtlas("graphics/ui.atlas")) { skin ->
 
         // I18N stuff
-        Colors.getColors()["Highlight"] = Color.ROYAL
+        Colors.getColors()["Highlight"] = Color(0xb19cd9)
         Colors.getColors()["Normal"] = Color.WHITE
         Bundle.values().forEach { bundle ->
             skin.add(bundle.skinKey, I18NBundle.createBundle(bundle.filePath.toInternalFile()))

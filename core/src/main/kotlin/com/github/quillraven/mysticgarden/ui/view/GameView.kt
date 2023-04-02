@@ -1,7 +1,6 @@
 package com.github.quillraven.mysticgarden.ui.view
 
 import com.badlogic.gdx.math.Interpolation
-import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.*
 import com.badlogic.gdx.scenes.scene2d.ui.Image
@@ -54,31 +53,27 @@ class GameView(
             this@GameView.infoLabel = label("", Label.FRAMED.skinKey) { cell ->
                 this.wrap = true
                 this.alpha = 0f
-                cell.bottom().expand().fillX().pad(0f, 10f, 40f, 10f)
+                cell.bottom().expand().fillX().pad(0f, 10f, 0f, 10f)
             }
 
-            midTableCell.expand().fill().row()
+            midTableCell.expand().fill().padBottom(10f).row()
         }
 
-        table { bottomTableCell ->
-            val tp = touchpad(0f) { cell ->
-                this.onChangeEvent { model.onTouchChange(knobPercentX, knobPercentY) }
+        if (MysticGarden.isMobile) {
+            // add touchpad only for mobile devices
+            table { bottomTableCell ->
+                touchpad(0f) { cell ->
+                    this.onChangeEvent { model.onTouchChange(knobPercentX, knobPercentY) }
 
-                cell.expand()
-                    .align(if (leftHand) Align.left else Align.right)
-                    .bottom()
-                    .pad(0f, 5f, 5f, 5f)
-            }
+                    cell.expand()
+                        .align(if (leftHand) Align.left else Align.right)
+                        .bottom()
+                        .pad(0f, 5f, 5f, 5f)
+                }
 
-            if (MysticGarden.isMobile) {
                 this.alpha = 0.75f
-            } else {
-                // for non-mobile we keep the touchpad widget for a
-                // consistent infoLabel position, but we will hide it and deactivate it
-                this.alpha = 0f
-                tp.touchable = Touchable.disabled
+                bottomTableCell.fill().bottom()
             }
-            bottomTableCell.fill().bottom()
         }
 
         setFillParent(true)
@@ -132,6 +127,13 @@ class GameView(
             stage += Image(Scene2DSkin.defaultSkin[drawable]).also { img ->
                 img.setScaling(Scaling.fit)
                 img.centerPosition(stage.width, stage.height)
+                // for the love of god I cannot find out how to get the correct
+                // infoLabel position from Scene2D to position the image above the infoLabel.
+                // Sounds like an easy task, but I guess you need dark magic and a master in rocket science
+                // to achieve that. I always get the position (10, -1) when clearly it is something different.
+                // So f%$& you again Scene2D -> I am hardcoding it.
+                val baseY = if (MysticGarden.isMobile) 80f else 10f
+                img.y = baseY + infoLabel.height + 10f
                 img += alpha(0.1f) +
                         fadeIn(2f, Interpolation.bounceOut) +
                         parallel(

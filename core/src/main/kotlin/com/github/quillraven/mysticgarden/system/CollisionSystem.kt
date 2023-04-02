@@ -110,6 +110,7 @@ class CollisionSystem(
         player[Player].items.add(itemType)
         audioService.play(SoundAsset.JINGLE)
         eventDispatcher.dispatch(ItemPickupEvent(itemType))
+        player.configure { it += Disable(5f) }
 
         if (itemType == ItemType.BOOTS) {
             player[Move].maxSpeed = Move.defaultSpeed * 1.5f
