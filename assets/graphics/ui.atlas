@@ -6,7 +6,7 @@ filter: Nearest, Nearest
 repeat: none
 arrow
   rotate: false
-  xy: 583, 670
+  xy: 69, 74
   size: 7, 10
   orig: 7, 10
   offset: 0, 0
@@ -18,30 +18,37 @@ axe
   orig: 32, 32
   offset: 0, 0
   index: -1
+banner
+  rotate: false
+  xy: 2, 86
+  size: 450, 138
+  orig: 450, 138
+  offset: 0, 0
+  index: -1
 bar_empty
   rotate: false
-  xy: 134, 157
+  xy: 580, 696
   size: 3, 9
   orig: 3, 9
   offset: 0, 0
   index: -1
 bar_full
   rotate: false
-  xy: 551, 655
+  xy: 550, 665
   size: 3, 9
   orig: 3, 9
   offset: 0, 0
   index: -1
 boots
   rotate: false
-  xy: 66, 134
+  xy: 516, 642
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 club
   rotate: false
-  xy: 516, 599
+  xy: 516, 608
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -55,14 +62,14 @@ crystal
   index: -1
 font
   rotate: false
-  xy: 2, 168
+  xy: 2, 226
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 frame2
   rotate: false
-  xy: 66, 115
+  xy: 615, 721
   size: 41, 17
   split: 13, 14, 5, 6
   pad: 0, 0, 0, 0
@@ -71,7 +78,7 @@ frame2
   index: -1
 frame3
   rotate: false
-  xy: 516, 666
+  xy: 2, 70
   size: 65, 14
   split: 21, 22, 4, 5
   pad: 0, 0, 0, 0
@@ -80,35 +87,35 @@ frame3
   index: -1
 orb
   rotate: false
-  xy: 2, 70
+  xy: 454, 192
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 slot
   rotate: false
-  xy: 516, 633
+  xy: 580, 707
   size: 33, 31
   orig: 33, 31
   offset: 0, 0
   index: -1
 touch_knob
   rotate: false
-  xy: 36, 82
+  xy: 488, 204
   size: 20, 20
   orig: 20, 20
   offset: 0, 0
   index: -1
 touch_pad
   rotate: false
-  xy: 2, 104
+  xy: 516, 676
   size: 62, 62
   orig: 62, 62
   offset: 0, 0
   index: -1
 wand
   rotate: false
-  xy: 100, 134
+  xy: 454, 158
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

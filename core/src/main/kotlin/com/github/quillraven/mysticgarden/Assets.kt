@@ -156,6 +156,7 @@ enum class ParticleAsset {
 
 enum class MusicAsset(fileName: String) {
     GAME("almost_finished.ogg"),
+    VICTORY("victory.mp3"),
     MENU("intro.mp3"),
     FANFARE("victory.mp3");
 

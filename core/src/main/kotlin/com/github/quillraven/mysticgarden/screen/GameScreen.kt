@@ -7,6 +7,7 @@ import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.utils.I18NBundle
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.github.quillraven.fleks.World
@@ -36,16 +37,18 @@ import ktx.scene2d.actors
 import kotlin.experimental.or
 
 class GameScreen(
+    private val game: MysticGarden,
     private val batch: Batch,
     private val assets: Assets,
     private val uiStage: Stage,
     private val prefs: Preferences,
     private val audioService: AudioService,
+    private val eventDispatcher: EventDispatcher,
+    private val i18n: I18NBundle,
 ) : KtxScreen {
 
     private val gameCamera = OrthographicCamera()
     private val gameViewport: Viewport = FitViewport(6.75f, 12f, gameCamera)
-    private val eventDispatcher = EventDispatcher()
     private val physicWorld = createWorld()
     private val rayHandler = createRayHandler()
     private val world = createEntityWorld()
@@ -53,6 +56,7 @@ class GameScreen(
 
     private fun createEntityWorld(): World = world {
         injectables {
+            add(game)
             add(batch)
             add(gameCamera)
             add(gameViewport)
@@ -106,8 +110,9 @@ class GameScreen(
     }
 
     override fun show() {
+        uiStage.clear()
         uiStage.actors {
-            gameView(GameModel(eventDispatcher, keyboardInput), true)
+            gameView(i18n, GameModel(eventDispatcher, keyboardInput, i18n), true)
         }
 
         Gdx.input.inputProcessor = InputMultiplexer(keyboardInput, uiStage)

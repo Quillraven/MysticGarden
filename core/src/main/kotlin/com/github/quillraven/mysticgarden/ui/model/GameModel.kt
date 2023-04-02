@@ -6,18 +6,15 @@ import com.github.quillraven.mysticgarden.event.*
 import com.github.quillraven.mysticgarden.input.KeyboardInput
 import com.github.quillraven.mysticgarden.system.numCrystals
 import com.github.quillraven.mysticgarden.system.numOrbs
-import com.github.quillraven.mysticgarden.ui.Bundle
 import com.github.quillraven.mysticgarden.ui.I18N
-import com.github.quillraven.mysticgarden.ui.get
 import ktx.i18n.get
-import ktx.scene2d.Scene2DSkin
 
 class GameModel(
     eventDispatcher: EventDispatcher,
     private val keyboardInput: KeyboardInput,
+    private val i18n: I18NBundle,
 ) : PropertyChangeSource() {
 
-    private val i18n: I18NBundle = Scene2DSkin.defaultSkin[Bundle.DEFAULT]
     var infoMsg by propertyNotify("")
 
     var maxCrystals by propertyNotify(0)

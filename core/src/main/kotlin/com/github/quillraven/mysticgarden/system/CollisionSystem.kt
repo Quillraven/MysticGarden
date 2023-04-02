@@ -5,10 +5,12 @@ import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
 import com.github.quillraven.fleks.World.Companion.inject
+import com.github.quillraven.mysticgarden.MysticGarden
 import com.github.quillraven.mysticgarden.SoundAsset
 import com.github.quillraven.mysticgarden.audio.AudioService
 import com.github.quillraven.mysticgarden.component.*
 import com.github.quillraven.mysticgarden.event.*
+import com.github.quillraven.mysticgarden.screen.VictoryScreen
 import ktx.graphics.component1
 import ktx.graphics.component2
 import ktx.graphics.component3
@@ -18,6 +20,7 @@ class CollisionSystem(
     private val rayHandler: RayHandler = inject(),
     private val audioService: AudioService = inject(),
     private val eventDispatcher: EventDispatcher = inject(),
+    private val game: MysticGarden = inject(),
 ) : IteratingSystem(family { all(Collision, Player) }) {
 
     private infix fun Entity.canDestroy(type: TiledObjectType): Boolean {
@@ -76,8 +79,7 @@ class CollisionSystem(
             type == TiledObjectType.PORTAL -> {
                 val p = player[Player]
                 if (p.crystals >= p.maxCrystals) {
-                    // TODO change to victory screen
-                    println("VICTORY")
+                    game.setScreen<VictoryScreen>()
                 } else {
                     eventDispatcher.dispatch(PortalCollision)
                 }

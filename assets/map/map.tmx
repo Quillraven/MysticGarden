@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-up" width="34" height="43" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="403">
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-up" width="34" height="43" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="404">
  <tileset firstgid="1" source="tileset.tsx"/>
  <layer id="1" name="background" width="34" height="43">
   <data encoding="base64" compression="zlib">

@@ -6,21 +6,21 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions.*
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.I18NBundle
 import com.badlogic.gdx.utils.Scaling
 import com.github.quillraven.mysticgarden.MysticGarden
 import com.github.quillraven.mysticgarden.component.ItemType
-import com.github.quillraven.mysticgarden.ui.Drawable
-import com.github.quillraven.mysticgarden.ui.GdxLabel
-import com.github.quillraven.mysticgarden.ui.Label
+import com.github.quillraven.mysticgarden.ui.*
 import com.github.quillraven.mysticgarden.ui.actor.CollectInfo
 import com.github.quillraven.mysticgarden.ui.actor.collectInfo
-import com.github.quillraven.mysticgarden.ui.get
 import com.github.quillraven.mysticgarden.ui.model.GameModel
 import ktx.actors.*
 import ktx.app.gdxError
+import ktx.i18n.get
 import ktx.scene2d.*
 
 class GameView(
+    private val i18n: I18NBundle,
     model: GameModel,
     leftHand: Boolean
 ) : KTable, Table(Scene2DSkin.defaultSkin) {
@@ -37,7 +37,7 @@ class GameView(
                 cell.padLeft(5f)
             }
 
-            this@GameView.timeLabel = label("Zeit: 00:00", Label.SMALL.skinKey) { cell ->
+            this@GameView.timeLabel = label(this@GameView.i18n[I18N.TIME, "00:00"], Label.SMALL.skinKey) { cell ->
                 cell.padLeft(40f).fill()
             }
 
@@ -92,11 +92,11 @@ class GameView(
                 if (totalTimeSeconds >= 6000) {
                     // time is more than 99 minutes and 59 seconds
                     // a player should never take that long, but you never know ;)
-                    timeLabel.txt = "Zeit: 99:59"
+                    timeLabel.txt = i18n[I18N.TIME, "99:59"]
                 } else {
                     val minutes = totalTimeSeconds / 60
                     val seconds = totalTimeSeconds % 60
-                    timeLabel.txt = "Zeit: %02d:%02d".format(minutes, seconds)
+                    timeLabel.txt = i18n[I18N.TIME, "%02d:%02d".format(minutes, seconds)]
                 }
             }
 
@@ -147,7 +147,8 @@ class GameView(
 
 @Scene2dDsl
 fun <S> KWidget<S>.gameView(
+    i18n: I18NBundle,
     model: GameModel,
     leftHand: Boolean,
     init: GameView.(S) -> Unit = {}
-): GameView = actor(GameView(model, leftHand), init)
+): GameView = actor(GameView(i18n, model, leftHand), init)

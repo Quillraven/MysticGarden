@@ -6,9 +6,14 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.utils.I18NBundle
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.github.quillraven.mysticgarden.audio.AudioService
+import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.screen.GameScreen
+import com.github.quillraven.mysticgarden.screen.VictoryScreen
+import com.github.quillraven.mysticgarden.ui.Bundle
+import com.github.quillraven.mysticgarden.ui.get
 import com.github.quillraven.mysticgarden.ui.loadSkin
 import ktx.app.KtxGame
 import ktx.app.KtxScreen
@@ -27,6 +32,7 @@ class MysticGarden : KtxGame<KtxScreen>() {
     private val audioService = AudioService(assets)
     private val uiStage by lazy { Stage(FitViewport(180f, 320f), batch) }
     private val prefs by lazy { Gdx.app.getPreferences("mystic-garden-kotlin") }
+    private val eventDispatcher = EventDispatcher()
 
     override fun create() {
         if (debug) {
@@ -39,13 +45,15 @@ class MysticGarden : KtxGame<KtxScreen>() {
         // load assets
         assets.load()
         Scene2DSkin.defaultSkin = loadSkin()
+        val i18n: I18NBundle = Scene2DSkin.defaultSkin[Bundle.DEFAULT]
 
         // set audio service volume
         audioService.mscVolume = prefs[prefKeyMusic, 1f]
         audioService.sndVolume = prefs[prefKeySound, 1f]
 
         // add screens and set start screen
-        addScreen(GameScreen(batch, assets, uiStage, prefs, audioService))
+        addScreen(GameScreen(this, batch, assets, uiStage, prefs, audioService, eventDispatcher, i18n))
+        addScreen(VictoryScreen(uiStage, i18n, audioService, eventDispatcher))
         setScreen<GameScreen>()
     }
 
