@@ -33,3 +33,5 @@ data class OrbPickupEvent(val orbs: Int) : Event
 data class GameTimeEvent(val totalTimeSeconds: Int) : Event
 
 data class ItemPickupEvent(val type: ItemType) : Event
+
+object PortalCollision : Event

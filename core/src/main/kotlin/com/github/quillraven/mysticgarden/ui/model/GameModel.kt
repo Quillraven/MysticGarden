@@ -57,6 +57,10 @@ class GameModel(
                 infoMsg = itemPickupInfo(it.type.name)
                 item = it.type
             }
+
+            register<PortalCollision> {
+                infoMsg = i18n[I18N.PORTALINFO]
+            }
         }
     }
 

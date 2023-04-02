@@ -4,9 +4,9 @@ import ktx.i18n.BundleLine
 
 /** Generated from assets/i18n/strings.properties file. */
 enum class I18N : BundleLine {
-    CONTINUEGAME,
+    CONTINUE,
     CREDITS,
-    CREDITSMENUITEM,
+    CREDITS_MENU,
     ITEM_PICKUP,
     ITEM_PICKUP_DESCRIPTION_AXE,
     ITEM_PICKUP_DESCRIPTION_BOOTS,
@@ -21,7 +21,7 @@ enum class I18N : BundleLine {
     ITEM_PICKUP_INFO_ORB,
     ITEM_PICKUP_INFO_WAND,
     LOADING,
-    NEEDEDGAMETIME,
+    NEEDEDTIME,
     NEWGAME,
     PORTALINFO,
     PRESSANYKEY,

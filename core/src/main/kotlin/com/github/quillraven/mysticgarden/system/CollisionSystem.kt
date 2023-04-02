@@ -8,10 +8,7 @@ import com.github.quillraven.fleks.World.Companion.inject
 import com.github.quillraven.mysticgarden.SoundAsset
 import com.github.quillraven.mysticgarden.audio.AudioService
 import com.github.quillraven.mysticgarden.component.*
-import com.github.quillraven.mysticgarden.event.CrystalPickupEvent
-import com.github.quillraven.mysticgarden.event.EventDispatcher
-import com.github.quillraven.mysticgarden.event.ItemPickupEvent
-import com.github.quillraven.mysticgarden.event.OrbPickupEvent
+import com.github.quillraven.mysticgarden.event.*
 import ktx.graphics.component1
 import ktx.graphics.component2
 import ktx.graphics.component3
@@ -81,6 +78,8 @@ class CollisionSystem(
                 if (p.crystals >= p.maxCrystals) {
                     // TODO change to victory screen
                     println("VICTORY")
+                } else {
+                    eventDispatcher.dispatch(PortalCollision)
                 }
                 // don't destroy the Portal ;)
                 return false
