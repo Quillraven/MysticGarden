@@ -49,7 +49,8 @@ enum class Drawable {
     TOUCH_PAD,
     WAND,
     BOOTS,
-    BANNER;
+    BANNER,
+    HERO;
 
     val atlasKey: String = this.name.lowercase()
 }

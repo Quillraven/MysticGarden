@@ -5,6 +5,10 @@ import ktx.i18n.BundleLine
 /** Generated from assets/i18n/strings.properties file. */
 enum class I18N : BundleLine {
     CONTINUE,
+    CONTROLSHERO,
+    CONTROLSHERO_MOBILE,
+    CONTROLSTOUCH,
+    CONTROLSTOUCH_MOBILE,
     CREDITS,
     CREDITS_MENU,
     ITEM_PICKUP,

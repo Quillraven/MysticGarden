@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.I18NBundle
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.github.quillraven.mysticgarden.audio.AudioService
 import com.github.quillraven.mysticgarden.event.EventDispatcher
+import com.github.quillraven.mysticgarden.screen.ControlsScreen
 import com.github.quillraven.mysticgarden.screen.GameScreen
 import com.github.quillraven.mysticgarden.screen.VictoryScreen
 import com.github.quillraven.mysticgarden.ui.Bundle
@@ -52,9 +53,10 @@ class MysticGarden : KtxGame<KtxScreen>() {
         audioService.sndVolume = prefs[prefKeySound, 1f]
 
         // add screens and set start screen
+        addScreen(ControlsScreen(this, audioService, uiStage, i18n))
         addScreen(GameScreen(this, batch, assets, uiStage, prefs, audioService, eventDispatcher, i18n))
         addScreen(VictoryScreen(uiStage, i18n, audioService, eventDispatcher))
-        setScreen<GameScreen>()
+        setScreen<ControlsScreen>()
     }
 
     override fun render() {
