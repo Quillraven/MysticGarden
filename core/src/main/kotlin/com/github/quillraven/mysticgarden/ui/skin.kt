@@ -2,6 +2,7 @@ package com.github.quillraven.mysticgarden.ui
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Colors
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -35,7 +36,6 @@ enum class Font(val scale: Float) {
 operator fun Skin.get(font: Font): BitmapFont = this.getFont(font.skinKey)
 
 enum class Drawable {
-    ARROW,
     AXE,
     BAR_EMPTY,
     BAR_FULL,
@@ -44,13 +44,13 @@ enum class Drawable {
     FRAME2,
     FRAME3,
     ORB,
-    SLOT,
     TOUCH_KNOB,
     TOUCH_PAD,
     WAND,
     BOOTS,
     BANNER,
-    HERO;
+    HERO,
+    MENU_BGD;
 
     val atlasKey: String = this.name.lowercase()
 }
@@ -66,7 +66,7 @@ enum class Label {
 operator fun Skin.get(drawable: Drawable): GdxDrawable = this.getDrawable(drawable.atlasKey)
 
 fun loadSkin(): Skin {
-    return skin(TextureAtlas("graphics/ui.atlas")) { skin ->
+    return skin(TextureAtlas("ui/ui.atlas")) { skin ->
 
         // I18N stuff
         Colors.getColors()["Highlight"] = Color(0xb19cd9)
@@ -82,6 +82,8 @@ fun loadSkin(): Skin {
                 bmp.data.setScale(fnt.scale)
             }
         }
+
+        skin[Drawable.MENU_BGD.atlasKey] = Texture("ui/menu_bgd.png")
 
         label { font = skin[Font.NORMAL] }
         label(Label.SMALL.skinKey) { font = skin[Font.SMALL] }

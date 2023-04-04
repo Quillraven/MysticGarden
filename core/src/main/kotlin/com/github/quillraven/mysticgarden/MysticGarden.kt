@@ -12,6 +12,7 @@ import com.github.quillraven.mysticgarden.audio.AudioService
 import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.screen.ControlsScreen
 import com.github.quillraven.mysticgarden.screen.GameScreen
+import com.github.quillraven.mysticgarden.screen.MenuScreen
 import com.github.quillraven.mysticgarden.screen.VictoryScreen
 import com.github.quillraven.mysticgarden.ui.Bundle
 import com.github.quillraven.mysticgarden.ui.get
@@ -54,8 +55,9 @@ class MysticGarden : KtxGame<KtxScreen>() {
 
         // add screens and set start screen
         addScreen(ControlsScreen(this, audioService, uiStage, i18n))
+        addScreen(MenuScreen(this, uiStage, audioService, i18n))
         addScreen(GameScreen(this, batch, assets, uiStage, prefs, audioService, eventDispatcher, i18n))
-        addScreen(VictoryScreen(uiStage, i18n, audioService, eventDispatcher))
+        addScreen(VictoryScreen(this, uiStage, i18n, audioService, eventDispatcher))
         setScreen<ControlsScreen>()
     }
 

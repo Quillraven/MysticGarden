@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.I18NBundle
 import com.github.quillraven.mysticgarden.MusicAsset
+import com.github.quillraven.mysticgarden.MysticGarden
 import com.github.quillraven.mysticgarden.audio.AudioService
 import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.event.GameTimeEvent
@@ -14,6 +15,7 @@ import ktx.app.KtxScreen
 import ktx.scene2d.actors
 
 class VictoryScreen(
+    private val game: MysticGarden,
     private val uiStage: Stage,
     private val i18n: I18NBundle,
     private val audioService: AudioService,
@@ -51,8 +53,7 @@ class VictoryScreen(
         val dt = delta.coerceAtMost(0.25f)
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY) || Gdx.input.justTouched()) {
-            // TODO return to main menu
-            Gdx.app.exit()
+            game.setScreen<MenuScreen>()
         }
 
         // render UI

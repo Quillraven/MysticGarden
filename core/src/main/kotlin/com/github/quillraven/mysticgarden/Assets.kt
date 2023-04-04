@@ -157,8 +157,7 @@ enum class ParticleAsset {
 enum class MusicAsset(fileName: String) {
     GAME("almost_finished.ogg"),
     VICTORY("victory.mp3"),
-    MENU("intro.mp3"),
-    FANFARE("victory.mp3");
+    MENU("intro.mp3");
 
     val path: String = "audio/$fileName"
 }
@@ -167,7 +166,6 @@ enum class SoundAsset(fileName: String) {
     CHOP("chop.ogg"),
     COLLECT("crystal_pickup.ogg"),
     JINGLE("jingle.wav"),
-    SELECT("select.wav"),
     SMASH("smash.ogg"),
     SWING("swing.ogg");
 

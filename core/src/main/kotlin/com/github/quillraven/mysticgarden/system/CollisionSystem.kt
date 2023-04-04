@@ -91,7 +91,11 @@ class CollisionSystem(
 
             type.isDestructible -> {
                 if (player canDestroy type) {
-                    audioService.play(SoundAsset.CHOP)
+                    when (type) {
+                        TiledObjectType.FIRE_STONE -> audioService.play(SoundAsset.SWING)
+                        TiledObjectType.WALL -> audioService.play(SoundAsset.SMASH)
+                        else -> audioService.play(SoundAsset.CHOP)
+                    }
                     return true
                 }
                 return false

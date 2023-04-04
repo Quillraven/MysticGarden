@@ -34,7 +34,7 @@ class PhysicSystem(
     override fun onUpdate() {
         // Apply linear impulse once before doing the world steps
         // to get a consistent behavior with our fixed timestep approach.
-        // Forces are cleared manually afterwards (see end of this method)
+        // Forces are cleared manually afterward (see end of this method)
         applyMoveImpulse()
 
         super.onUpdate()
@@ -98,7 +98,7 @@ class PhysicSystem(
             return
         }
 
-        // Store collision events to handle them afterwards because there are some
+        // Store collision events to handle them afterward because there are some
         // limitations within ContactListener functions like e.g. you are not allowed
         // to remove bodies (=our entities).
         if (dataA has Player) {
