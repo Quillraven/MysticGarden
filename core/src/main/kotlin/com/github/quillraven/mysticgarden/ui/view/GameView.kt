@@ -22,7 +22,6 @@ import ktx.scene2d.*
 class GameView(
     private val i18n: I18NBundle,
     model: GameModel,
-    leftHand: Boolean
 ) : KTable, Table(Scene2DSkin.defaultSkin) {
 
     private val timeLabel: GdxLabel
@@ -66,9 +65,14 @@ class GameView(
                     this.onChangeEvent { model.onTouchChange(knobPercentX, knobPercentY) }
 
                     cell.expand()
-                        .align(if (leftHand) Align.left else Align.right)
+                        .align(Align.left)
                         .bottom()
                         .pad(0f, 5f, 5f, 5f)
+                }
+
+                imageButton(ImageButton.BACK.skinKey) { cell ->
+                    this.onClick { model.goToMenu() }
+                    cell.right().bottom().width(25f).height(25f).padRight(5f).padBottom(5f)
                 }
 
                 this.alpha = 0.75f
@@ -149,6 +153,5 @@ class GameView(
 fun <S> KWidget<S>.gameView(
     i18n: I18NBundle,
     model: GameModel,
-    leftHand: Boolean,
     init: GameView.(S) -> Unit = {}
-): GameView = actor(GameView(i18n, model, leftHand), init)
+): GameView = actor(GameView(i18n, model), init)

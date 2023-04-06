@@ -10,10 +10,7 @@ import com.badlogic.gdx.utils.I18NBundle
 import ktx.assets.toInternalFile
 import ktx.collections.set
 import ktx.scene2d.Scene2DSkin
-import ktx.style.label
-import ktx.style.set
-import ktx.style.skin
-import ktx.style.touchpad
+import ktx.style.*
 
 typealias GdxDrawable = com.badlogic.gdx.scenes.scene2d.utils.Drawable
 typealias GdxLabel = com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -50,7 +47,8 @@ enum class Drawable {
     BOOTS,
     BANNER,
     HERO,
-    MENU_BGD;
+    MENU_BGD,
+    BACK;
 
     val atlasKey: String = this.name.lowercase()
 }
@@ -61,6 +59,12 @@ enum class Label {
     FRAMED;
 
     val skinKey: String = "Label_${this.name.lowercase()}"
+}
+
+enum class ImageButton {
+    BACK;
+
+    val skinKey: String = "ImageButton_${this.name.lowercase()}"
 }
 
 operator fun Skin.get(drawable: Drawable): GdxDrawable = this.getDrawable(drawable.atlasKey)
@@ -101,6 +105,11 @@ fun loadSkin(): Skin {
         touchpad {
             background = skin[Drawable.TOUCH_PAD]
             knob = skin[Drawable.TOUCH_KNOB]
+        }
+
+        imageButton(ImageButton.BACK.skinKey) {
+            imageDown = skin[Drawable.BACK]
+            imageUp = imageDown
         }
 
     }.also {

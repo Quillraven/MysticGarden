@@ -40,19 +40,20 @@ class GameScreen(
     private val game: MysticGarden,
     private val batch: Batch,
     private val assets: Assets,
-    private val uiStage: Stage,
     private val prefs: Preferences,
     private val audioService: AudioService,
     private val eventDispatcher: EventDispatcher,
     private val i18n: I18NBundle,
 ) : KtxScreen {
 
+    private val uiStage = Stage(FitViewport(180f, 320f), batch)
     private val gameCamera = OrthographicCamera()
     private val gameViewport: Viewport = FitViewport(6.75f, 12f, gameCamera)
     private val physicWorld = createWorld()
     private val rayHandler = createRayHandler()
     private val world = createEntityWorld()
-    private val keyboardInput = KeyboardInput(PlayerController(world))
+    private val keyboardInput = KeyboardInput(PlayerController(world), game)
+    private var currentMap: TiledMapAsset? = null
 
     private fun createEntityWorld(): World = world {
         injectables {
@@ -110,14 +111,16 @@ class GameScreen(
     }
 
     override fun show() {
-        uiStage.clear()
-        uiStage.actors {
-            gameView(i18n, GameModel(eventDispatcher, keyboardInput, i18n), true)
+        if (uiStage.root.children.isEmpty) {
+            uiStage.actors { gameView(i18n, GameModel(eventDispatcher, keyboardInput, i18n, game)) }
         }
 
         Gdx.input.inputProcessor = InputMultiplexer(keyboardInput, uiStage)
 
-        eventDispatcher.dispatch(MapChangeEvent(assets[TiledMapAsset.MAP]))
+        if (currentMap == null) {
+            currentMap = TiledMapAsset.MAP
+            eventDispatcher.dispatch(MapChangeEvent(assets[TiledMapAsset.MAP]))
+        }
         audioService.play(MusicAsset.GAME)
     }
 
@@ -145,6 +148,7 @@ class GameScreen(
         world.dispose()
         physicWorld.disposeSafely()
         rayHandler.disposeSafely()
+        uiStage.disposeSafely()
     }
 }
 

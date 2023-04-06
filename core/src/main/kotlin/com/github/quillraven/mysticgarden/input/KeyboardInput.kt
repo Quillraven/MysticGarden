@@ -1,11 +1,16 @@
 package com.github.quillraven.mysticgarden.input
 
 import com.badlogic.gdx.Input
+import com.github.quillraven.mysticgarden.MysticGarden
 import com.github.quillraven.mysticgarden.RegionName
+import com.github.quillraven.mysticgarden.screen.MenuScreen
 import ktx.app.KtxInputAdapter
 import ktx.math.vec2
 
-class KeyboardInput(private val playerController: PlayerController) : KtxInputAdapter {
+class KeyboardInput(
+    private val playerController: PlayerController,
+    private val game: MysticGarden,
+) : KtxInputAdapter {
 
     private val moveVec = vec2()
 
@@ -31,6 +36,7 @@ class KeyboardInput(private val playerController: PlayerController) : KtxInputAd
             Input.Keys.S -> directionChange(0f, -1f)
             Input.Keys.A -> directionChange(-1f, 0f)
             Input.Keys.D -> directionChange(1f, 0f)
+            Input.Keys.ESCAPE -> game.setScreen<MenuScreen>()
             else -> return false
         }
 

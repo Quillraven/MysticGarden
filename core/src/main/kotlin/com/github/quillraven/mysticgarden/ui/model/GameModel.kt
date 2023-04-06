@@ -1,9 +1,11 @@
 package com.github.quillraven.mysticgarden.ui.model
 
 import com.badlogic.gdx.utils.I18NBundle
+import com.github.quillraven.mysticgarden.MysticGarden
 import com.github.quillraven.mysticgarden.component.ItemType
 import com.github.quillraven.mysticgarden.event.*
 import com.github.quillraven.mysticgarden.input.KeyboardInput
+import com.github.quillraven.mysticgarden.screen.MenuScreen
 import com.github.quillraven.mysticgarden.system.numCrystals
 import com.github.quillraven.mysticgarden.system.numOrbs
 import com.github.quillraven.mysticgarden.ui.I18N
@@ -13,6 +15,7 @@ class GameModel(
     eventDispatcher: EventDispatcher,
     private val keyboardInput: KeyboardInput,
     private val i18n: I18NBundle,
+    private val game: MysticGarden,
 ) : PropertyChangeSource() {
 
     var infoMsg by propertyNotify("")
@@ -69,5 +72,9 @@ class GameModel(
 
     fun onTouchChange(x: Float, y: Float) {
         keyboardInput.updateMove(x, y)
+    }
+
+    fun goToMenu() {
+        game.setScreen<MenuScreen>()
     }
 }

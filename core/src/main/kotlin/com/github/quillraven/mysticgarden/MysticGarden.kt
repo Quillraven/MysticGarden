@@ -56,7 +56,7 @@ class MysticGarden : KtxGame<KtxScreen>() {
         // add screens and set start screen
         addScreen(ControlsScreen(this, audioService, uiStage, i18n))
         addScreen(MenuScreen(this, uiStage, audioService, i18n))
-        addScreen(GameScreen(this, batch, assets, uiStage, prefs, audioService, eventDispatcher, i18n))
+        addScreen(GameScreen(this, batch, assets, prefs, audioService, eventDispatcher, i18n))
         addScreen(VictoryScreen(this, uiStage, i18n, audioService, eventDispatcher))
         setScreen<ControlsScreen>()
     }
