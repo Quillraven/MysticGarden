@@ -69,6 +69,7 @@ class GameScreen(
     private val keyboardInput = KeyboardInput(PlayerController(world), game)
     private val activeMap = assets[TiledMapAsset.MAP]
     private val gameModel = GameModel(eventDispatcher, keyboardInput, i18n, game)
+    private var wasShown = false
 
     init {
         uiStage.actors { gameView(i18n, gameModel) }
@@ -187,6 +188,11 @@ class GameScreen(
     }
 
     fun saveGame() {
+        if (!wasShown) {
+            // screen was never active -> don't save
+            return
+        }
+
         prefs.flush {
             with(world) {
                 val playerEntity = family { all(Player, Boundary) }.first()
@@ -208,7 +214,7 @@ class GameScreen(
 
     override fun show() {
         Gdx.input.inputProcessor = InputMultiplexer(keyboardInput, uiStage)
-
+        wasShown = true
         audioService.play(MusicAsset.GAME)
     }
 
