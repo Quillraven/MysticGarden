@@ -5,11 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.utils.Scaling
 import com.github.quillraven.mysticgarden.ui.Drawable
 import com.github.quillraven.mysticgarden.ui.get
-import ktx.actors.onClickEvent
+import ktx.actors.onClick
 import ktx.actors.plusAssign
 import ktx.collections.GdxArray
 import ktx.scene2d.*
-import kotlin.math.roundToInt
 
 class VolumeControl(
     private val onVolumeChange: (Float) -> Unit,
@@ -25,13 +24,16 @@ class VolumeControl(
                 this.setSize(elementWidth, elementHeight)
                 this.setScaling(Scaling.fill)
                 images.add(this)
-            }
-        }
 
-        this.onClickEvent { _, x, _ ->
-            val volumeLevel = (x / prefWidth * 10f).roundToInt() / 10f
-            setVolume(volumeLevel)
-            onVolumeChange(volumeLevel)
+                this.onClick {
+                    var volumeLevel = (this@VolumeControl.children.indexOf(this).toFloat() + 1) / numElements
+                    if (volumeLevel <= 0.1) {
+                        volumeLevel = 0f
+                    }
+                    setVolume(volumeLevel)
+                    onVolumeChange(volumeLevel)
+                }
+            }
         }
     }
 
