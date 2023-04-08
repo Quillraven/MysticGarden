@@ -55,6 +55,10 @@ class GameScreen(
     private val keyboardInput = KeyboardInput(PlayerController(world), game)
     private var currentMap: TiledMapAsset? = null
 
+    init {
+        uiStage.actors { gameView(i18n, GameModel(eventDispatcher, keyboardInput, i18n, game)) }
+    }
+
     private fun createEntityWorld(): World = world {
         injectables {
             add(game)
@@ -111,10 +115,6 @@ class GameScreen(
     }
 
     override fun show() {
-        if (uiStage.root.children.isEmpty) {
-            uiStage.actors { gameView(i18n, GameModel(eventDispatcher, keyboardInput, i18n, game)) }
-        }
-
         Gdx.input.inputProcessor = InputMultiplexer(keyboardInput, uiStage)
 
         if (currentMap == null) {
