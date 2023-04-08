@@ -23,6 +23,7 @@ class VictoryScreen(
 ) : KtxScreen {
 
     private var neededTime = 0
+    private var remainInScreen = 2f
 
     init {
         eventDispatcher.register<GameTimeEvent> {
@@ -31,6 +32,7 @@ class VictoryScreen(
     }
 
     override fun show() {
+        remainInScreen = 2f
         audioService.play(MusicAsset.VICTORY)
 
         uiStage.clear()
@@ -51,8 +53,9 @@ class VictoryScreen(
 
     override fun render(delta: Float) {
         val dt = delta.coerceAtMost(0.25f)
+        remainInScreen -= dt
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY) || Gdx.input.justTouched()) {
+        if (remainInScreen <= 0f && (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY) || Gdx.input.justTouched())) {
             game.setScreen<MenuScreen>()
             return
         }
