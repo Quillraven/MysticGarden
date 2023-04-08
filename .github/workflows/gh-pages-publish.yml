@@ -27,6 +27,5 @@ jobs:
     - name: Publish game
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        token: ${{ secrets.GH_PAGESS_ACCESS_TOKEN }}
         branch: gh-pages
         folder: teavm/build/dist/webapp/
