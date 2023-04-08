@@ -56,6 +56,8 @@ subprojects {
 eclipse.project.name = 'MysticGarden' + '-parent'
 
 tasks.register("i18n-gen") {
+    group = "i18n"
+
     def project = 'core'             // Will contain generated enum class.
     def source = 'src/main/kotlin'   // Kotlin source path of the project.
     def pack = 'com.github.quillraven.mysticgarden.ui'    // Enum target package.
