@@ -42,7 +42,7 @@ keepInputFileExtensions=false
 
 name=ui
 filename=
-output=../assets/graphics
+output=../assets/ui
 
 alias=true
 alphaThreshold=0

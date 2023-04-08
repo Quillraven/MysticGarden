@@ -9,6 +9,7 @@ import com.github.quillraven.mysticgarden.MysticGarden
 import com.github.quillraven.mysticgarden.audio.AudioService
 import com.github.quillraven.mysticgarden.ui.view.controlsView
 import ktx.app.KtxScreen
+import ktx.assets.disposeSafely
 import ktx.scene2d.actors
 
 class ControlsScreen(
@@ -33,7 +34,11 @@ class ControlsScreen(
         val dt = delta.coerceAtMost(0.25f)
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY) || Gdx.input.justTouched()) {
+            game.removeScreen<ControlsScreen>()
+            disposeSafely()
+
             game.setScreen<MenuScreen>()
+            return
         }
 
         // render UI

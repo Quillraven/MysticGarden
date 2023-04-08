@@ -54,6 +54,7 @@ class VictoryScreen(
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY) || Gdx.input.justTouched()) {
             game.setScreen<MenuScreen>()
+            return
         }
 
         // render UI
