@@ -120,7 +120,7 @@ class GameView(
                 stage.actors.filterIsInstance<Image>()
                     .forEach(stage.root::removeActor)
 
-                items.forEach { showItem(itemDrawable(it)) }
+                items.forEach { addItemImmediately(itemDrawable(it)) }
             }
         }
     }
@@ -131,6 +131,23 @@ class GameView(
         ItemType.WAND -> Drawable.WAND
         ItemType.BOOTS -> Drawable.BOOTS
         else -> gdxError("Unsupported type $itemType")
+    }
+
+    private fun addItemImmediately(drawable: Drawable) {
+        val numItems = stage.actors.size - 1
+        val offsetTop = 30f
+        val offsetLeft = 62f
+        val imgSize = 11f
+        val padLeft = 5f
+
+        stage += Image(Scene2DSkin.defaultSkin[drawable]).also { img ->
+            img.setScaling(Scaling.fit)
+            img.setSize(imgSize, imgSize)
+            img.setPosition(
+                offsetLeft + (imgSize + padLeft) * numItems,
+                stage.height - offsetTop
+            )
+        }
     }
 
     private fun showItem(drawable: Drawable) {

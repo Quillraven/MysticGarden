@@ -6,6 +6,8 @@ import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.I18NBundle
 import com.badlogic.gdx.utils.viewport.FitViewport
@@ -15,14 +17,17 @@ import com.github.quillraven.fleks.world
 import com.github.quillraven.mysticgarden.Assets
 import com.github.quillraven.mysticgarden.MusicAsset
 import com.github.quillraven.mysticgarden.MysticGarden
+import com.github.quillraven.mysticgarden.MysticGarden.Companion.prefKeyCrystals
+import com.github.quillraven.mysticgarden.MysticGarden.Companion.prefKeyItems
+import com.github.quillraven.mysticgarden.MysticGarden.Companion.prefKeyOrbs
+import com.github.quillraven.mysticgarden.MysticGarden.Companion.prefKeyPlayerPos
+import com.github.quillraven.mysticgarden.MysticGarden.Companion.prefKeySpeed
+import com.github.quillraven.mysticgarden.MysticGarden.Companion.prefKeyTime
 import com.github.quillraven.mysticgarden.TiledMapAsset
 import com.github.quillraven.mysticgarden.audio.AudioService
-import com.github.quillraven.mysticgarden.component.B2DLight
-import com.github.quillraven.mysticgarden.component.Light
+import com.github.quillraven.mysticgarden.component.*
 import com.github.quillraven.mysticgarden.component.Light.Companion.LightCone
 import com.github.quillraven.mysticgarden.component.Light.Companion.LightPoint
-import com.github.quillraven.mysticgarden.component.Particle
-import com.github.quillraven.mysticgarden.component.Physic
 import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.event.MapChangeEvent
 import com.github.quillraven.mysticgarden.input.KeyboardInput
@@ -31,12 +36,17 @@ import com.github.quillraven.mysticgarden.system.*
 import com.github.quillraven.mysticgarden.ui.model.GameModel
 import com.github.quillraven.mysticgarden.ui.view.gameView
 import ktx.app.KtxScreen
+import ktx.app.gdxError
 import ktx.assets.disposeSafely
 import ktx.box2d.createWorld
+import ktx.collections.GdxArray
 import ktx.graphics.component1
 import ktx.graphics.component2
 import ktx.graphics.component3
 import ktx.math.vec2
+import ktx.preferences.flush
+import ktx.preferences.get
+import ktx.preferences.set
 import ktx.scene2d.actors
 import kotlin.experimental.or
 
@@ -127,17 +137,83 @@ class GameScreen(
         world.system<MapSystem>().resetMapData(prefs)
         val (_, x, y) = activeMap.startLocation
         world.system<ZoneSystem>().resetActiveZone(vec2(x, y))
-        world.system<GameTimeSystem>().resetTime()
+        world.system<GameTimeSystem>().totalTime = 0
         val (r, g, b) = Light.ambientColor
         rayHandler.setAmbientLight(r, g, b, 1f)
 
         gameModel.reset()
     }
 
+    fun loadGame() {
+        val playerPos: Vector2 = prefs[prefKeyPlayerPos] ?: gdxError("Missing pref key $prefKeyPlayerPos")
+        val time: Int = prefs[prefKeyTime] ?: gdxError("Missing pref key $prefKeyTime")
+        val crystals: Int = prefs[prefKeyCrystals] ?: gdxError("Missing pref key $prefKeyCrystals")
+        val orbs: Int = prefs[prefKeyOrbs] ?: gdxError("Missing pref key $prefKeyOrbs")
+        val items: GdxArray<ItemType> = prefs[prefKeyItems] ?: gdxError("Missing pref key $prefKeyItems")
+        val speed: Float = prefs[prefKeySpeed] ?: gdxError("Missing pref key $prefKeySpeed")
+
+        with(world.system<MapSystem>()) {
+            destroyObjects()
+            destroyCollision()
+        }
+        world.system<ZoneSystem>().resetActiveZone(playerPos)
+        world.system<GameTimeSystem>().totalTime = time
+        val (r, g, b) = Light.ambientColor
+        val gain = orbs * Light.ambientOrbGain
+        rayHandler.setAmbientLight(r + gain, g + gain, b + gain, 1f)
+
+        // load player crystals, orbs and items
+        with(world) {
+            val playerEntity = family { all(Player, Boundary) }.first()
+            val playerCmp = playerEntity[Player]
+
+            playerCmp.crystals = crystals
+            playerCmp.chromas = orbs
+            playerCmp.items.clear()
+            playerCmp.items.addAll(items)
+
+            playerEntity[Move].maxSpeed = speed
+
+            val playerBoundary = playerEntity[Boundary]
+            playerBoundary.pos(playerPos.x, playerPos.y)
+            playerEntity.configure {
+                it -= Physic
+                it += Physic.of(physicWorld, playerBoundary, BodyType.DynamicBody, it, MysticGarden.b2dPlayer)
+            }
+        }
+
+        // update UI
+        gameModel.reset(crystals = crystals, orbs = orbs, time = time, items = items)
+    }
+
+    fun saveGame() {
+        prefs.flush {
+            with(world) {
+                val playerEntity = family { all(Player, Boundary) }.first()
+                val playerBoundary = playerEntity[Boundary]
+                val (crystals, chromas, items) = playerEntity[Player]
+
+                prefs[prefKeyPlayerPos] = vec2(playerBoundary.x, playerBoundary.y)
+                prefs[prefKeyTime] = system<GameTimeSystem>().totalTime
+                prefs[prefKeyCrystals] = crystals
+                prefs[prefKeyOrbs] = chromas
+                prefs[prefKeyItems] = items
+                prefs[prefKeySpeed] = playerEntity[Move].maxSpeed
+            }
+        }
+
+        val activeZone = world.system<ZoneSystem>().activeZone
+        world.system<MapSystem>().saveObjects(activeZone)
+    }
+
     override fun show() {
         Gdx.input.inputProcessor = InputMultiplexer(keyboardInput, uiStage)
 
         audioService.play(MusicAsset.GAME)
+    }
+
+    override fun hide() {
+        saveGame()
     }
 
     override fun resize(width: Int, height: Int) {

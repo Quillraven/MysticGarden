@@ -1,6 +1,7 @@
 package com.github.quillraven.mysticgarden.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.I18NBundle
 import com.github.quillraven.mysticgarden.MusicAsset
@@ -16,6 +17,7 @@ class MenuScreen(
     private val uiStage: Stage,
     private val audioService: AudioService,
     private val i18n: I18NBundle,
+    private val prefs: Preferences,
 ) : KtxScreen {
 
     override fun show() {
@@ -25,8 +27,7 @@ class MenuScreen(
             val model = MenuModel(game, audioService)
             menuView(model, i18n)
             // modify model afterwards to trigger menuView data bindings
-            // TODO logic to identify if there is a savestate
-            model.hasSaveState = false
+            model.hasSaveState = MysticGarden.prefKeyPlayerPos in prefs
             model.volume = audioService.mscVolume
         }
 

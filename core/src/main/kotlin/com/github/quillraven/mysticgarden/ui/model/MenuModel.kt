@@ -19,8 +19,8 @@ class MenuModel(
     }
 
     fun continueGame() {
-        // TODO load logic -> maybe part of GameScreen then we can combine startNewGame and continueGame
         game.setScreen<GameScreen>()
+        game.getScreen<GameScreen>().loadGame()
     }
 
     fun quitGame() {

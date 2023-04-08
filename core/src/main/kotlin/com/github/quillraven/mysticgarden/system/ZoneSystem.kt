@@ -35,7 +35,8 @@ class ZoneSystem(
 ) : IteratingSystem(family { all(Player, Boundary) }) {
 
     private lateinit var activeMap: TiledMap
-    private var activeZone = defaultZone
+    var activeZone = defaultZone
+        private set
     private val allZones = GdxArray<Zone>()
     private val tmpVec2 = vec2()
 

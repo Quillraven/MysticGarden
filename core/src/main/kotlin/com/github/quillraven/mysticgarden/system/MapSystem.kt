@@ -73,7 +73,7 @@ class MapSystem(
         spawnCollision(map, newZone)
     }
 
-    private fun destroyCollision() {
+    fun destroyCollision() {
         log.debug { "Destroying ${collisionBodies.size} collision bodies" }
         collisionBodies.forEach { physicWorld.destroyBody(it) }
         collisionBodies.clear()
@@ -85,9 +85,14 @@ class MapSystem(
         tiledEntities.forEach { it.configure { e -> e += Remove(CameraSystem.maxPanTime) } }
     }
 
+    fun destroyObjects() {
+        log.debug { "Destroying ${tiledEntities.numEntities} tiled objects" }
+        tiledEntities.forEach { it.remove() }
+    }
+
     private fun prefZoneObjectsKey(zone: Zone) = "zone-${zone.id}-objects"
 
-    private fun saveObjects(zone: Zone) {
+    fun saveObjects(zone: Zone) {
         prefs.flush {
             this[prefZoneObjectsKey(zone)] =
                 Json().toJson(tiledEntities.entities.map { it[Tiled].id }, Array::class.java, Int::class.java)
@@ -184,9 +189,10 @@ class MapSystem(
                 .forEach(prefs::remove)
         }
 
-        // remove player and tiled entities
+        // remove player and map entities
         playerEntities.entities.forEach { it.remove() }
-        tiledEntities.entities.forEach { it.remove() }
+        destroyObjects()
+        destroyCollision()
     }
 
     companion object {

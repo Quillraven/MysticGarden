@@ -55,7 +55,7 @@ class MysticGarden : KtxGame<KtxScreen>() {
 
         // add screens and set start screen
         addScreen(ControlsScreen(this, audioService, uiStage, i18n))
-        addScreen(MenuScreen(this, uiStage, audioService, i18n))
+        addScreen(MenuScreen(this, uiStage, audioService, i18n, prefs))
         addScreen(GameScreen(this, batch, assets, prefs, audioService, eventDispatcher, i18n))
         addScreen(VictoryScreen(this, uiStage, i18n, audioService, eventDispatcher))
         setScreen<ControlsScreen>()
@@ -72,6 +72,7 @@ class MysticGarden : KtxGame<KtxScreen>() {
             this[prefKeyMusic] = audioService.mscVolume
             this[prefKeySound] = audioService.sndVolume
         }
+        getScreen<GameScreen>().saveGame()
 
         // dispose resources
         super.dispose()
@@ -83,11 +84,16 @@ class MysticGarden : KtxGame<KtxScreen>() {
 
     companion object {
         var isMobile = false
-
         const val unitScale = 1 / 32f
 
         const val prefKeyMusic = "musicVolume"
         const val prefKeySound = "soundVolume"
+        const val prefKeyPlayerPos = "playerPos"
+        const val prefKeyTime = "time"
+        const val prefKeyCrystals = "crystals"
+        const val prefKeyOrbs = "orbs"
+        const val prefKeyItems = "items"
+        const val prefKeySpeed = "speed"
 
         const val b2dPlayer: Short = 2
         const val b2dMapObject: Short = 4

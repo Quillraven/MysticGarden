@@ -9,6 +9,8 @@ import com.github.quillraven.mysticgarden.screen.MenuScreen
 import com.github.quillraven.mysticgarden.system.numCrystals
 import com.github.quillraven.mysticgarden.system.numOrbs
 import com.github.quillraven.mysticgarden.ui.I18N
+import ktx.collections.GdxArray
+import ktx.collections.gdxArrayOf
 import ktx.i18n.get
 
 class GameModel(
@@ -32,7 +34,7 @@ class GameModel(
 
     // special property to immediately set items in the UI without any animation
     // -> used for loading/resetting save states
-    var allItems by propertyNotify(emptyList<ItemType>())
+    var allItems by propertyNotify(gdxArrayOf<ItemType>())
 
     init {
         with(eventDispatcher) {
@@ -68,12 +70,12 @@ class GameModel(
         }
     }
 
-    fun reset() {
-        collectedCrystals = 0
-        collectedOrbs = 0
-        totalTime = 0
+    fun reset(crystals: Int = 0, orbs: Int = 0, time: Int = 0, items: GdxArray<ItemType> = gdxArrayOf<ItemType>()) {
+        collectedCrystals = crystals
+        collectedOrbs = orbs
+        totalTime = time
         infoMsg = ""
-        allItems = emptyList()
+        allItems = items
     }
 
     private fun itemPickupInfo(type: String): String {
