@@ -4,6 +4,7 @@ import ktx.i18n.BundleLine
 
 /** Generated from assets/i18n/strings.properties file. */
 enum class I18N : BundleLine {
+    CLEARSAVE,
     CONTINUE,
     CONTROLSHERO,
     CONTROLSHERO_MOBILE,
@@ -27,11 +28,13 @@ enum class I18N : BundleLine {
     LOADING,
     NEEDEDTIME,
     NEWGAME,
+    NO,
     PORTALINFO,
     PRESSANYKEY,
     QUITGAME,
     TIME,
     VOLUME,
+    YES,
     ;
 
     private val key = this.name.lowercase().replace("_", ".")
