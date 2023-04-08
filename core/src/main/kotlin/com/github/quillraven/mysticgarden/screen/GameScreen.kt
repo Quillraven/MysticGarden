@@ -180,6 +180,7 @@ class GameScreen(
             playerEntity.configure {
                 it -= Physic
                 it += Physic.of(physicWorld, playerBoundary, BodyType.DynamicBody, it, MysticGarden.b2dPlayer)
+                it[LightPoint].light.attachToBody(it[Physic].body)
             }
         }
 
