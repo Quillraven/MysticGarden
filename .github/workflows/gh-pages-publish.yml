@@ -27,4 +27,3 @@ jobs:
         token: ${{ secrets.GH_PAGESS_ACCESS_TOKEN }}
         branch: gh-pages
         folder: teavm/build/dist/webapp/
-        repository-name: mystic-garden-teavm
