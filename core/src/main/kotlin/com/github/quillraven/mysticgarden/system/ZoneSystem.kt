@@ -35,7 +35,7 @@ class ZoneSystem(
 ) : IteratingSystem(family { all(Player, Boundary) }) {
 
     private lateinit var activeMap: TiledMap
-    private var activeZone = Zone(-1, Rectangle())
+    private var activeZone = defaultZone
     private val allZones = GdxArray<Zone>()
     private val tmpVec2 = vec2()
 
@@ -43,6 +43,7 @@ class ZoneSystem(
         eventDispatcher.register<MapChangeEvent> { (map) ->
             // init initial zone of new map
             activeMap = map
+            allZones.clear()
             allZones.addAll(
                 map.zoneLayer.objects
                     .filterIsInstance<RectangleMapObject>()
@@ -78,5 +79,14 @@ class ZoneSystem(
             updateActiveZone(center)
             entity.configure { it += Disable(CameraSystem.maxPanTime) }
         }
+    }
+
+    fun resetActiveZone(playerPosition: Vector2) {
+        activeZone = defaultZone
+        updateActiveZone(playerPosition)
+    }
+
+    companion object {
+        private val defaultZone = Zone(-1, Rectangle())
     }
 }

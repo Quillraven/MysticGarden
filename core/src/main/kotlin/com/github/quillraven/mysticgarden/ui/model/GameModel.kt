@@ -30,6 +30,10 @@ class GameModel(
 
     var item by propertyNotify(ItemType.NONE)
 
+    // special property to immediately set items in the UI without any animation
+    // -> used for loading/resetting save states
+    var allItems by propertyNotify(emptyList<ItemType>())
+
     init {
         with(eventDispatcher) {
             register<MapChangeEvent> {
@@ -62,6 +66,14 @@ class GameModel(
                 infoMsg = i18n[I18N.PORTALINFO]
             }
         }
+    }
+
+    fun reset() {
+        collectedCrystals = 0
+        collectedOrbs = 0
+        totalTime = 0
+        infoMsg = ""
+        allItems = emptyList()
     }
 
     private fun itemPickupInfo(type: String): String {

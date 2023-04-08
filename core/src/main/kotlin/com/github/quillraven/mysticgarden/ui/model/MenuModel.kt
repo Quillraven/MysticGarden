@@ -15,6 +15,7 @@ class MenuModel(
 
     fun startNewGame() {
         game.setScreen<GameScreen>()
+        game.getScreen<GameScreen>().newGame()
     }
 
     fun continueGame() {

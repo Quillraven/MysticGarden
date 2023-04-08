@@ -33,6 +33,10 @@ import com.github.quillraven.mysticgarden.ui.view.gameView
 import ktx.app.KtxScreen
 import ktx.assets.disposeSafely
 import ktx.box2d.createWorld
+import ktx.graphics.component1
+import ktx.graphics.component2
+import ktx.graphics.component3
+import ktx.math.vec2
 import ktx.scene2d.actors
 import kotlin.experimental.or
 
@@ -53,10 +57,12 @@ class GameScreen(
     private val rayHandler = createRayHandler()
     private val world = createEntityWorld()
     private val keyboardInput = KeyboardInput(PlayerController(world), game)
+    private val activeMap = assets[TiledMapAsset.MAP]
+    private val gameModel = GameModel(eventDispatcher, keyboardInput, i18n, game)
 
     init {
-        uiStage.actors { gameView(i18n, GameModel(eventDispatcher, keyboardInput, i18n, game)) }
-        eventDispatcher.dispatch(MapChangeEvent(assets[TiledMapAsset.MAP]))
+        uiStage.actors { gameView(i18n, gameModel) }
+        eventDispatcher.dispatch(MapChangeEvent(activeMap))
     }
 
     private fun createEntityWorld(): World = world {
@@ -112,6 +118,20 @@ class GameScreen(
         )
 
         setAmbientLight(Light.ambientColor)
+    }
+
+    fun newGame() {
+        // reset map data BEFORE resetting active zone
+        // because ZoneSystem will trigger the MapSystem via
+        // a ZoneChangeEvent to load map entities.
+        world.system<MapSystem>().resetMapData(prefs)
+        val (_, x, y) = activeMap.startLocation
+        world.system<ZoneSystem>().resetActiveZone(vec2(x, y))
+        world.system<GameTimeSystem>().resetTime()
+        val (r, g, b) = Light.ambientColor
+        rayHandler.setAmbientLight(r, g, b, 1f)
+
+        gameModel.reset()
     }
 
     override fun show() {

@@ -176,6 +176,19 @@ class MapSystem(
         }
     }
 
+    fun resetMapData(prefs: Preferences) {
+        // remove any saved preference data
+        prefs.flush {
+            prefs.get().keys
+                .filter { it.startsWith("zone-") }
+                .forEach(prefs::remove)
+        }
+
+        // remove player and tiled entities
+        playerEntities.entities.forEach { it.remove() }
+        tiledEntities.entities.forEach { it.remove() }
+    }
+
     companion object {
         private val log = Logger(MapSystem::class.java.simpleName)
     }

@@ -18,4 +18,8 @@ class GameTimeSystem(private val eventDispatcher: EventDispatcher = inject()) : 
         totalTime += 1
         eventDispatcher.dispatch(GameTimeEvent(totalTime))
     }
+
+    fun resetTime() {
+        totalTime = 0
+    }
 }

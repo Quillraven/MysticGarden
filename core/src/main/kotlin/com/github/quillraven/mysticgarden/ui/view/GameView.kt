@@ -106,9 +106,22 @@ class GameView(
 
             onPropertyChange(GameModel::infoMsg) {
                 infoLabel.txt = it
-                infoLabel += alpha(1f) + fadeOut(6f, Interpolation.swingIn)
+                if (it.isBlank()) {
+                    infoLabel.clearActions()
+                    infoLabel.alpha = 0f
+                } else {
+                    infoLabel += alpha(1f) + fadeOut(6f, Interpolation.swingIn)
+                }
             }
             onPropertyChange(GameModel::item) { showItem(itemDrawable(it)) }
+
+            onPropertyChange(GameModel::allItems) { items ->
+                stage.root.clearActions()
+                stage.actors.filterIsInstance<Image>()
+                    .forEach(stage.root::removeActor)
+
+                items.forEach { showItem(itemDrawable(it)) }
+            }
         }
     }
 
