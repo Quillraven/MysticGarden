@@ -11,8 +11,7 @@ import com.github.quillraven.mysticgarden.ui.*
 import com.github.quillraven.mysticgarden.ui.actor.VolumeControl
 import com.github.quillraven.mysticgarden.ui.actor.volumeControl
 import com.github.quillraven.mysticgarden.ui.model.MenuModel
-import ktx.actors.alpha
-import ktx.actors.onClick
+import ktx.actors.*
 import ktx.i18n.get
 import ktx.scene2d.*
 
@@ -23,8 +22,11 @@ class MenuView(
 
     private val continueLabel: GdxLabel
     private val volumeControl: VolumeControl
+    private val clearSaveStateTable: Table
 
     init {
+        clearSaveStateTable = newClearSaveStateTable()
+
         background = skin[Drawable.MENU_BGD]
 
         image(Scene2DSkin.defaultSkin[Drawable.BANNER]) { cell ->
@@ -40,7 +42,13 @@ class MenuView(
                 this.setAlignment(Align.center)
                 cell.row()
 
-                this.onClick { this@MenuView.model.startNewGame() }
+                this.onClick {
+                    if (this@MenuView.model.hasSaveState) {
+                        stage += this@MenuView.clearSaveStateTable
+                    } else {
+                        this@MenuView.model.startNewGame()
+                    }
+                }
             }
 
             this@MenuView.continueLabel = label(this@MenuView.i18n[I18N.CONTINUE], Label.NORMAL.skinKey) { cell ->
@@ -87,6 +95,33 @@ class MenuView(
 
         model.onPropertyChange(MenuModel::volume) { volumeLevel ->
             volumeControl.setVolume(volumeLevel)
+        }
+    }
+
+    private fun newClearSaveStateTable(): Table {
+        return Table().apply {
+            background = Scene2DSkin.defaultSkin[Drawable.FRAME2]
+
+            this.add(GdxLabel(i18n[I18N.CLEARSAVE], Scene2DSkin.defaultSkin, Label.NORMAL.skinKey)).apply {
+                this.actor.wrap = true
+                this.actor.setAlignment(Align.center)
+                this.expandX().fillX().colspan(2).padBottom(20f).row()
+            }
+
+            this.add(GdxLabel("[Highlight]${i18n[I18N.YES]}[]", Scene2DSkin.defaultSkin, Label.NORMAL.skinKey)).apply {
+                this.actor.setAlignment(Align.center)
+                this.expandX().fillX()
+                this.actor.onClick { this@MenuView.model.startNewGame() }
+            }
+            this.add(GdxLabel("[Highlight]${i18n[I18N.NO]}[]", Scene2DSkin.defaultSkin, Label.NORMAL.skinKey)).apply {
+                this.actor.setAlignment(Align.center)
+                this.expandX().fillX()
+                this.actor.onClick { stage -= this@MenuView.clearSaveStateTable }
+            }
+
+            this.width = 150f
+            this.height = 110f
+            this.centerPosition(180f, 320f)
         }
     }
 }
