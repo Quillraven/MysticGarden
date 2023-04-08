@@ -53,10 +53,10 @@ class GameScreen(
     private val rayHandler = createRayHandler()
     private val world = createEntityWorld()
     private val keyboardInput = KeyboardInput(PlayerController(world), game)
-    private var currentMap: TiledMapAsset? = null
 
     init {
         uiStage.actors { gameView(i18n, GameModel(eventDispatcher, keyboardInput, i18n, game)) }
+        eventDispatcher.dispatch(MapChangeEvent(assets[TiledMapAsset.MAP]))
     }
 
     private fun createEntityWorld(): World = world {
@@ -117,10 +117,6 @@ class GameScreen(
     override fun show() {
         Gdx.input.inputProcessor = InputMultiplexer(keyboardInput, uiStage)
 
-        if (currentMap == null) {
-            currentMap = TiledMapAsset.MAP
-            eventDispatcher.dispatch(MapChangeEvent(assets[TiledMapAsset.MAP]))
-        }
         audioService.play(MusicAsset.GAME)
     }
 
