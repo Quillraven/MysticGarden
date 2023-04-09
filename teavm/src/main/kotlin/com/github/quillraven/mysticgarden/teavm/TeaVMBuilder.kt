@@ -15,6 +15,8 @@ object TeaVMBuilder {
             webappPath = File("build/dist").canonicalPath
 
             htmlTitle = "Mystic Garden"
+            htmlWidth = 432
+            htmlHeight = 768
         }
 
         val tool = TeaBuilder.config(teaBuildConfiguration)

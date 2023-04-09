@@ -5,7 +5,6 @@ package com.github.quillraven.mysticgarden.teavm
 import com.github.quillraven.mysticgarden.MysticGarden
 import com.github.xpenatan.gdx.backends.teavm.TeaApplication
 import com.github.xpenatan.gdx.backends.teavm.TeaApplicationConfiguration
-import com.google.gwt.user.client.Window
 
 /** Launches the TeaVM/HTML application. */
 fun main() {
@@ -14,8 +13,8 @@ fun main() {
         height = 0
     }
 
-    val userAgent = Window.Navigator.getUserAgent() ?: ""
-    MysticGarden.isMobile = userAgent.contains("Mobile") || userAgent.contains("Android")
-
+    // for now set mobile to true for mobile browsers
+    // until we figure out how to distinguish between mobile and desktop browser
+    MysticGarden.isMobile = true
     TeaApplication(MysticGarden(), config)
 }
