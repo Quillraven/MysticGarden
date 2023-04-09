@@ -13,12 +13,9 @@ object TeaVMBuilder {
         val teaBuildConfiguration = TeaBuildConfiguration().apply {
             assetsPath.add(File("../assets"))
             webappPath = File("build/dist").canonicalPath
-            // Register any extra classpath assets here:
-            // additionalAssetsClasspathFiles += "com/github/quillraven/mysticgarden/asset.extension"
-        }
 
-        // Register any classes or packages that require reflection here:
-        // TeaReflectionSupplier.addReflectionClass("com.github.quillraven.mysticgarden.reflect")
+            htmlTitle = "Mystic Garden"
+        }
 
         val tool = TeaBuilder.config(teaBuildConfiguration)
         tool.mainClass = "com.github.quillraven.mysticgarden.teavm.TeaVMLauncher"
