@@ -100,7 +100,7 @@ class MysticGarden : KtxGame<KtxScreen>() {
         const val b2dEnvironment: Short = 8
         const val b2dWater: Short = 16
 
-        const val debug = true
+        const val debug = false
         const val debugRender = false
     }
 }
