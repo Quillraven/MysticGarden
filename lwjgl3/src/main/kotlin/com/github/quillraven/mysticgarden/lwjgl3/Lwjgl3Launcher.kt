@@ -9,7 +9,7 @@ import com.github.quillraven.mysticgarden.MysticGarden
 /** Launches the desktop (LWJGL3) application. */
 fun main() {
     Lwjgl3Application(MysticGarden(), Lwjgl3ApplicationConfiguration().apply {
-        setTitle("MysticGarden")
+        setTitle("Mystic Garden")
         setWindowedMode(432, 768)
         setWindowIcon(*(arrayOf(128, 64, 32, 16).map { "libgdx$it.png" }.toTypedArray()))
     })
