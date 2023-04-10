@@ -30,6 +30,7 @@ class VictoryView(
             cell.expand().fill().row()
         }
         label(i18n[I18N.PRESSANYKEY], Label.SMALL.skinKey) { cell ->
+            this.wrap = true
             this.setAlignment(Align.center, Align.center)
             this += forever(sequence(alpha(0.3f, 1f), alpha(1f, 1f)))
             cell.expand().fill()
