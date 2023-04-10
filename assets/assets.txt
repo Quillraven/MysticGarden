@@ -2,8 +2,8 @@ t:ui/font.fnt:11800:application/unknown
 i:ui/menu_bgd.png:668757:image/png
 i:ui/ui.png:135266:image/png
 t:ui/ui.atlas:1660:application/unknown
-b:i18n/strings.properties:1627:application/unknown
-b:i18n/strings_de.properties:1802:application/unknown
+b:i18n/strings.properties:1341:application/unknown
+b:i18n/strings_de.properties:1513:application/unknown
 a:audio/swing.ogg:9769:audio/ogg
 a:audio/jingle.wav:350434:audio/x-wav
 a:audio/victory.mp3:1024904:audio/mpeg
