@@ -27,6 +27,7 @@ class VictoryView(
         }
         val timeLabel = label("", Label.NORMAL.skinKey) { cell ->
             this.setAlignment(Align.top, Align.center)
+            this.wrap = true
             cell.expand().fill().row()
         }
         label(i18n[I18N.PRESSANYKEY], Label.SMALL.skinKey) { cell ->

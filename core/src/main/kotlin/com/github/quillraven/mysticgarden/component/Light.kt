@@ -6,10 +6,7 @@ import box2dLight.RayHandler
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.physics.box2d.Body
-import com.github.quillraven.fleks.Component
-import com.github.quillraven.fleks.ComponentHook
-import com.github.quillraven.fleks.ComponentType
-import com.github.quillraven.fleks.componentTypeOf
+import com.github.quillraven.fleks.*
 
 typealias B2DLight = box2dLight.Light
 
@@ -25,6 +22,10 @@ data class Light(
 
     override fun type(): ComponentType<Light> = cmpType
 
+    override fun World.onRemove(entity: Entity) {
+        light.remove()
+    }
+
     companion object {
         val LightPoint = componentTypeOf<Light>()
         val LightCone = componentTypeOf<Light>()
@@ -34,10 +35,6 @@ data class Light(
         const val ambientOrbGain = 0.02f
         val distanceInterpolation: Interpolation = Interpolation.smoother
         val angleInterpolation: Interpolation = Interpolation.swing
-
-        val onRemove: ComponentHook<Light> = { _, component: Light ->
-            component.light.remove()
-        }
 
         fun pointLightOf(
             rayHandler: RayHandler,

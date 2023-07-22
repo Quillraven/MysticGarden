@@ -4,9 +4,9 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType
 import com.github.quillraven.fleks.Component
-import com.github.quillraven.fleks.ComponentHook
 import com.github.quillraven.fleks.ComponentType
 import com.github.quillraven.fleks.Entity
+import com.github.quillraven.fleks.World
 import com.github.quillraven.mysticgarden.PhysicWorld
 import ktx.box2d.body
 import ktx.box2d.box
@@ -18,6 +18,11 @@ data class Physic(
     val posBeforeStep: Vector2 = vec2(body.position.x, body.position.y),
 ) : Component<Physic> {
     override fun type(): ComponentType<Physic> = Physic
+
+    override fun World.onRemove(entity: Entity) {
+        body.world.destroyBody(body)
+        body.userData = null
+    }
 
     companion object : ComponentType<Physic>() {
         fun of(world: PhysicWorld, boundary: Boundary, bodyType: BodyType, entity: Entity, category: Short): Physic {
@@ -38,12 +43,6 @@ data class Physic(
                     }
                 }
             )
-        }
-
-        val onRemove: ComponentHook<Physic> = { _: Entity, component: Physic ->
-            val (body) = component
-            body.world.destroyBody(body)
-            body.userData = null
         }
     }
 }

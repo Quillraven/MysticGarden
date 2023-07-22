@@ -3,8 +3,9 @@ package com.github.quillraven.mysticgarden.component
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect
 import com.badlogic.gdx.math.Vector2
 import com.github.quillraven.fleks.Component
-import com.github.quillraven.fleks.ComponentHook
 import com.github.quillraven.fleks.ComponentType
+import com.github.quillraven.fleks.Entity
+import com.github.quillraven.fleks.World
 import ktx.math.vec2
 
 data class Particle(
@@ -19,9 +20,9 @@ data class Particle(
 
     override fun type() = Particle
 
-    companion object : ComponentType<Particle>() {
-        val onRemove: ComponentHook<Particle> = { _, component ->
-            component.effect.free()
-        }
+    override fun World.onRemove(entity: Entity) {
+        effect.free()
     }
+
+    companion object : ComponentType<Particle>()
 }

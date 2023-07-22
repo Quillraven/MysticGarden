@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.I18NBundle
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.github.quillraven.fleks.World
-import com.github.quillraven.fleks.world
+import com.github.quillraven.fleks.configureWorld
 import com.github.quillraven.mysticgarden.Assets
 import com.github.quillraven.mysticgarden.MusicAsset
 import com.github.quillraven.mysticgarden.MysticGarden
@@ -26,7 +26,6 @@ import com.github.quillraven.mysticgarden.MysticGarden.Companion.prefKeyTime
 import com.github.quillraven.mysticgarden.TiledMapAsset
 import com.github.quillraven.mysticgarden.audio.AudioService
 import com.github.quillraven.mysticgarden.component.*
-import com.github.quillraven.mysticgarden.component.Light.Companion.LightCone
 import com.github.quillraven.mysticgarden.component.Light.Companion.LightPoint
 import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.event.MapChangeEvent
@@ -76,7 +75,7 @@ class GameScreen(
         eventDispatcher.dispatch(MapChangeEvent(activeMap))
     }
 
-    private fun createEntityWorld(): World = world {
+    private fun createEntityWorld(): World = configureWorld {
         injectables {
             add(game)
             add(batch)
@@ -89,13 +88,6 @@ class GameScreen(
             add(prefs)
             add(rayHandler)
             add(audioService)
-        }
-
-        components {
-            onRemove(Physic, Physic.onRemove)
-            onRemove(LightPoint, Light.onRemove)
-            onRemove(LightCone, Light.onRemove)
-            onRemove(Particle, Particle.onRemove)
         }
 
         systems {
