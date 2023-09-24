@@ -40,20 +40,20 @@ class Assets : Disposable {
     fun load() {
         manager.setLoader(TmxMapLoader())
 
-        AtlasAsset.values().forEach { manager.load<TextureAtlas>(it.path) }
-        TiledMapAsset.values().forEach { manager.load<TiledMap>(it.path) }
-        ParticleAsset.values().forEach {
+        AtlasAsset.entries.forEach { manager.load<TextureAtlas>(it.path) }
+        TiledMapAsset.entries.forEach { manager.load<TiledMap>(it.path) }
+        ParticleAsset.entries.forEach {
             manager.load<ParticleEffect>(it.path, ParticleEffectLoader.ParticleEffectParameter().apply {
                 this.atlasFile = AtlasAsset.GAME.path
             })
         }
-        SoundAsset.values().forEach { manager.load<Sound>(it.path) }
-        MusicAsset.values().forEach { manager.load<Music>(it.path) }
+        SoundAsset.entries.forEach { manager.load<Sound>(it.path) }
+        MusicAsset.entries.forEach { manager.load<Music>(it.path) }
 
         manager.finishLoading()
 
         // create particle pools
-        ParticleAsset.values().forEach {
+        ParticleAsset.entries.forEach {
             val effect = manager.getAsset<ParticleEffect>(it.path)
             particlePools[it] = ParticleEffectPool(effect, 1, 5)
             // We will manually take care to reset the blend function inside the RenderSystem.

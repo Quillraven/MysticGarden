@@ -27,7 +27,7 @@ enum class TiledObjectType(
 
     companion object {
         fun of(name: String): TiledObjectType {
-            return values().firstOrNull { it.name == name.uppercase() } ?: gdxError("Unknown object type: $name")
+            return entries.firstOrNull { it.name == name.uppercase() } ?: gdxError("Unknown object type: $name")
         }
     }
 }

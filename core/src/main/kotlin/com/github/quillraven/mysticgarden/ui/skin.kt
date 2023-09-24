@@ -75,12 +75,12 @@ fun loadSkin(): Skin {
         // I18N stuff
         Colors.getColors()["Highlight"] = Color(0xb19cd9)
         Colors.getColors()["Normal"] = Color.WHITE
-        Bundle.values().forEach { bundle ->
+        Bundle.entries.forEach { bundle ->
             skin.add(bundle.skinKey, I18NBundle.createBundle(bundle.filePath.toInternalFile()))
         }
 
         // Scene2D related stuff
-        Font.values().forEach { fnt ->
+        Font.entries.forEach { fnt ->
             skin[fnt.skinKey] = BitmapFont("ui/font.fnt".toInternalFile(), skin.getRegion("font")).also { bmp ->
                 bmp.data.markupEnabled = true
                 bmp.data.setScale(fnt.scale)

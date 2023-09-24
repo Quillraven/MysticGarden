@@ -34,4 +34,4 @@ data class GameTimeEvent(val totalTimeSeconds: Int) : Event
 
 data class ItemPickupEvent(val type: ItemType) : Event
 
-object PortalCollision : Event
+data object PortalCollision : Event
