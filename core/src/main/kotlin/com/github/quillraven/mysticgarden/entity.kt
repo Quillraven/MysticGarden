@@ -23,7 +23,7 @@ fun World.spawnPlayer(x: Float, y: Float): Entity {
 
     return this.entity {
         it += Player()
-        it += CameraLock()
+        it += Tags.CAMERA_LOCK
         it += Move(Move.defaultSpeed)
         val boundary = Boundary(x, y, 0.8f, 0.8f)
         it += boundary

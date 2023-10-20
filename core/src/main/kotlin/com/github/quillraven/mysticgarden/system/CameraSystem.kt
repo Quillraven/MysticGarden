@@ -10,7 +10,7 @@ import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
 import com.github.quillraven.fleks.World.Companion.inject
 import com.github.quillraven.mysticgarden.component.Boundary
-import com.github.quillraven.mysticgarden.component.CameraLock
+import com.github.quillraven.mysticgarden.component.Tags
 import com.github.quillraven.mysticgarden.event.EventDispatcher
 import com.github.quillraven.mysticgarden.event.ZoneChangeEvent
 import ktx.math.component1
@@ -22,7 +22,7 @@ import kotlin.math.min
 class CameraSystem(
     private val gameCamera: OrthographicCamera = inject(),
     eventDispatcher: EventDispatcher = inject(),
-) : IteratingSystem(family { all(CameraLock, Boundary) }) {
+) : IteratingSystem(family { all(Tags.CAMERA_LOCK, Boundary) }) {
 
     private val activeMapZone = Rectangle()
     private val camBoundaries = Rectangle()
